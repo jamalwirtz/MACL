@@ -1,0 +1,32 @@
+[Unit]
+Description=Muddo Agro Chemicals LTD — Flask Web Application
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/muddo_agro
+Environment="PATH=/var/www/muddo_agro/venv/bin"
+
+# Load environment variables from .env file
+EnvironmentFile=/var/www/muddo_agro/.env
+
+ExecStart=/var/www/muddo_agro/venv/bin/gunicorn \
+    --config /var/www/muddo_agro/gunicorn.conf.py \
+    app:app
+
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=muddo_agro
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
