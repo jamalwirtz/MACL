@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Contact Us — Muddo Agro Chemicals{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:14px;"><a href="/">Home</a><span class="sep">/</span><span class="current">Contact</span></div>
+    <div class="page-hero-tag anim-fade-down"><i class="fas fa-envelope"></i> Get in Touch</div>
+    <h1 class="anim-fade-up">Contact Us</h1>
+    <p class="anim-fade-up delay-1">Reach out for product enquiries, pricing, wholesale orders, or expert crop protection advice. Our team is ready to help.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- INFO SIDE -->
+      <div>
+        <h2 class="section-title" style="text-align:left;margin-bottom:12px;">We're Here to Help</h2>
+        <p>Whether you're a small-scale farmer, a distributor, or an agronomist looking for bulk pricing, our team is ready to assist.</p>
+        <div class="contact-items" style="margin-top:24px;">
+          <div class="contact-item" data-reveal="right">
+            <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><h4>Our Location</h4><p>Container Village Nakivubo, Equity Bank Basement, Kampala, Uganda</p></div>
+          </div>
+          <div class="contact-item" data-reveal="right" data-reveal-delay="80">
+            <div class="contact-item-icon"><i class="fas fa-phone"></i></div>
+            <div><h4>Phone / WhatsApp</h4><p><a href="tel:+256772507582" style="color:var(--green-mid);">+256 772 507582</a></p></div>
+          </div>
+          <div class="contact-item" data-reveal="right" data-reveal-delay="160">
+            <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
+            <div><h4>Email Address</h4><p><a href="mailto:muddoagro811@gmail.com" style="color:var(--green-mid);">muddoagro811@gmail.com</a></p></div>
+          </div>
+          <div class="contact-item" data-reveal="right" data-reveal-delay="240">
+            <div class="contact-item-icon"><i class="fas fa-clock"></i></div>
+            <div><h4>Business Hours</h4><p>Monday – Saturday: 8:00am – 6:00pm<br><span style="font-size:.82rem;color:var(--text-muted);">Closed Sundays &amp; Public Holidays</span></p></div>
+          </div>
+          <div class="contact-item" data-reveal="right" data-reveal-delay="320">
+            <div class="contact-item-icon"><i class="fab fa-facebook"></i></div>
+            <div><h4>Social Media</h4><p><a href="https://facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/" target="_blank" style="color:var(--green-mid);">MUDDO AGRO Chemicals LTD</a></p></div>
+          </div>
+        </div>
+
+        <!-- TRACKING BANNER -->
+        <div class="tracking-link-banner" data-reveal="up" style="margin-top:24px;">
+          <div>
+            <strong style="font-size:.92rem;color:var(--green-deep,#0d2b14);display:flex;align-items:center;gap:7px;"><i class="fas fa-search" style="color:var(--green-mid);"></i> Track Your Enquiry</strong>
+            <p style="margin:4px 0 0;font-size:.86rem;color:var(--text-muted);">After submitting, you'll receive a reference number. Use it to check your status anytime.</p>
+          </div>
+          <a href="{{ url_for('track') }}" class="btn-green" style="font-size:.82rem;padding:9px 18px;white-space:nowrap;"><i class="fas fa-arrow-right"></i> Track</a>
+        </div>
+
+        <!-- MAP -->
+        <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;height:220px;box-shadow:var(--shadow-md);" data-reveal="up">
+          <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=32.575%2C0.307%2C32.588%2C0.320&layer=mapnik&marker=0.3136%2C32.5811"
+            width="100%" height="220" style="border:0;" loading="lazy" title="Muddo Agro Location"></iframe>
+        </div>
+        <p style="font-size:.75rem;color:var(--text-muted);margin-top:6px;text-align:right;">
+          <a href="https://www.openstreetmap.org/?mlat=0.3136&mlon=32.5811#map=15/0.3136/32.5811" target="_blank" style="color:var(--green-mid);">View larger map ↗</a>
+        </p>
+      </div>
+
+      <!-- FORM SIDE -->
+      <div class="contact-form" data-reveal="left">
+        <h3>Send Us a Message</h3>
+        <p>Fill in the form below and we'll respond within 1 business day.</p>
+        <form method="POST" action="{{ url_for('contact') }}">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone / WhatsApp</label>
+              <input type="tel" id="phone" name="phone" placeholder="+256 7XX XXX XXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select a topic…</option>
+              <option value="Product Enquiry">Product Enquiry</option>
+              <option value="Pricing / Quotation">Pricing / Quotation</option>
+              <option value="Wholesale / Bulk Order">Wholesale / Bulk Order</option>
+              <option value="Distributor Partnership">Distributor Partnership</option>
+              <option value="Technical / Agronomy Advice">Technical / Agronomy Advice</option>
+              <option value="General Enquiry">General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" placeholder="Tell us what you need — product name, quantity, delivery location, etc." required rows="5"></textarea>
+          </div>
+          <button type="submit" class="btn-green btn-ripple" style="width:100%;padding:13px;font-size:.95rem;justify-content:center;">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

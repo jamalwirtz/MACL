@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Track Your Enquiry — Muddo Agro{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-tag anim-fade-down"><i class="fas fa-search"></i> Enquiry Tracking</div>
+    <h1 class="anim-fade-up">Track Your Enquiry</h1>
+    <p class="anim-fade-up delay-1">Enter your reference number to check the status of your enquiry.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container" style="max-width:620px;">
+    <div class="admin-card anim-fade-up" style="border-radius:16px;overflow:hidden;">
+      <div style="padding:28px 32px;border-bottom:1px solid var(--border-color);">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:var(--text-primary);margin:0 0 20px;">Enter Reference Number</h3>
+        <form method="GET" action="{{ url_for('track') }}" style="display:flex;gap:10px;">
+          <input type="text" name="ref" value="{{ ref }}" placeholder="e.g. ENQ-3A7X9K2M"
+            style="flex:1;padding:12px 16px;border:2px solid var(--border-color);border-radius:10px;font-size:1rem;font-family:'DM Sans',sans-serif;color:var(--text-primary);background:var(--bg-input);transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--green-mid)'" onblur="this.style.borderColor='var(--border-color)'">
+          <button type="submit" class="btn-green btn-ripple" style="padding:12px 22px;border-radius:10px;white-space:nowrap;"><i class="fas fa-search"></i> Track</button>
+        </form>
+      </div>
+      {% if ref and result %}
+      <div style="padding:28px 32px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:16px;border-radius:10px;background:{{'#e8f5e9' if result.status != 'new' else '#e3f2fd'}};border:1.5px solid {{'#a5d6a7' if result.status != 'new' else '#90caf9'}}">
+          <div style="width:44px;height:44px;border-radius:50%;background:{{'#2d6e35' if result.status=='resolved' else ('#1565c0' if result.status=='new' else '#f57c00')}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">
+            <i class="fas {{'fa-check' if result.status=='resolved' else ('fa-clock' if result.status=='pending' else 'fa-envelope-open')}}"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;color:var(--text-primary);">Enquiry {{ result.status|title }}</div>
+            <div style="font-size:.82rem;color:var(--text-muted);">Reference: <strong style="font-family:monospace;letter-spacing:.05em;">{{ result.ref_number }}</strong></div>
+          </div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;">
+          {% for label, value in [('Name', result.name), ('Email', result.email), ('Subject', result.subject), ('Date Submitted', result.created_at[:16])] %}
+          <tr style="border-bottom:1px solid var(--border-color);">
+            <td style="padding:10px 6px;font-size:.82rem;font-weight:700;color:var(--text-muted);width:130px;">{{ label }}</td>
+            <td style="padding:10px 6px;font-size:.92rem;color:var(--text-primary);">{{ value }}</td>
+          </tr>
+          {% endfor %}
+          <tr><td style="padding:10px 6px;font-size:.82rem;font-weight:700;color:var(--text-muted);vertical-align:top;">Message</td>
+          <td style="padding:10px 6px;font-size:.92rem;color:var(--text-secondary);line-height:1.65;">{{ result.message }}</td></tr>
+        </table>
+        <div style="margin-top:20px;padding:14px;background:var(--bg-alt);border-radius:8px;font-size:.86rem;color:var(--text-muted);">
+          <i class="fas fa-info-circle" style="color:var(--green-mid);margin-right:6px;"></i>
+          Our team responds within 1 business day. For urgent matters, call <a href="tel:+256772507582" style="color:var(--green-mid);font-weight:700;">+256 772 507582</a>.
+        </div>
+      </div>
+      {% elif ref %}
+      <div style="padding:40px;text-align:center;">
+        <i class="fas fa-search" style="font-size:2.5rem;color:var(--border-color);display:block;margin-bottom:14px;"></i>
+        <h4 style="color:var(--text-secondary);font-size:1.05rem;font-weight:700;">No enquiry found</h4>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-top:8px;">The reference number <strong style="font-family:monospace;">{{ ref }}</strong> was not found. Please check and try again.</p>
+      </div>
+      {% endif %}
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+      <a href="{{ url_for('contact') }}" style="font-size:.88rem;color:var(--green-mid);">← Submit a new enquiry</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Agent Chat{% endblock %}
+{% block extra_head %}
+<style>
+.chat-layout { height: calc(100vh - 180px); min-height: 500px; }
+</style>
+{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+  <div><div class="admin-page-title anim-fade-right">Agent Chat</div><div class="admin-page-sub">Real-time messaging with your field agents.</div></div>
+</div>
+
+<div class="chat-layout admin-card">
+  <!-- SIDEBAR: agent list -->
+  <div class="chat-sidebar">
+    <div class="chat-sidebar-header">
+      <h3><i class="fas fa-users" style="color:var(--green-mid);margin-right:6px;"></i> Field Agents</h3>
+      <p style="font-size:.75rem;color:var(--text-light);margin-top:3px;">{{ agents|length }} agent(s)</p>
+    </div>
+    <div class="chat-contacts">
+      {% for agent in agents %}
+      {% set u = unread_map.get(agent.id, 0) %}
+      {% if agent.last_seen %}
+        {% set diff = (now - agent.last_seen[:19]|replace('T',' ')|todatetime()).total_seconds() %}
+        {% set status = 'online' if diff < 300 else ('away' if diff < 1800 else 'offline') %}
+      {% else %}{% set status = 'offline' %}{% endif %}
+      <div class="chat-contact" data-id="{{ agent.id }}" data-role="agent" data-name="{{ agent.name }}" data-status="{{ status }}" id="contact-{{ agent.id }}">
+        <div class="chat-avatar">
+          {{ agent.name[0]|upper }}
+          <span class="status-dot {{ status }}"></span>
+        </div>
+        <div class="chat-contact-info">
+          <div class="chat-contact-name">{{ agent.name }}</div>
+          <div class="chat-contact-preview">{{ agent.region or 'No region' }} · {{ agent.district or '' }}</div>
+        </div>
+        <div class="chat-contact-meta">
+          {% if agent.last_seen %}<span class="chat-contact-time">{{ agent.last_seen[:10] }}</span>{% endif %}
+          {% if u > 0 %}<span class="chat-unread-badge">{{ u }}</span>{% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div style="padding:32px;text-align:center;color:var(--text-light);">
+        <i class="fas fa-users" style="font-size:2rem;display:block;margin-bottom:10px;color:var(--border);"></i>
+        No active agents.<br>
+        <a href="{{ url_for('admin_agents') }}" style="color:var(--green-mid);font-size:.85rem;">Add agents →</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- MAIN CHAT AREA -->
+  <div class="chat-main">
+    <!-- Empty state -->
+    <div class="chat-empty" id="chatEmptyState">
+      <i class="fas fa-comment-dots"></i>
+      <h3 style="font-family:'Playfair Display',serif;color:var(--green-deep);margin-bottom:6px;">Select an Agent</h3>
+      <p style="font-size:.88rem;color:var(--text-light);">Click an agent on the left to start a conversation.</p>
+    </div>
+    <!-- Chat area (hidden until contact selected) -->
+    <div id="chatMainArea" style="display:none;flex-direction:column;flex:1;">
+      <div class="chat-header">
+        <div class="chat-header-avatar" id="chatHeaderAvatar">?</div>
+        <div>
+          <div class="chat-header-name" id="chatHeaderName">Agent</div>
+          <div class="chat-header-status" id="chatHeaderStatus"><span class="status-dot offline"></span> offline</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <a id="chatAgentLink" href="{{ url_for('admin_agents') }}" class="btn-sm" style="background:var(--green-tint);color:var(--green-dark);font-size:.76rem;"><i class="fas fa-user"></i> Profile</a>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-area">
+        <textarea id="chatInput" placeholder="Type a message… (Enter to send, Shift+Enter for new line)" rows="1"></textarea>
+        <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script>
+// Auto-open contact from URL hash
+const hash = window.location.hash.replace('#chat-','');
+if (hash) {
+  const el = document.querySelector('.chat-contact[data-id="'+hash+'"]');
+  if (el && window.muddoChat) window.muddoChat.selectContact(el);
+}
+</script>
+{% endblock %}

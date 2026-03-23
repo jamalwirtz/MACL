@@ -1,0 +1,152 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Distributors{% endblock %}
+{% block content %}
+
+<div class="admin-page-title">Distributor Management</div>
+<div class="admin-page-sub">Manage the nationwide network of Muddo Agro outlet stores.</div>
+
+<!-- ADD DISTRIBUTOR FORM -->
+<div class="admin-card" style="margin-bottom:24px;">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:6px;"></i> Add New Distributor Outlet</span>
+    <button onclick="toggleForm()" id="formToggleBtn" class="btn-sm green"><i class="fas fa-chevron-down"></i> Show Form</button>
+  </div>
+  <div id="addDistForm" style="display:none;">
+    <div class="admin-card-body">
+      <form method="POST" action="{{ url_for('admin_add_distributor') }}" class="admin-form">
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>Store / Outlet Name *</label>
+            <input type="text" name="name" placeholder="e.g. Mbarara Western Hub" required>
+          </div>
+          <div class="admin-input-group">
+            <label>Region *</label>
+            <select name="region" required>
+              <option value="">Select…</option>
+              <option value="Central">Central</option>
+              <option value="Eastern">Eastern</option>
+              <option value="Northern">Northern</option>
+              <option value="Western">Western</option>
+            </select>
+          </div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>District *</label>
+            <input type="text" name="district" placeholder="e.g. Kampala, Jinja, Gulu…" required>
+          </div>
+          <div class="admin-input-group">
+            <label>Physical Address</label>
+            <input type="text" name="address" placeholder="e.g. Main Street, Plot 45, Jinja Town">
+          </div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>Phone Number *</label>
+            <input type="text" name="phone" placeholder="+256 7XX XXX XXX" required>
+          </div>
+          <div class="admin-input-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="outlet@muddo.ug">
+          </div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>GPS Latitude <span style="font-size:.72rem;color:var(--text-light);">(for map pin)</span></label>
+            <input type="number" name="lat" step="0.0001" placeholder="e.g. 0.3136" min="-2" max="5">
+          </div>
+          <div class="admin-input-group">
+            <label>GPS Longitude <span style="font-size:.72rem;color:var(--text-light);">(for map pin)</span></label>
+            <input type="number" name="lng" step="0.0001" placeholder="e.g. 32.5811" min="29" max="36">
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:var(--green-tint);border-radius:6px;font-size:.78rem;color:var(--text-mid);margin-top:-4px;">
+          <i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
+          To get GPS coordinates: open <a href="https://www.google.com/maps" target="_blank" style="color:var(--green-mid);">Google Maps</a>, right-click the location, and copy the coordinates shown.
+        </div>
+        <div>
+          <button type="submit" class="btn-sm green" style="padding:10px 20px;font-size:.88rem;">
+            <i class="fas fa-plus"></i> Add Distributor
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- DISTRIBUTORS BY REGION -->
+{% set regions = ['Central', 'Eastern', 'Northern', 'Western'] %}
+{% for region in regions %}
+  {% set region_dists = distributors | selectattr('region', 'equalto', region) | list %}
+  {# works with dicts since selectattr checks dict keys too #}
+  {% if region_dists %}
+  <div class="admin-card" style="margin-bottom:20px;">
+    <div class="admin-card-header">
+      <span class="admin-card-title">
+        <i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-right:6px;"></i>
+        {{ region }} Region
+        <span style="margin-left:8px;background:var(--green-pale);color:var(--green-dark);padding:2px 8px;border-radius:100px;font-size:.72rem;">{{ region_dists|length }} outlet(s)</span>
+      </span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Name</th><th>District</th><th>Address</th><th>Contact</th><th>Coordinates</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for d in region_dists %}
+          <tr>
+            <td><strong>{{ d.name }}</strong></td>
+            <td style="font-size:.84rem;">{{ d.district }}</td>
+            <td style="font-size:.82rem;color:var(--text-mid);max-width:180px;">{{ d.address or '—' }}</td>
+            <td>
+              <a href="tel:{{ d.phone }}" style="font-size:.82rem;color:var(--green-mid);display:block;">{{ d.phone }}</a>
+              {% if d.email %}<a href="mailto:{{ d.email }}" style="font-size:.75rem;color:var(--text-light);">{{ d.email }}</a>{% endif %}
+            </td>
+            <td style="font-size:.75rem;color:var(--text-light);font-family:'DM Mono',monospace;">
+              {% if d.lat and d.lng %}
+              {{ "%.4f"|format(d.lat) }}, {{ "%.4f"|format(d.lng) }}
+              <br>
+              <a href="https://www.google.com/maps?q={{ d.lat }},{{ d.lng }}" target="_blank" style="color:var(--green-mid);font-size:.72rem;"><i class="fas fa-external-link-alt"></i> View on Maps</a>
+              {% else %}—{% endif %}
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin_delete_distributor', did=d.id) }}"
+                    onsubmit="return confirm('Remove {{ d.name }} from the distributor network?')">
+                <button type="submit" class="btn-sm red"><i class="fas fa-trash"></i> Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+
+<!-- EMPTY STATE -->
+{% if not distributors %}
+<div class="admin-card">
+  <div class="admin-card-body" style="text-align:center;padding:48px;">
+    <i class="fas fa-store" style="font-size:3rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+    <h3 style="color:var(--text-light);font-weight:600;">No distributors yet</h3>
+    <p style="color:var(--text-light);font-size:.88rem;margin-top:6px;">Use the form above to add your first outlet.</p>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+function toggleForm() {
+  const form = document.getElementById('addDistForm');
+  const btn = document.getElementById('formToggleBtn');
+  const showing = form.style.display !== 'none';
+  form.style.display = showing ? 'none' : 'block';
+  btn.innerHTML = showing
+    ? '<i class="fas fa-chevron-down"></i> Show Form'
+    : '<i class="fas fa-chevron-up"></i> Hide Form';
+}
+</script>
+{% endblock %}

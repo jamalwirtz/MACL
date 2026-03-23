@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Muddo Agro Chemicals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="auth-page">
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <i class="fas fa-leaf auth-bg-icon"></i>
+    <div class="auth-logo" style="margin-bottom:32px;justify-content:flex-start;">
+      <div class="auth-logo-icon" style="animation:none;"><i class="fas fa-leaf"></i></div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:white;letter-spacing:.03em;">MUDDO AGRO</div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;">Chemicals LTD</div>
+      </div>
+    </div>
+    <h1>Access Your<br><span>Agro Portal</span></h1>
+    <p>Secure access for Muddo Agro administrators and field agents. Manage products, track supply requests, and communicate across regions.</p>
+    <div class="auth-features">
+      <div class="auth-feature"><i class="fas fa-shield-alt"></i><span>Secure role-based access control</span></div>
+      <div class="auth-feature"><i class="fas fa-comments"></i><span>Real-time messaging with agents</span></div>
+      <div class="auth-feature"><i class="fas fa-chart-pie"></i><span>Live dashboard and supply tracking</span></div>
+      <div class="auth-feature"><i class="fas fa-map-marked-alt"></i><span>Nationwide distributor management</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <div class="auth-logo" style="margin-bottom:16px;">
+          <div class="auth-logo-icon"><i class="fas fa-leaf"></i></div>
+        </div>
+        <h2 id="authTitle">Welcome Back</h2>
+        <p id="authSub">Sign in to your Muddo Agro account</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for cat, msg in messages %}
+          <div class="flash flash-{{ cat }}" style="margin-bottom:16px;border-radius:8px;animation:none;">
+            <i class="fas fa-exclamation-circle"></i> {{ msg }}
+          </div>
+        {% endfor %}{% endif %}
+      {% endwith %}
+
+      <!-- ROLE SELECTOR -->
+      <div class="auth-roles">
+        <button class="auth-role-btn active" data-title="Admin Login" data-sub="Full access to all management features">
+          <i class="fas fa-user-shield"></i> Admin
+        </button>
+        <button class="auth-role-btn" data-title="Agent Login" data-sub="Access your regional dashboard and requests">
+          <i class="fas fa-user-tie"></i> Agent
+        </button>
+      </div>
+
+      <form method="POST" action="/login">
+        <div class="auth-input-wrap">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
+          <i class="fas fa-user input-icon"></i>
+        </div>
+        <div class="auth-input-wrap">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••••" required autocomplete="current-password">
+          <i class="fas fa-lock input-icon"></i>
+        </div>
+        <button type="submit" class="auth-submit">
+          <span><i class="fas fa-sign-in-alt"></i> Sign In Securely</span>
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <a href="/" style="font-size:.8rem;color:var(--text-light);display:inline-flex;align-items:center;gap:6px;transition:color .2s;">
+          <i class="fas fa-arrow-left"></i> Back to Public Website
+        </a>
+      </div>
+
+      <div style="margin-top:16px;padding:12px;background:var(--green-tint);border-radius:8px;font-size:.75rem;color:var(--text-light);text-align:center;line-height:1.7;">
+        <strong style="color:var(--green-dark);">Demo credentials</strong><br>
+        Admin: <code>admin</code> / <code>muddo@admin2024</code><br>
+        Agent: <code>agent_central</code> / <code>agent123</code>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

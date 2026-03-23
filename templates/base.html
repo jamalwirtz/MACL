@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Muddo Agro Chemicals LTD{% endblock %}</title>
+<meta name="description" content="Muddo Agro Chemicals LTD — Uganda's trusted distributor of pesticides, herbicides, fungicides and fertilizers. MAAIF-registered. Nationwide delivery. Call +256 772 507582.">
+<meta name="keywords" content="agrochemicals Uganda, pesticides Uganda, herbicides Uganda, fungicides Uganda, Muddo Agro, MACL, farming chemicals Kampala">
+<meta name="author" content="Muddo Agro Chemicals LTD">
+<meta property="og:title" content="Muddo Agro Chemicals LTD — Uganda's Trusted Agrochemical Partner">
+<meta property="og:description" content="Professional-grade pesticides, herbicides, fungicides and fertilizers. MAAIF-registered distributor serving all regions of Uganda.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ url_for('static', filename='images/macl_logo.png', _external=True) }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Muddo Agro Chemicals LTD">
+<meta name="twitter:description" content="Uganda's trusted MAAIF-registered agrochemical distributor.">
+<link rel="canonical" href="{{ request.url }}">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0d2b14">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/macl_logo.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}" media="print">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block extra_head %}{% endblock %}
+<script>
+(function(){
+  var t=localStorage.getItem('muddo-theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+})();
+</script>
+{% if ga_id and ga_id != 'G-XXXXXXXXXX' %}
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ ga_id }}');
+</script>
+{% endif %}
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Muddo Agro Chemicals LTD",
+  "alternateName": "MACL",
+  "description": "Uganda's trusted MAAIF-registered distributor of pesticides, herbicides, fungicides and fertilizers.",
+  "url": "{{ request.url_root }}",
+  "telephone": "+256772507582",
+  "email": "muddoagro811@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Container Village Nakivubo, Equity Bank Basement",
+    "addressLocality": "Kampala",
+    "addressCountry": "UG"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 0.3136, "longitude": 32.5811 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00", "closes": "18:00"
+  }],
+  "sameAs": ["https://www.facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/"],
+  "logo": "{{ url_for('static', filename='images/macl_logo.png', _external=True) }}",
+  "currenciesAccepted": "UGX",
+  "priceRange": "$$"
+}
+</script>
+
+<!-- PWA Manifest + Service Worker -->
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0d2b14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Muddo Agro">
+</head>
+<body data-user-role="{{ session.get('role','') }}" data-user-id="{{ session.get('user_id','') }}" data-user-initial="{{ (session.get('user_name','U') or 'U')[0]|upper }}">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="topbar"><div class="topbar-inner">
+  <div class="topbar-left">
+    <span><i class="fas fa-map-marker-alt"></i> Container Village Nakivubo, Kampala</span>
+    <span><i class="fas fa-clock"></i> Mon–Sat: 8:00am – 6:00pm</span>
+  </div>
+  <div class="topbar-right">
+    <a href="tel:+256772507582"><i class="fas fa-phone"></i> +256 772 507582</a>
+    <a href="mailto:muddoagro811@gmail.com"><i class="fas fa-envelope"></i> muddoagro811@gmail.com</a>
+    <a href="https://facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/" target="_blank"><i class="fab fa-facebook"></i></a>
+    {% if session.get('role') == 'admin' %}<a href="{{ url_for('admin_dashboard') }}" style="background:rgba(200,168,75,.2);padding:2px 10px;border-radius:100px;"><i class="fas fa-shield-alt"></i> Admin</a>
+    {% elif session.get('role') == 'agent' %}<a href="{{ url_for('agent_dashboard') }}" style="background:rgba(200,168,75,.2);padding:2px 10px;border-radius:100px;"><i class="fas fa-user"></i> {{ session.get('user_name','') }}</a>
+    {% endif %}
+  </div>
+</div></div>
+
+<nav class="navbar" id="navbar"><div class="nav-inner">
+  <a href="{{ url_for('index') }}" class="nav-logo">
+    <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL" style="height:52px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));">
+    <div class="logo-text"><span class="logo-main">MUDDO AGRO</span><span class="logo-sub">Chemicals LTD</span></div>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+    <div class="nav-dropdown">
+      <a class="nav-link dropdown-toggle {% if request.endpoint in ['pesticides','herbicides','fungicides','other_products','product_detail'] %}active{% endif %}">Products <i class="fas fa-chevron-down"></i></a>
+      <div class="dropdown-menu">
+        <div class="dropdown-header">Our Product Range</div>
+        <a href="{{ url_for('pesticides') }}" class="dropdown-item"><span class="di-icon pest"><i class="fas fa-bug"></i></span><div><strong>Pesticides</strong><small>Insect &amp; pest control</small></div></a>
+        <a href="{{ url_for('herbicides') }}" class="dropdown-item"><span class="di-icon herb"><i class="fas fa-seedling"></i></span><div><strong>Herbicides</strong><small>Weed control solutions</small></div></a>
+        <a href="{{ url_for('fungicides') }}" class="dropdown-item"><span class="di-icon fung"><i class="fas fa-microscope"></i></span><div><strong>Fungicides</strong><small>Disease prevention</small></div></a>
+        <a href="{{ url_for('other_products') }}" class="dropdown-item"><span class="di-icon other"><i class="fas fa-boxes"></i></span><div><strong>Other Products</strong><small>Fertilizers &amp; equipment</small></div></a>
+        <div style="border-top:1px solid var(--border-color);margin:6px 0;"></div>
+        <a href="{{ url_for('compare') }}" class="dropdown-item"><span class="di-icon" style="background:#e8f5e9;color:#1b5e20;"><i class="fas fa-balance-scale"></i></span><div><strong>Compare Products</strong><small>Side-by-side comparison</small></div></a>
+      </div>
+    </div>
+    <a href="{{ url_for('distributors') }}" class="nav-link {% if request.endpoint == 'distributors' %}active{% endif %}"><i class="fas fa-store"></i> Find a Distributor</a>
+    <a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">About</a>
+    <a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a>
+    {% if session.get('role') == 'admin' %}
+      <a href="{{ url_for('admin_chat') }}" class="nav-link" style="position:relative;"><i class="fas fa-comments"></i> Messages{% if unread_count and unread_count > 0 %}<span id="chatNavBadge" style="position:absolute;top:-3px;right:-3px;background:#c0392b;color:white;font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">{{ unread_count }}</span>{% endif %}</a>
+      <a href="{{ url_for('logout') }}" class="nav-link" style="color:#c0392b;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    {% elif session.get('role') == 'agent' %}
+      <a href="{{ url_for('agent_chat') }}" class="nav-link" style="position:relative;"><i class="fas fa-comments"></i> Messages{% if agent_unread and agent_unread > 0 %}<span id="chatNavBadge" style="position:absolute;top:-3px;right:-3px;background:#c0392b;color:white;font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">{{ agent_unread }}</span>{% endif %}</a>
+      <a href="{{ url_for('logout') }}" class="nav-link" style="color:#c0392b;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    {% else %}
+      <a href="{{ url_for('contact') }}" class="nav-cta btn-ripple">Get a Quote</a>
+    {% endif %}
+  </div>
+
+
+    <!-- SEARCH -->
+    <div style="position:relative;" id="navSearchWrap">
+      <form action="{{ url_for('search') }}" method="GET" style="display:flex;align-items:center;">
+        <div style="position:relative;">
+          <i class="fas fa-search" id="searchIcon" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;cursor:pointer;z-index:2;" onclick="toggleSearchExpand()"></i>
+          <input type="text" name="q" id="navSearchInput" placeholder="Search products…"
+            style="width:0;padding:7px 10px 7px 32px;border:1.5px solid var(--border-color);border-radius:100px;font-size:.82rem;font-family:'DM Sans',sans-serif;background:var(--bg-card,#fff);color:var(--text-primary);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);cursor:pointer;"
+            id="navSearch" onfocus="this.style.width='180px';this.style.opacity='1';" onblur="if(!this.value)collapseSearch();">
+        </div>
+      </form>
+      <!-- Autocomplete dropdown -->
+      <div id="searchDropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-card,#fff);border:1px solid var(--border-color);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.15);min-width:280px;z-index:9999;overflow:hidden;"></div>
+    </div>
+
+    <!-- GLOBAL SEARCH -->
+    <form action="{{ url_for('search') }}" method="GET" style="display:flex;align-items:center;position:relative;" id="globalSearchForm">
+      <input type="text" name="q" placeholder="Search products…" autocomplete="off"
+        id="globalSearchInput"
+        style="width:0;padding:0;border:none;background:transparent;transition:all .35s cubic-bezier(.34,1.56,.64,1);font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--text-primary);outline:none;"
+        aria-label="Search products">
+      <button type="button" id="searchToggle" 
+        style="background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:1rem;padding:7px 8px;border-radius:8px;transition:all .2s ease;display:flex;align-items:center;"
+        aria-label="Toggle search"
+        title="Search">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+    <!-- THEME TOGGLE -->
+    <button class="theme-toggle-pill" onclick="toggleTheme()" title="Switch theme" aria-label="Toggle dark/light mode">
+      <i class="fas fa-moon icon-moon" data-theme-icon></i>
+      <i class="fas fa-sun icon-sun" style="display:none;" data-theme-icon></i>
+      <span data-theme-label>Dark Mode</span>
+    </button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</div></nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
+  <div class="flash-container">{% for cat,msg in messages %}<div class="flash flash-{{ cat }} anim-slide-in-right"><i class="fas {% if cat=='success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i> {{ msg }}<button onclick="this.parentElement.remove()" class="flash-close">&times;</button></div>{% endfor %}</div>
+{% endif %}{% endwith %}
+
+<main id="main-content">{% block content %}{% endblock %}</main>
+
+<!-- PRODUCT MODAL -->
+<div class="product-modal-overlay" id="productModalOverlay">
+  <div class="product-modal" role="dialog">
+    <button class="modal-close-btn" onclick="document.getElementById('productModalOverlay').classList.remove('open');document.body.style.overflow='';" aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="modal-layout">
+      <div class="modal-image-side">
+        <img id="modalImg" src="" alt="Product" loading="lazy">
+        <div class="modal-image-overlay"></div>
+        <div class="modal-counter" id="modalCounter">1 / 1</div>
+        <div class="modal-image-nav">
+          <button class="modal-nav-btn" onclick="modalNav(-1)"><i class="fas fa-chevron-left"></i></button>
+          <button class="modal-nav-btn" onclick="modalNav(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+      <div class="modal-info-side">
+        <span class="modal-tag" id="modalTag"></span>
+        <h2 class="modal-product-name" id="modalName"></h2>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-specs-grid">
+          <div class="modal-spec-item"><div class="modal-spec-label"><i class="fas fa-flask"></i> Active Ingredient</div><div class="modal-spec-value" id="modalIngr">—</div></div>
+          <div class="modal-spec-item"><div class="modal-spec-label"><i class="fas fa-vial"></i> Formulation</div><div class="modal-spec-value" id="modalForm">—</div></div>
+          <div class="modal-spec-item"><div class="modal-spec-label"><i class="fas fa-leaf"></i> Target Crops</div><div class="modal-spec-value" id="modalCrops">—</div></div>
+          <div class="modal-spec-item"><div class="modal-spec-label"><i class="fas fa-tint"></i> Dosage</div><div class="modal-spec-value" id="modalDose">—</div></div>
+          <div class="modal-spec-item" style="grid-column:span 2;"><div class="modal-spec-label"><i class="fas fa-box"></i> Pack Sizes</div><div class="modal-spec-value" id="modalPack">—</div></div>
+        </div>
+        <div class="modal-actions">
+          <a id="modalEnqBtn" href="/contact" class="btn-primary btn-ripple" style="flex:1;justify-content:center;text-align:center;"><i class="fas fa-envelope"></i> Enquire Now</a>
+          <a id="modalViewBtn" href="#" class="btn-outline"><i class="fas fa-external-link-alt"></i> Full Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-wave"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C300,80 900,0 1200,40 L1200,80 L0,80 Z" fill="var(--green-deep)"/></svg></div>
+  <div class="footer-body"><div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL" class="footer-logo-img"></div>
+      <p>Providing premium agrochemical solutions to Ugandan farmers. Registered distributors of pesticides, herbicides, and fungicides.</p>
+      <div class="footer-social">
+        <a href="https://facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="tel:+256772507582"><i class="fas fa-phone"></i></a>
+        <a href="mailto:muddoagro811@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Products</h4><ul>
+      <li><a href="{{ url_for('pesticides') }}"><i class="fas fa-bug"></i> Pesticides</a></li>
+      <li><a href="{{ url_for('herbicides') }}"><i class="fas fa-seedling"></i> Herbicides</a></li>
+      <li><a href="{{ url_for('fungicides') }}"><i class="fas fa-microscope"></i> Fungicides</a></li>
+      <li><a href="{{ url_for('other_products') }}"><i class="fas fa-boxes"></i> Other Products</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('distributors') }}">Find a Distributor</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+      <li><a href="{{ url_for('login') }}">Staff Sign In</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact Us</h4><ul class="footer-contact">
+      <li><i class="fas fa-map-marker-alt"></i> Container Village Nakivubo, Equity Bank Basement, Kampala</li>
+      <li><i class="fas fa-phone"></i> +256 772 507582</li>
+      <li><i class="fas fa-envelope"></i> muddoagro811@gmail.com</li>
+      <li><i class="fas fa-clock"></i> Mon–Sat: 8:00am – 6:00pm</li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; {{ now.year }} Muddo Agro Chemicals LTD. All Rights Reserved. | Registered in Uganda</p><p>Built with ❤ for Ugandan Agriculture</p></div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/enhancements.js') }}" defer></script>
+{% block extra_scripts %}{% endblock %}
+
+<!-- WhatsApp Click-to-Chat FAB -->
+<a href="https://wa.me/{{ wa_number }}?text=Hello%20Muddo%20Agro%2C%20I%20need%20assistance%20with%20your%20products."
+   target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
+   class="whatsapp-fab"
+   title="Chat with us on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+<!-- FLOATING THEME TOGGLE FAB -->
+<button class="theme-fab" onclick="toggleTheme()" title="Toggle dark / light mode" aria-label="Toggle theme">
+  <i class="fas fa-moon fab-moon"></i>
+  <i class="fas fa-sun fab-sun"></i>
+</button>
+
+
+<!-- Service Worker Registration -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/static/sw.js', { scope: '/' })
+      .catch(e => console.log('SW registration failed:', e));
+  });
+}
+</script>
+
+<!-- Back to Top Button -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
+  aria-label="Back to top"
+  style="position:fixed;bottom:148px;right:24px;z-index:8886;width:42px;height:42px;border-radius:50%;
+         border:none;background:var(--green-dark,#1a4a23);color:var(--gold,#c8a84b);
+         cursor:pointer;display:none;align-items:center;justify-content:center;
+         box-shadow:0 4px 14px rgba(0,0,0,.25);font-size:.95rem;
+         transition:all .3s cubic-bezier(.34,1.56,.64,1);"
+  onmouseover="this.style.transform='translateY(-3px) scale(1.08)'"
+  onmouseout="this.style.transform=''">
+  <i class="fas fa-chevron-up"></i>
+</button>
+<script>
+const btt = document.getElementById('backToTop');
+if (btt) {
+  window.addEventListener('scroll', () => {
+    btt.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  }, {passive: true});
+}
+</script>
+</body>
+</html>

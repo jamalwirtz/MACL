@@ -1,0 +1,4 @@
+name,category,description,active_ingredient,formulation,crops,dosage,packing,image_url
+EXAMPLE PRODUCT 1,pesticide,Brief description of the product and its benefits.,Active ingredient 250g/L,Emulsifiable Concentrate,Maize; Beans; Cotton,1-2 L/ha,250ml; 500ml; 1L,https://example.com/image.jpg
+EXAMPLE PRODUCT 2,herbicide,Describe what weeds it controls and how it works.,Glyphosate 480g/L,Soluble Liquid,All crops (pre-plant),3-5 L/ha,1L; 5L; 20L,
+EXAMPLE PRODUCT 3,fungicide,Describe the disease control spectrum.,Mancozeb 80%,Wettable Powder,Tomatoes; Potatoes,2 kg/ha,500g; 1kg,

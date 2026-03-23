@@ -1,0 +1,137 @@
+{% extends "agent/base_agent.html" %}
+{% block title %}Agent Dashboard{% endblock %}
+{% block content %}
+
+<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+  <div>
+    <div class="admin-page-title anim-fade-right">My Dashboard</div>
+    <div class="admin-page-sub">Hello, <strong>{{ agent.name }}</strong> — {{ now.strftime('%A, %d %B %Y') }}</div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <a href="{{ url_for('agent_chat') }}" class="btn-sm" style="background:var(--green-mid);color:white;">
+      <i class="fas fa-comments"></i> Chat Admin
+      {% if unread > 0 %}<span style="background:#c0392b;border-radius:100px;padding:1px 6px;margin-left:4px;font-size:.65rem;">{{ unread }}</span>{% endif %}
+    </a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row" style="margin-bottom:24px;">
+  <div class="stat-card hover-lift anim-fade-up delay-1">
+    <div class="stat-card-icon green"><i class="fas fa-flask"></i></div>
+    <div><div class="stat-card-value" data-target="{{ total_products }}">0</div><div class="stat-card-label">Products in Catalogue</div></div>
+  </div>
+  <div class="stat-card hover-lift anim-fade-up delay-2">
+    <div class="stat-card-icon gold"><i class="fas fa-dolly"></i></div>
+    <div><div class="stat-card-value" data-target="{{ my_requests|length }}">0</div><div class="stat-card-label">My Supply Requests</div></div>
+  </div>
+  <div class="stat-card hover-lift anim-fade-up delay-3">
+    <div class="stat-card-icon red"><i class="fas fa-comment-dots"></i></div>
+    <div><div class="stat-card-value" data-target="{{ unread }}">0</div><div class="stat-card-label">Unread Messages</div></div>
+  </div>
+  <div class="stat-card hover-lift anim-fade-up delay-4" style="background:linear-gradient(135deg,var(--green-deep),var(--green-dark));color:white;">
+    <div class="stat-card-icon" style="background:rgba(200,168,75,.2);color:var(--gold);"><i class="fas fa-map-marker-alt"></i></div>
+    <div>
+      <div class="stat-card-value" style="color:white;">{{ agent.region or '—' }}</div>
+      <div class="stat-card-label" style="color:rgba(255,255,255,.6);">Assigned Region</div>
+    </div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+  <!-- SUPPLY REQUEST FORM -->
+  <div class="admin-card anim-fade-up delay-2">
+    <div class="admin-card-header">
+      <span class="admin-card-title"><i class="fas fa-dolly" style="color:var(--gold);margin-right:6px;"></i> Submit Supply Request</span>
+    </div>
+    <div class="admin-card-body">
+      <form method="POST" action="{{ url_for('agent_supply_request') }}" class="admin-form">
+        <div class="admin-input-group">
+          <label>Product Name *</label>
+          <input type="text" name="product_name" placeholder="e.g. BULLDOCK 25EC, Weed Master 480SL…" required>
+        </div>
+        <div class="admin-input-group">
+          <label>Quantity Required</label>
+          <input type="text" name="quantity" placeholder="e.g. 50 litres, 20 x 1L bottles…">
+        </div>
+        <div class="admin-input-group">
+          <label>Additional Notes</label>
+          <textarea name="notes" rows="3" placeholder="Urgency level, delivery location, customer details…"></textarea>
+        </div>
+        <button type="submit" class="btn-sm green" style="padding:10px 20px;"><i class="fas fa-paper-plane"></i> Submit Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- LATEST ADMIN MESSAGE & REQUEST HISTORY -->
+  <div style="display:flex;flex-direction:column;gap:20px;">
+
+    <!-- LAST ADMIN MESSAGE -->
+    <div class="admin-card anim-fade-up delay-3">
+      <div class="admin-card-header">
+        <span class="admin-card-title"><i class="fas fa-comment-dots" style="color:var(--green-mid);margin-right:6px;"></i> Latest from Admin</span>
+        <a href="{{ url_for('agent_chat') }}" style="font-size:.8rem;color:var(--green-mid);">Open Chat →</a>
+      </div>
+      <div class="admin-card-body">
+        {% if last_msg %}
+        <div style="padding:14px;background:var(--green-tint);border-radius:10px;border-left:4px solid var(--green-mid);">
+          <div style="font-size:.78rem;color:var(--text-light);margin-bottom:6px;">{{ last_msg.created_at[:16] }}</div>
+          <div style="font-size:.9rem;color:var(--text-dark);line-height:1.6;">{{ last_msg.content }}</div>
+        </div>
+        <a href="{{ url_for('agent_chat') }}" class="btn-sm green" style="margin-top:14px;"><i class="fas fa-reply"></i> Reply</a>
+        {% else %}
+        <div style="text-align:center;padding:24px;color:var(--text-light);">
+          <i class="fas fa-comment" style="font-size:1.8rem;display:block;margin-bottom:8px;color:var(--border);"></i>
+          No messages yet.
+          <a href="{{ url_for('agent_chat') }}" style="color:var(--green-mid);display:block;margin-top:8px;font-size:.85rem;">Start a conversation →</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- MY PROFILE CARD -->
+    <div class="admin-card anim-fade-up delay-4">
+      <div class="admin-card-header"><span class="admin-card-title"><i class="fas fa-id-card" style="color:var(--green-mid);margin-right:6px;"></i> My Profile</span></div>
+      <div class="admin-card-body" style="padding:16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--green-dark);color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;">{{ agent.name[0]|upper }}</div>
+          <div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--green-deep);">{{ agent.name }}</div>
+            <div style="font-size:.78rem;color:var(--text-light);">@{{ agent.username }}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          {% if agent.phone %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-phone" style="color:var(--green-mid);width:14px;"></i> {{ agent.phone }}</div>{% endif %}
+          {% if agent.email %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-envelope" style="color:var(--green-mid);width:14px;"></i> {{ agent.email }}</div>{% endif %}
+          {% if agent.region %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-map-marker-alt" style="color:var(--green-mid);width:14px;"></i> {{ agent.region }}{% if agent.district %} · {{ agent.district }}{% endif %}</div>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY SUPPLY REQUEST HISTORY -->
+{% if my_requests %}
+<div class="admin-card anim-fade-up" style="margin-top:20px;">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-history" style="color:var(--green-mid);margin-right:6px;"></i> My Supply Request History</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Product</th><th>Quantity</th><th>Status</th><th>Admin Response</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for r in my_requests %}
+        <tr>
+          <td style="font-weight:600;font-size:.88rem;">{{ r.product_name or 'General Supply' }}</td>
+          <td style="font-size:.84rem;">{{ r.quantity or '—' }}</td>
+          <td><span class="status-badge status-{{ r.status }}">{{ r.status }}</span></td>
+          <td style="font-size:.82rem;color:var(--text-mid);">{{ r.admin_response or '—' }}</td>
+          <td style="font-size:.76rem;color:var(--text-light);">{{ r.created_at[:10] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

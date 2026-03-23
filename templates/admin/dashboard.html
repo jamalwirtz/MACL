@@ -1,0 +1,554 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ── DASHBOARD-SPECIFIC STYLES ───────────────────────────────────────── */
+
+/* KPI Card with top colour bar */
+.kpi-card {
+  background: var(--admin-card, #fff);
+  border: 1px solid var(--border-color, #e0e8e2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  transition: transform .25s ease, box-shadow .25s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  position: relative;
+}
+.kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+.kpi-bar {
+  height: 5px;
+  width: 100%;
+  display: block;
+}
+.kpi-body {
+  padding: 20px 22px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.kpi-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.kpi-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem; font-weight: 900; line-height: 1;
+  color: var(--text-primary, #111);
+}
+[data-theme="dark"] .kpi-value { color: #d6edd8; }
+.kpi-label {
+  font-size: .8rem; font-weight: 600; color: var(--text-muted, #565656);
+  margin-top: 5px; letter-spacing: .02em;
+}
+.kpi-footer {
+  padding: 8px 22px 14px;
+  font-size: .76rem;
+  color: var(--text-subtle, #767676);
+  border-top: 1px solid var(--border-color, #e0e8e2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.kpi-footer i { font-size: .7rem; }
+
+/* Colour palettes for bars + icons */
+.kpi-blue   .kpi-bar { background: linear-gradient(90deg, #1565c0, #1e88e5); }
+.kpi-blue   .kpi-icon { background: #e3f2fd; color: #1565c0; }
+.kpi-teal   .kpi-bar { background: linear-gradient(90deg, #00695c, #26a69a); }
+.kpi-teal   .kpi-icon { background: #e0f2f1; color: #00695c; }
+.kpi-amber  .kpi-bar { background: linear-gradient(90deg, #c77700, #ffa000); }
+.kpi-amber  .kpi-icon { background: #fff8e1; color: #c77700; }
+.kpi-red    .kpi-bar { background: linear-gradient(90deg, #b71c1c, #e53935); }
+.kpi-red    .kpi-icon { background: #ffebee; color: #b71c1c; }
+.kpi-indigo .kpi-bar { background: linear-gradient(90deg, #283593, #3f51b5); }
+.kpi-indigo .kpi-icon { background: #e8eaf6; color: #283593; }
+.kpi-green  .kpi-bar { background: linear-gradient(90deg, #1b5e20, #2d6e35); }
+.kpi-green  .kpi-icon { background: #e8f5e9; color: #1b5e20; }
+.kpi-rose   .kpi-bar { background: linear-gradient(90deg, #880e4f, #c2185b); }
+.kpi-rose   .kpi-icon { background: #fce4ec; color: #880e4f; }
+.kpi-slate  .kpi-bar { background: linear-gradient(90deg, #37474f, #607d8b); }
+.kpi-slate  .kpi-icon { background: #eceff1; color: #37474f; }
+
+/* Dark mode icon bg adjustments */
+[data-theme="dark"] .kpi-blue   .kpi-icon { background: rgba(21,101,192,.2); color: #90caf9; }
+[data-theme="dark"] .kpi-teal   .kpi-icon { background: rgba(0,105,92,.2);  color: #80cbc4; }
+[data-theme="dark"] .kpi-amber  .kpi-icon { background: rgba(199,119,0,.2); color: #ffc850; }
+[data-theme="dark"] .kpi-red    .kpi-icon { background: rgba(183,28,28,.2); color: #ef9a9a; }
+[data-theme="dark"] .kpi-indigo .kpi-icon { background: rgba(40,53,147,.2); color: #9fa8da; }
+[data-theme="dark"] .kpi-green  .kpi-icon { background: rgba(27,94,32,.2);  color: #a5d6a7; }
+[data-theme="dark"] .kpi-rose   .kpi-icon { background: rgba(136,14,79,.2); color: #f48fb1; }
+[data-theme="dark"] .kpi-slate  .kpi-icon { background: rgba(55,71,79,.2);  color: #b0bec5; }
+
+/* KPI grid */
+.kpi-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.kpi-grid-4-small { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 14px; }
+
+/* Section panel */
+.dash-panel {
+  background: var(--admin-card, #fff);
+  border: 1px solid var(--border-color, #e0e8e2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.dash-panel-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color, #e0e8e2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dash-panel-head h3 {
+  font-size: .96rem; font-weight: 800; font-family: 'DM Sans', sans-serif;
+  color: var(--text-primary, #111); display: flex; align-items: center; gap: 8px;
+  margin: 0;
+}
+.dash-panel-head h3 i { font-size: .88rem; }
+.dash-panel-link {
+  font-size: .8rem; font-weight: 700; color: var(--green-mid); text-decoration: none;
+  display: flex; align-items: center; gap: 4px; transition: gap .2s ease;
+  white-space: nowrap;
+}
+.dash-panel-link:hover { gap: 8px; }
+
+/* Agent status row */
+.agent-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px; border-bottom: 1px solid var(--border-color, #e0e8e2);
+  transition: background .2s ease;
+}
+.agent-row:last-child { border-bottom: none; }
+.agent-row:hover { background: var(--bg-alt, #f0f8f1); }
+.agent-avi {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--green-dark); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .92rem; flex-shrink: 0; position: relative;
+}
+.agent-dot {
+  position: absolute; bottom: 0; right: 0;
+  width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--admin-card, #fff);
+}
+.dot-online  { background: #27ae60; }
+.dot-away    { background: #f39c12; }
+.dot-offline { background: #b0bec5; }
+.agent-info  { flex: 1; min-width: 0; }
+.agent-name  { font-size: .9rem; font-weight: 700; color: var(--text-primary, #111); }
+.agent-meta  { font-size: .76rem; color: var(--text-muted, #565656); margin-top: 1px; }
+.agent-status-badge {
+  font-size: .7rem; font-weight: 800; letter-spacing: .06em; padding: 3px 9px;
+  border-radius: 100px; text-transform: uppercase; flex-shrink: 0;
+}
+.asb-online  { background: #e8f5e9; color: #1b5e20; }
+.asb-away    { background: #fff8e1; color: #c77700; }
+.asb-offline { background: #eceff1; color: #546e7a; }
+[data-theme="dark"] .asb-online  { background: rgba(27,94,32,.25);  color: #a5d6a7; }
+[data-theme="dark"] .asb-away    { background: rgba(199,119,0,.2); color: #ffd54f; }
+[data-theme="dark"] .asb-offline { background: rgba(55,71,79,.2);  color: #90a4ae; }
+
+/* Activity item */
+.act-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 18px; border-bottom: 1px solid var(--border-color, #e0e8e2);
+  transition: background .2s ease;
+}
+.act-item:last-child { border-bottom: none; }
+.act-item:hover { background: var(--bg-alt, #f0f8f1); }
+.act-dot {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: .76rem;
+  font-weight: 800; margin-top: 1px;
+}
+.act-body { flex: 1; min-width: 0; }
+.act-text { font-size: .88rem; color: var(--text-secondary, #383838); line-height: 1.5; }
+.act-text strong { color: var(--text-primary, #111); font-weight: 700; }
+.act-time { font-size: .74rem; color: var(--text-muted, #565656); margin-top: 3px; }
+.act-unread { width: 8px; height: 8px; border-radius: 50%; background: #e53935; flex-shrink: 0; margin-top: 6px; }
+
+/* Supply request row */
+.sr-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px; border-bottom: 1px solid var(--border-color, #e0e8e2);
+  transition: background .2s ease;
+}
+.sr-row:last-child { border-bottom: none; }
+.sr-row:hover { background: var(--bg-alt, #f0f8f1); }
+.sr-stripe {
+  width: 4px; min-height: 38px; border-radius: 3px; flex-shrink: 0;
+}
+.sr-pending  .sr-stripe { background: #ffa000; }
+.sr-approved .sr-stripe { background: #2d6e35; }
+.sr-denied   .sr-stripe { background: #e53935; }
+.sr-info     { flex: 1; min-width: 0; }
+.sr-product  { font-size: .9rem; font-weight: 700; color: var(--text-primary, #111); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sr-agent    { font-size: .76rem; color: var(--text-muted, #565656); margin-top: 2px; }
+
+/* Mini bar chart */
+.mini-bar-wrap { padding: 16px 20px; }
+.mini-bar-row  { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.mini-bar-row:last-child { margin-bottom: 0; }
+.mini-bar-label { font-size: .83rem; font-weight: 700; color: var(--text-secondary, #383838); min-width: 90px; display: flex; align-items: center; gap: 6px; }
+.mini-bar-track { flex: 1; height: 9px; background: var(--border-color, #e0e8e2); border-radius: 100px; overflow: hidden; }
+.mini-bar-fill  { height: 100%; border-radius: 100px; width: 0; transition: width 1.3s cubic-bezier(.22,1,.36,1); }
+.mini-bar-count { font-size: .82rem; font-weight: 800; color: var(--text-primary, #111); min-width: 24px; text-align: right; }
+
+/* Recent requests table enhancement */
+.rr-row { padding: 12px 18px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 14px; transition: background .2s ease; }
+.rr-row:last-child { border-bottom: none; }
+.rr-row:hover { background: var(--bg-alt, #f0f8f1); }
+.rr-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--green-mid); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .88rem; flex-shrink: 0; }
+.rr-info   { flex: 1; min-width: 0; }
+.rr-name   { font-size: .9rem; font-weight: 700; color: var(--text-primary, #111); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rr-subject{ font-size: .78rem; color: var(--text-muted, #565656); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rr-right  { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.rr-date   { font-size: .72rem; color: var(--text-subtle, #767676); }
+
+@media (max-width: 1200px) { .kpi-grid-4 { grid-template-columns: repeat(2,1fr); } .kpi-grid-4-small { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 640px)  { .kpi-grid-4 { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── PAGE HEADER ──────────────────────────────────────────────────────── -->
+<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+  <div>
+    <div class="admin-page-title anim-fade-right">Overview</div>
+    <div class="admin-page-sub">
+      Welcome back, <strong>{{ session.get('username','Admin') }}</strong>
+      <span style="margin:0 8px;color:var(--border-color);">·</span>
+      {{ now.strftime('%A, %d %B %Y') }}
+      <span style="margin:0 8px;color:var(--border-color);">·</span>
+      {{ now.strftime('%I:%M %p') }}
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="{{ url_for('admin_products') }}" class="btn-sm" style="background:#1565c0;color:#fff;border-radius:8px;"><i class="fas fa-plus"></i> Add Product</a>
+    <a href="{{ url_for('admin_agents') }}"   class="btn-sm" style="background:#00695c;color:#fff;border-radius:8px;"><i class="fas fa-user-plus"></i> Add Agent</a>
+    <a href="{{ url_for('admin_chat') }}"     class="btn-sm" style="background:#b71c1c;color:#fff;border-radius:8px;">
+      <i class="fas fa-comments"></i> Messages
+      {% if stats.unread_msgs > 0 %}<span style="background:rgba(255,255,255,.25);border-radius:100px;padding:1px 7px;font-size:.65rem;margin-left:3px;">{{ stats.unread_msgs }}</span>{% endif %}
+    </a>
+  </div>
+</div>
+
+<!-- ── KPI ROW 1 ────────────────────────────────────────────────────────── -->
+<div class="kpi-grid-4">
+
+  <a href="{{ url_for('admin_products') }}" class="kpi-card kpi-blue anim-fade-up delay-1">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body">
+      <div class="kpi-icon"><i class="fas fa-flask"></i></div>
+      <div>
+        <div class="kpi-value" data-target="{{ stats.total_products }}">0</div>
+        <div class="kpi-label">Total Products</div>
+      </div>
+    </div>
+    <div class="kpi-footer"><i class="fas fa-arrow-right"></i> View catalogue</div>
+  </a>
+
+  <a href="{{ url_for('admin_agents') }}" class="kpi-card kpi-teal anim-fade-up delay-2">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body">
+      <div class="kpi-icon"><i class="fas fa-users"></i></div>
+      <div>
+        <div class="kpi-value" data-target="{{ stats.active_agents }}">0</div>
+        <div class="kpi-label">Active Agents</div>
+      </div>
+    </div>
+    <div class="kpi-footer"><i class="fas fa-arrow-right"></i> {{ stats.total_agents }} total agents</div>
+  </a>
+
+  <a href="{{ url_for('admin_supply_requests') }}" class="kpi-card kpi-amber anim-fade-up delay-3">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body">
+      <div class="kpi-icon"><i class="fas fa-dolly"></i></div>
+      <div>
+        <div class="kpi-value" data-target="{{ stats.pending_supply }}">0</div>
+        <div class="kpi-label">Pending Supply Requests</div>
+      </div>
+    </div>
+    <div class="kpi-footer"><i class="fas fa-clock"></i> Awaiting approval</div>
+  </a>
+
+  <a href="{{ url_for('admin_requests') }}" class="kpi-card kpi-red anim-fade-up delay-4">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body">
+      <div class="kpi-icon"><i class="fas fa-envelope-open-text"></i></div>
+      <div>
+        <div class="kpi-value" data-target="{{ stats.new_requests }}">0</div>
+        <div class="kpi-label">New Contact Requests</div>
+      </div>
+    </div>
+    <div class="kpi-footer"><i class="fas fa-arrow-right"></i> {{ stats.total_requests }} total messages</div>
+  </a>
+
+</div>
+
+<!-- ── KPI ROW 2 (secondary) ────────────────────────────────────────────── -->
+<div class="kpi-grid-4-small anim-fade-up delay-2">
+
+  <a href="{{ url_for('admin_distributors') }}" class="kpi-card kpi-indigo">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body" style="padding:14px 18px 12px;">
+      <div class="kpi-icon" style="width:38px;height:38px;border-radius:10px;font-size:.95rem;"><i class="fas fa-store"></i></div>
+      <div>
+        <div class="kpi-value" style="font-size:1.6rem!important;" data-target="{{ stats.total_distributors }}">0</div>
+        <div class="kpi-label">Distributor Outlets</div>
+      </div>
+    </div>
+  </a>
+
+  <a href="{{ url_for('admin_chat') }}" class="kpi-card kpi-rose">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body" style="padding:14px 18px 12px;">
+      <div class="kpi-icon" style="width:38px;height:38px;border-radius:10px;font-size:.95rem;"><i class="fas fa-comment-dots"></i></div>
+      <div>
+        <div class="kpi-value" style="font-size:1.6rem!important;" data-target="{{ stats.unread_msgs }}">0</div>
+        <div class="kpi-label">Unread Messages</div>
+      </div>
+    </div>
+  </a>
+
+  <a href="{{ url_for('admin_requests') }}" class="kpi-card kpi-slate">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body" style="padding:14px 18px 12px;">
+      <div class="kpi-icon" style="width:38px;height:38px;border-radius:10px;font-size:.95rem;"><i class="fas fa-inbox"></i></div>
+      <div>
+        <div class="kpi-value" style="font-size:1.6rem!important;" data-target="{{ stats.total_requests }}">0</div>
+        <div class="kpi-label">All Enquiries</div>
+      </div>
+    </div>
+  </a>
+
+  <a href="{{ url_for('admin_agents') }}" class="kpi-card kpi-green">
+    <span class="kpi-bar"></span>
+    <div class="kpi-body" style="padding:14px 18px 12px;">
+      <div class="kpi-icon" style="width:38px;height:38px;border-radius:10px;font-size:.95rem;"><i class="fas fa-user-check"></i></div>
+      <div>
+        <div class="kpi-value" style="font-size:1.6rem!important;" data-target="{{ stats.total_agents }}">0</div>
+        <div class="kpi-label">Total Agents</div>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<!-- ── MAIN GRID ─────────────────────────────────────────────────────────── -->
+<div style="display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:20px;">
+
+  <!-- AGENT STATUS PANEL -->
+  <div class="dash-panel anim-fade-up delay-3">
+    <div class="dash-panel-head">
+      <h3 style="color:var(--text-primary);">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#e0f2f1;color:#00695c;font-size:.78rem;"><i class="fas fa-users"></i></span>
+        Agent Network
+      </h3>
+      <a href="{{ url_for('admin_agents') }}" class="dash-panel-link" style="color:#00695c;">Manage all <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+    </div>
+
+    {% for agent in agents[:8] %}
+    {% if agent.last_seen %}
+      {% set diff = (now - agent.last_seen[:19]|replace('T',' ')|todatetime()).total_seconds() %}
+      {% set status = 'online' if diff < 300 else ('away' if diff < 1800 else 'offline') %}
+    {% else %}{% set status = 'offline' %}{% endif %}
+    <div class="agent-row">
+      <div class="agent-avi">
+        {{ agent.name[0]|upper }}
+        <span class="agent-dot dot-{{ status }}"></span>
+      </div>
+      <div class="agent-info">
+        <div class="agent-name">{{ agent.name }}</div>
+        <div class="agent-meta">
+          {{ agent.region or 'No region' }}{% if agent.district %} · {{ agent.district }}{% endif %}
+          {% if agent.last_seen %}
+            <span style="margin-left:6px;color:var(--text-subtle);">
+              {% if status == 'online' %}🟢 Online now
+              {% elif status == 'away' %}🟡 Away
+              {% else %}Last seen {{ agent.last_seen[:10] }}{% endif %}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="agent-status-badge asb-{{ status }}">{{ status }}</span>
+        <a href="{{ url_for('admin_chat') }}#chat-{{ agent.id }}"
+           style="width:30px;height:30px;border-radius:8px;background:var(--bg-alt);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.8rem;text-decoration:none;transition:all .2s ease;"
+           title="Chat with {{ agent.name }}"
+           onmouseover="this.style.background='var(--green-mid)';this.style.color='white'"
+           onmouseout="this.style.background='var(--bg-alt)';this.style.color='var(--green-mid)'">
+          <i class="fas fa-comment"></i>
+        </a>
+      </div>
+    </div>
+    {% else %}
+    <div style="padding:40px;text-align:center;color:var(--text-muted);">
+      <i class="fas fa-users" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--border-color);"></i>
+      <strong style="color:var(--text-secondary);">No agents yet</strong><br>
+      <a href="{{ url_for('admin_agents') }}" style="color:#00695c;font-size:.9rem;margin-top:6px;display:inline-block;">Add your first agent →</a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div style="display:flex;flex-direction:column;gap:18px;">
+
+    <!-- PRODUCT MIX -->
+    <div class="dash-panel anim-fade-up delay-4">
+      <div class="dash-panel-head">
+        <h3>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#e3f2fd;color:#1565c0;font-size:.78rem;"><i class="fas fa-chart-bar"></i></span>
+          Product Mix
+        </h3>
+        <a href="{{ url_for('admin_products') }}" class="dash-panel-link" style="color:#1565c0;">Add <i class="fas fa-plus" style="font-size:.7rem;"></i></a>
+      </div>
+      <div class="mini-bar-wrap">
+        {% set bar_colors = {'pesticide':'#e53935','herbicide':'#2d6e35','fungicide':'#3f51b5','other':'#f57c00'} %}
+        {% for cat in products_by_cat %}
+        {% set pct = (cat.cnt / stats.total_products * 100)|int if stats.total_products else 0 %}
+        {% set color = bar_colors.get(cat.category, '#607d8b') %}
+        <div class="mini-bar-row">
+          <div class="mini-bar-label">
+            <span style="width:9px;height:9px;border-radius:50%;background:{{ color }};flex-shrink:0;display:inline-block;"></span>
+            {{ cat.category|title }}s
+          </div>
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="background:{{ color }};" data-width="{{ pct }}%"></div>
+          </div>
+          <div class="mini-bar-count">{{ cat.cnt }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- SUPPLY REQUESTS -->
+    <div class="dash-panel anim-fade-up delay-5">
+      <div class="dash-panel-head">
+        <h3>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#fff8e1;color:#c77700;font-size:.78rem;"><i class="fas fa-dolly"></i></span>
+          Supply Requests
+        </h3>
+        <a href="{{ url_for('admin_supply_requests') }}" class="dash-panel-link" style="color:#c77700;">All <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+      </div>
+      {% for r in recent_supply %}
+      <div class="sr-row sr-{{ r.status }}">
+        <div class="sr-stripe"></div>
+        <div class="sr-info">
+          <div class="sr-product">{{ r.product_name or 'General Supply' }}</div>
+          <div class="sr-agent"><i class="fas fa-user" style="font-size:.65rem;margin-right:4px;"></i>{{ r.agent_name }} · {{ r.created_at[:10] }}</div>
+        </div>
+        <span class="status-badge status-{{ r.status }}" style="font-size:.68rem;">{{ r.status }}</span>
+      </div>
+      {% else %}
+      <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:.9rem;">No supply requests yet.</div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BOTTOM ROW ────────────────────────────────────────────────────────── -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;">
+
+  <!-- RECENT CONTACT REQUESTS -->
+  <div class="dash-panel anim-fade-up delay-6">
+    <div class="dash-panel-head">
+      <h3>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#ffebee;color:#b71c1c;font-size:.78rem;"><i class="fas fa-envelope"></i></span>
+        Contact Requests
+      </h3>
+      <a href="{{ url_for('admin_requests') }}" class="dash-panel-link" style="color:#b71c1c;">View all <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+    </div>
+    {% for r in recent_requests %}
+    <div class="rr-row">
+      <div class="rr-avatar">{{ (r.name or 'U')[0]|upper }}</div>
+      <div class="rr-info">
+        <div class="rr-name">{{ r.name }}</div>
+        <div class="rr-subject">{{ r.subject }}</div>
+      </div>
+      <div class="rr-right">
+        <span class="status-badge status-{{ r.status }}" style="font-size:.68rem;">{{ r.status }}</span>
+        <span class="rr-date">{{ r.created_at[:10] }}</span>
+      </div>
+    </div>
+    {% else %}
+    <div style="padding:28px;text-align:center;color:var(--text-muted);font-size:.9rem;">No contact requests yet.</div>
+    {% endfor %}
+  </div>
+
+  <!-- RECENT AGENT MESSAGES -->
+  <div class="dash-panel anim-fade-up delay-7">
+    <div class="dash-panel-head">
+      <h3>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#fce4ec;color:#880e4f;font-size:.78rem;"><i class="fas fa-comment-dots"></i></span>
+        Agent Messages
+      </h3>
+      <a href="{{ url_for('admin_chat') }}" class="dash-panel-link" style="color:#880e4f;">Open chat <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+    </div>
+    {% for m in recent_msgs %}
+    <div class="act-item">
+      <div class="act-dot" style="background:#fce4ec;color:#880e4f;">{{ (m.sender_name or 'A')[0]|upper }}</div>
+      <div class="act-body">
+        <div class="act-text"><strong>{{ m.sender_name or 'Agent' }}</strong> — {{ m.content[:72] }}{% if m.content|length > 72 %}…{% endif %}</div>
+        <div class="act-time">{{ m.created_at[:16] }}</div>
+      </div>
+      {% if not m.read %}<div class="act-unread" title="Unread"></div>{% endif %}
+    </div>
+    {% else %}
+    <div style="padding:28px;text-align:center;color:var(--text-muted);font-size:.9rem;">
+      <i class="fas fa-comment" style="font-size:1.8rem;display:block;margin-bottom:8px;color:var(--border-color);"></i>
+      No agent messages yet.
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- ── QUICK ACTIONS ROW ─────────────────────────────────────────────────── -->
+<div class="dash-panel anim-fade-up" style="margin-top:18px;">
+  <div class="dash-panel-head">
+    <h3>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#e8f5e9;color:#1b5e20;font-size:.78rem;"><i class="fas fa-bolt"></i></span>
+      Quick Actions
+    </h3>
+  </div>
+  <div style="padding:16px 20px;display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="{{ url_for('admin_products') }}"        class="btn-sm" style="background:#1565c0;color:#fff;border-radius:8px;"><i class="fas fa-flask"></i>  Products</a>
+    <a href="{{ url_for('admin_distributors') }}"    class="btn-sm" style="background:#283593;color:#fff;border-radius:8px;"><i class="fas fa-store"></i>  Distributors</a>
+    <a href="{{ url_for('admin_agents') }}"          class="btn-sm" style="background:#00695c;color:#fff;border-radius:8px;"><i class="fas fa-users"></i>  Agents</a>
+    <a href="{{ url_for('admin_supply_requests') }}" class="btn-sm" style="background:#c77700;color:#fff;border-radius:8px;"><i class="fas fa-dolly"></i>  Supply Req</a>
+    <a href="{{ url_for('admin_requests') }}"        class="btn-sm" style="background:#b71c1c;color:#fff;border-radius:8px;"><i class="fas fa-envelope"></i> Enquiries</a>
+    <a href="{{ url_for('admin_chat') }}"            class="btn-sm" style="background:#880e4f;color:#fff;border-radius:8px;"><i class="fas fa-comments"></i> Chat</a>
+    <a href="{{ url_for('index') }}"  target="_blank" class="btn-sm" style="background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border-color);border-radius:8px;"><i class="fas fa-external-link-alt"></i> View Site</a>
+  </div>
+</div>
+
+
+<!-- ── ANALYTICS CHART ──────────────────────────────────────────────────────── -->
+<div class="dash-panel anim-fade-up" style="margin-top:18px;">
+  <div class="dash-panel-head">
+    <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
+      <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#1b5e20;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-chart-line"></i></span>
+      Enquiry Trend — Last 14 Days
+    </h3>
+    <a href="{{ url_for('admin_requests') }}" class="dash-panel-link" style="color:#1b5e20;">All enquiries <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+  </div>
+  <div style="padding:18px 20px;">
+    <canvas id="enquiryChart" height="90"></canvas>
+  </div>
+</div>
+<script>
+// Animate bar charts
+setTimeout(() => {
+  document.querySelectorAll('.mini-bar-fill[data-width]').forEach(el => {
+    el.style.width = el.dataset.width;
+  });
+}, 400);
+</script>
+{% endblock %}

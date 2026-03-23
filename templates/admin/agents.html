@@ -1,0 +1,138 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Agents{% endblock %}
+{% block content %}
+
+<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+  <div>
+    <div class="admin-page-title anim-fade-right">Agent Management</div>
+    <div class="admin-page-sub">Add, monitor, and manage your field sales agents across Uganda.</div>
+  </div>
+</div>
+
+<!-- ADD AGENT FORM -->
+<div class="admin-card anim-fade-up delay-1" style="margin-bottom:24px;">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-user-plus" style="color:var(--green-mid);margin-right:6px;"></i> Add New Agent</span>
+    <button onclick="this.closest('.admin-card').querySelector('.admin-card-body').classList.toggle('hidden-form')" class="btn-sm gold"><i class="fas fa-chevron-down"></i> Toggle Form</button>
+  </div>
+  <div class="admin-card-body">
+    <form method="POST" action="{{ url_for('admin_add_agent') }}" class="admin-form">
+      <div class="admin-form-row">
+        <div class="admin-input-group"><label>Full Name *</label><input type="text" name="name" placeholder="e.g. Alice Namukasa" required></div>
+        <div class="admin-input-group"><label>Username * <small style="color:var(--text-light);">(for login)</small></label><input type="text" name="username" placeholder="e.g. alice" required autocomplete="off"></div>
+      </div>
+      <div class="admin-form-row">
+        <div class="admin-input-group"><label>Password *</label><input type="password" name="password" placeholder="Set a strong password" required autocomplete="new-password"></div>
+        <div class="admin-input-group"><label>Phone Number</label><input type="text" name="phone" placeholder="+256 7XX XXX XXX"></div>
+      </div>
+      <div class="admin-form-row">
+        <div class="admin-input-group"><label>Email Address</label><input type="email" name="email" placeholder="agent@muddo.ug"></div>
+        <div class="admin-input-group"><label>Assigned Region</label>
+          <select name="region">
+            <option value="">No region assigned</option>
+            <option value="Central">Central</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Northern">Northern</option>
+            <option value="Western">Western</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-input-group"><label>District / Area</label><input type="text" name="district" placeholder="e.g. Kampala, Jinja…"></div>
+      <div style="padding:10px 12px;background:var(--green-tint);border-radius:8px;font-size:.78rem;color:var(--text-mid);margin-top:4px;">
+        <i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
+        The agent will sign in at <strong>/login</strong> using their username and password. They will see the Agent Portal.
+      </div>
+      <div><button type="submit" class="btn-sm green" style="padding:10px 20px;"><i class="fas fa-user-plus"></i> Create Agent Account</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- AGENTS GRID -->
+<div class="admin-card anim-fade-up delay-2">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-users" style="color:var(--green-mid);margin-right:6px;"></i> All Agents ({{ agents|length }})</span>
+    <input type="text" id="agentSearch" placeholder="Search agents…" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;font-family:'DM Sans',sans-serif;">
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table" id="agentsTable">
+      <thead>
+        <tr><th>Agent</th><th>Region</th><th>Contact</th><th>Status</th><th>Last Seen</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for agent in agents %}
+        {% if agent.last_seen %}
+          {% set diff_secs = (now - agent.last_seen[:19]|replace('T',' ')|todatetime()).total_seconds() %}
+          {% set online = diff_secs < 300 %}
+          {% set away = diff_secs < 1800 %}
+        {% else %}{% set online = false %}{% set away = false %}{% endif %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:var(--green-dark);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;position:relative;">
+                {{ agent.name[0]|upper }}
+                <span style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;border:2px solid white;background:{% if online %}#27ae60{% elif away %}#f39c12{% else %}#bdc3c7{% endif %};"></span>
+              </div>
+              <div>
+                <div style="font-weight:700;font-size:.88rem;">{{ agent.name }}</div>
+                <div style="font-size:.74rem;color:var(--text-light);">@{{ agent.username }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            {% if agent.region %}
+            <span style="background:var(--green-pale);color:var(--green-dark);padding:3px 10px;border-radius:100px;font-size:.74rem;font-weight:600;">{{ agent.region }}</span>
+            {% if agent.district %}<div style="font-size:.72rem;color:var(--text-light);margin-top:3px;">{{ agent.district }}</div>{% endif %}
+            {% else %}<span style="color:var(--text-light);font-size:.82rem;">—</span>{% endif %}
+          </td>
+          <td>
+            {% if agent.phone %}<a href="tel:{{ agent.phone }}" style="font-size:.82rem;color:var(--green-mid);display:block;">{{ agent.phone }}</a>{% endif %}
+            {% if agent.email %}<a href="mailto:{{ agent.email }}" style="font-size:.76rem;color:var(--text-light);">{{ agent.email }}</a>{% endif %}
+          </td>
+          <td>
+            <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:.74rem;font-weight:700;
+              background:{% if agent.status == 'active' %}var(--green-pale){% else %}var(--border){% endif %};
+              color:{% if agent.status == 'active' %}var(--green-dark){% else %}var(--text-light){% endif %};">
+              <i class="fas fa-circle" style="font-size:.45rem;"></i>{{ agent.status|capitalize }}
+            </span>
+          </td>
+          <td style="font-size:.78rem;color:var(--text-light);">
+            {% if agent.last_seen %}
+            <span style="color:{% if online %}#27ae60{% elif away %}#f39c12{% else %}var(--text-light){% endif %};">
+              {% if online %}🟢 Online now{% elif away %}🟡 Away{% else %}{{ agent.last_seen[:16] }}{% endif %}
+            </span>
+            {% else %}Never signed in{% endif %}
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <a href="{{ url_for('admin_chat') }}#chat-{{ agent.id }}" class="btn-sm" style="background:var(--green-tint);color:var(--green-dark);" title="Chat"><i class="fas fa-comment"></i> Chat</a>
+              <a href="{{ url_for('agent_report', aid=agent.id) }}" class="btn-sm" style="background:#e3f2fd;color:#1565c0;" title="Download Agent Report PDF"><i class="fas fa-file-pdf"></i> Report</a>
+              <form method="POST" action="{{ url_for('admin_toggle_agent', aid=agent.id) }}" style="display:inline;">
+                <button class="btn-sm gold" title="Toggle status">
+                  <i class="fas fa-{% if agent.status == 'active' %}pause{% else %}play{% endif %}"></i>
+                  {{ 'Disable' if agent.status == 'active' else 'Enable' }}
+                </button>
+              </form>
+              <form method="POST" action="{{ url_for('admin_delete_agent', aid=agent.id) }}" onsubmit="return confirm('Remove {{ agent.name }}?')">
+                <button class="btn-sm red"><i class="fas fa-trash"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center;padding:36px;color:var(--text-light);">
+          <i class="fas fa-users" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--border);"></i>
+          No agents yet. Use the form above to add your first field agent.
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+document.getElementById('agentSearch')?.addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('#agentsTable tbody tr').forEach(row => row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none');
+});
+</script>
+{% endblock %}

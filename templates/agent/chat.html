@@ -1,0 +1,97 @@
+{% extends "agent/base_agent.html" %}
+{% block title %}Chat with Admin{% endblock %}
+{% block extra_head %}
+<style>.chat-layout { height: calc(100vh - 180px); min-height: 460px; }</style>
+{% endblock %}
+{% block content %}
+
+<div style="margin-bottom:20px;">
+  <div class="admin-page-title anim-fade-right">Chat with Admin</div>
+  <div class="admin-page-sub">Direct line to Muddo Agro headquarters. Ask questions, report issues, request supplies.</div>
+</div>
+
+<div class="chat-layout admin-card">
+  <!-- SIDEBAR: only Admin -->
+  <div class="chat-sidebar">
+    <div class="chat-sidebar-header">
+      <h3><i class="fas fa-headset" style="color:var(--green-mid);margin-right:6px;"></i> Headquarters</h3>
+    </div>
+    <div class="chat-contacts">
+      <div class="chat-contact active" data-id="{{ admin_id }}" data-role="admin" data-name="Admin" data-status="online" id="contact-{{ admin_id }}">
+        <div class="chat-avatar" style="background:var(--green-deep);">
+          <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;padding:4px;">
+          <span class="status-dot online"></span>
+        </div>
+        <div class="chat-contact-info">
+          <div class="chat-contact-name">MACL Headquarters</div>
+          <div class="chat-contact-preview">Muddo Agro Chemicals LTD</div>
+        </div>
+      </div>
+
+      <!-- Quick message shortcuts -->
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">Quick Messages</div>
+        {% for msg in [
+          ('Request stock reorder','fas fa-box'),
+          ('Report pricing issue','fas fa-tag'),
+          ('Need product info','fas fa-info-circle'),
+          ('Customer complaint','fas fa-exclamation-triangle')
+        ] %}
+        <div onclick="quickMsg('{{ msg[0] }}')" style="padding:7px 10px;border-radius:7px;cursor:pointer;font-size:.78rem;color:var(--text-mid);display:flex;align-items:center;gap:8px;transition:background .2s ease;margin-bottom:3px;" onmouseover="this.style.background='var(--green-tint)'" onmouseout="this.style.background='transparent'">
+          <i class="{{ msg[1] }}" style="color:var(--green-mid);width:14px;font-size:.75rem;"></i> {{ msg[0] }}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT MAIN -->
+  <div class="chat-main" id="chatMainArea" style="display:flex;flex-direction:column;">
+    <div class="chat-header">
+      <div class="chat-header-avatar" style="background:var(--green-deep);padding:4px;overflow:hidden;" id="chatHeaderAvatar">
+        <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">
+      </div>
+      <div>
+        <div class="chat-header-name" id="chatHeaderName">MACL Headquarters</div>
+        <div class="chat-header-status" id="chatHeaderStatus"><span class="status-dot online"></span> Container Village Nakivubo, Kampala</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <a href="tel:+256772507582" class="btn-sm" style="background:var(--green-tint);color:var(--green-dark);font-size:.76rem;"><i class="fas fa-phone"></i> Call</a>
+        <a href="{{ url_for('agent_supply_request') }}" class="btn-sm gold" style="font-size:.76rem;" onclick="return false;" ><i class="fas fa-dolly"></i> Supply Request</a>
+      </div>
+    </div>
+
+    <!-- Info banner -->
+    <div style="padding:10px 16px;background:var(--green-tint);border-bottom:1px solid var(--green-pale);font-size:.78rem;color:var(--green-dark);display:flex;align-items:center;gap:8px;">
+      <i class="fas fa-info-circle"></i>
+      Messages are checked regularly during business hours (Mon–Sat, 8am–6pm). For urgent matters call <a href="tel:+256772507582" style="color:var(--green-dark);font-weight:700;">+256 772 507582</a>.
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-area">
+      <textarea id="chatInput" placeholder="Type your message to headquarters… (Enter to send)" rows="1"></textarea>
+      <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script>
+// Auto-select the admin contact on load
+window.addEventListener('DOMContentLoaded', () => {
+  const adminContact = document.querySelector('.chat-contact[data-id="{{ admin_id }}"]');
+  if (adminContact && window.muddoChat) {
+    window.muddoChat.selectContact(adminContact);
+  }
+});
+
+function quickMsg(text) {
+  const input = document.getElementById('chatInput');
+  if (input) {
+    input.value = text;
+    input.focus();
+    input.style.borderColor = 'var(--green-mid)';
+  }
+}
+</script>
+{% endblock %}

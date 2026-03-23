@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Admin{% endblock %} — Muddo Agro Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block extra_head %}{% endblock %}
+<script>
+(function(){var t=localStorage.getItem('muddo-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body class="admin-body" data-user-role="admin" data-user-id="{{ session.get('user_id','1') }}" data-user-initial="A">
+
+<nav class="admin-navbar">
+  <div class="logo" style="gap:12px;">
+    <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL" style="height:38px;width:auto;filter:brightness(1.1) drop-shadow(0 1px 3px rgba(0,0,0,.3));">
+    <span style="color:rgba(255,255,255,.35);margin:0 2px;">|</span>
+    <span style="color:rgba(255,255,255,.65);font-weight:400;font-size:.82rem;">Admin Portal</span>
+  </div>
+  <div class="admin-nav-actions" style="gap:16px;align-items:center;">
+    <a href="{{ url_for('admin_chat') }}" style="position:relative;">
+      <div class="notif-bell"><i class="fas fa-comments"></i></div>
+      {% if unread_count and unread_count > 0 %}<span class="notif-count" id="notifCount">{{ unread_count }}</span>{% endif %}
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="margin-right:4px;">
+      <i class="fas fa-moon toggle-moon"></i>
+      <i class="fas fa-sun toggle-sun"></i>
+      <span data-theme-label>Dark</span>
+    </button>
+    <a href="{{ url_for('index') }}" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
+    <a href="{{ url_for('logout') }}" style="color:#ff9999;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <!-- Admin User Card -->
+    <div style="padding:16px 18px 12px;border-bottom:1px solid var(--border-color);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--green-dark);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;flex-shrink:0;">A</div>
+        <div>
+          <div style="font-size:.88rem;font-weight:800;color:var(--text-primary);">Administrator</div>
+          <div style="font-size:.72rem;color:var(--text-muted);">Super Admin</div>
+        </div>
+        <div style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#27ae60;" title="Online"></div>
+      </div>
+    </div>
+
+    <div style="padding:8px 0;overflow-y:auto;flex:1;">
+      <!-- Overview -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Overview</div>
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+          <i class="fas fa-chart-pie"></i> Dashboard
+        </a>
+      </div>
+
+      <!-- Catalogue -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Catalogue</div>
+        <a href="{{ url_for('admin_products') }}" class="sidebar-link {% if request.endpoint == 'admin_products' %}active{% endif %}">
+          <i class="fas fa-flask"></i> Products
+        </a>
+        <a href="{{ url_for('admin_inventory') }}" class="sidebar-link {% if request.endpoint == 'admin_inventory' %}active{% endif %}">
+          <i class="fas fa-boxes"></i> Inventory
+          {% if low_stock_count and low_stock_count > 0 %}<span class="sidebar-badge" style="background:#f57c00;">{{ low_stock_count }}</span>{% endif %}
+        </a>
+        <a href="{{ url_for('admin_distributors') }}" class="sidebar-link {% if request.endpoint == 'admin_distributors' %}active{% endif %}">
+          <i class="fas fa-store"></i> Distributors
+        </a>
+      </div>
+
+      <!-- Tools -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Tools</div>
+        <a href="{{ url_for('admin_quotes') }}" class="sidebar-link {% if request.endpoint == 'admin_quotes' %}active{% endif %}">
+          <i class="fas fa-file-pdf"></i> Quote Generator
+        </a>
+        <a href="{{ url_for('admin_import') }}" class="sidebar-link {% if request.endpoint == 'admin_import' %}active{% endif %}">
+          <i class="fas fa-file-csv"></i> Bulk Import
+        </a>
+        <a href="{{ url_for('admin_newsletter') }}" class="sidebar-link {% if request.endpoint == 'admin_newsletter' %}active{% endif %}">
+          <i class="fas fa-envelope-open-text"></i> Newsletter
+        </a>
+      </div>
+
+      <!-- People -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">People & Comms</div>
+        <a href="{{ url_for('admin_agents') }}" class="sidebar-link {% if request.endpoint == 'admin_agents' %}active{% endif %}">
+          <i class="fas fa-users"></i> Field Agents
+        </a>
+        <a href="{{ url_for('admin_chat') }}" class="sidebar-link {% if request.endpoint == 'admin_chat' %}active{% endif %}">
+          <i class="fas fa-comments"></i> Agent Chat
+          {% if unread_count and unread_count > 0 %}<span class="sidebar-badge">{{ unread_count }}</span>{% endif %}
+        </a>
+      </div>
+
+      <!-- Requests -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Inbound Requests</div>
+        <a href="{{ url_for('admin_requests') }}" class="sidebar-link {% if request.endpoint == 'admin_requests' %}active{% endif %}">
+          <i class="fas fa-envelope"></i> Contact Requests
+          {% if stats is defined and stats.new_requests > 0 %}<span class="sidebar-badge">{{ stats.new_requests }}</span>{% endif %}
+        </a>
+        <a href="{{ url_for('admin_supply_requests') }}" class="sidebar-link {% if request.endpoint == 'admin_supply_requests' %}active{% endif %}">
+          <i class="fas fa-dolly"></i> Supply Requests
+          {% if pending_supply and pending_supply > 0 %}<span class="sidebar-badge" style="background:#f57c00;color:white;">{{ pending_supply }}</span>{% endif %}
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div style="border-top:1px solid var(--border-color);padding:8px 0 4px;">
+      <a href="{{ url_for('admin_settings') }}" class="sidebar-link {% if request.endpoint == 'admin_settings' %}active{% endif %}">
+        <i class="fas fa-cog"></i> Settings
+      </a>
+      <a href="{{ url_for('index') }}" class="sidebar-link" target="_blank">
+        <i class="fas fa-external-link-alt"></i> View Website
+      </a>
+      <a href="{{ url_for('logout') }}" class="sidebar-link" style="color:#e53935;">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for cat,msg in messages %}
+        <div class="flash flash-{{ cat }}" style="margin-bottom:16px;max-width:500px;animation:slideInRight .3s ease;">
+          <i class="fas {% if cat=='success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i> {{ msg }}
+        </div>
+      {% endfor %}{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_scripts %}{% endblock %}
+
+<button class="theme-fab" onclick="toggleTheme()" title="Toggle dark / light mode">
+  <i class="fas fa-moon fab-moon"></i>
+  <i class="fas fa-sun fab-sun"></i>
+</button>
+
+<script src="{{ url_for('static', filename='js/enhancements.js') }}" defer></script>
+</body>
+</html>

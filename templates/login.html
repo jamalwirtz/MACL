@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Sign In — Muddo Agro Chemicals LTD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ─── FULL PAGE LAYOUT ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { display: grid; grid-template-columns: 1fr 1fr; font-family: 'DM Sans', sans-serif; background: #0d2b14; }
+
+/* ─── LEFT — BUSINESS CARD PANEL ────────────────────────────────────────── */
+.card-panel {
+  position: relative;
+  background: linear-gradient(160deg, #e8651a 0%, #f0892a 40%, #c8550e 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 52px; overflow: hidden;
+}
+/* Decorative grain overlay */
+.card-panel::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+/* Animated blob shapes */
+.card-panel .blob {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  animation: float 6s ease-in-out infinite;
+}
+.blob-1 { width: 320px; height: 320px; top: -100px; right: -80px; animation-delay: 0s; }
+.blob-2 { width: 200px; height: 200px; bottom: -60px; left: -40px; animation-delay: -2s; animation-duration: 8s; }
+.blob-3 { width: 140px; height: 140px; top: 40%; left: 10%; animation-delay: -4s; animation-duration: 5s; }
+
+/* ─── REAL BUSINESS CARD (right side of uploaded image) ─────────────────── */
+.biz-card {
+  position: relative; z-index: 2; width: 100%; max-width: 440px;
+  background: linear-gradient(135deg, #fae9c8 0%, #f5d898 60%, #f0c860 100%);
+  border-radius: 20px;
+  box-shadow: 0 32px 80px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.2),
+              inset 0 1px 0 rgba(255,255,255,.5);
+  overflow: hidden;
+  animation: scaleSpring .8s cubic-bezier(.34,1.56,.64,1) both .2s;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease;
+}
+.biz-card:hover {
+  transform: translateY(-6px) rotate(-0.5deg);
+  box-shadow: 0 44px 100px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.25);
+}
+
+/* Card top gradient bar */
+.biz-card-bar {
+  height: 6px;
+  background: linear-gradient(90deg, #2d6e35, #4a9f56, #e8651a, #f0892a);
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+}
+
+.biz-card-header {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 22px 24px 16px; border-bottom: 1.5px solid rgba(232,101,26,.2);
+}
+.biz-card-header img {
+  width: 80px; height: auto; object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.biz-card-header-text { flex: 1; }
+.biz-card-name {
+  font-size: 1.25rem; font-weight: 900; color: #e8651a;
+  font-family: 'Playfair Display', serif; line-height: 1.1;
+  letter-spacing: .02em;
+}
+.biz-card-name span { color: #2d6e35; display: block; font-size: .85rem; font-weight: 700; margin-top: 1px; }
+.biz-card-tagline {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: #2d6e35; margin-top: 6px;
+  border-top: 1.5px solid rgba(45,110,53,.2); padding-top: 6px;
+}
+
+/* ─── INTERACTIVE FACT TABS ─────────────────────────────────────────────── */
+.biz-card-body { padding: 20px 24px 24px; }
+.fact-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.fact-tab {
+  flex: 1; padding: 6px 8px; border-radius: 8px; border: 1.5px solid rgba(45,110,53,.2);
+  background: transparent; font-size: .7rem; font-weight: 700; cursor: pointer;
+  color: #2d6e35; font-family: 'DM Sans', sans-serif;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  text-align: center; letter-spacing: .04em;
+}
+.fact-tab.active, .fact-tab:hover {
+  background: #2d6e35; color: white; border-color: #2d6e35;
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,110,53,.3);
+}
+.fact-panel { display: none; animation: fadeUp .35s ease both; }
+.fact-panel.active { display: block; }
+.fact-item {
+  display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  background: rgba(255,255,255,.5); border: 1px solid rgba(45,110,53,.12);
+  transition: all .2s ease; cursor: default;
+}
+.fact-item:hover { background: rgba(255,255,255,.8); transform: translateX(4px); }
+.fact-item:last-child { margin-bottom: 0; }
+.fact-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: .85rem;
+}
+.fi-green { background: rgba(45,110,53,.15); color: #2d6e35; }
+.fi-orange { background: rgba(232,101,26,.15); color: #e8651a; }
+.fact-item h5 { font-size: .78rem; font-weight: 700; color: #1a3d20; margin-bottom: 2px; }
+.fact-item p  { font-size: .72rem; color: #5a7a5f; line-height: 1.45; }
+
+/* Card footer: contact strip */
+.biz-card-footer {
+  padding: 12px 24px; background: rgba(45,110,53,.08);
+  border-top: 1.5px solid rgba(45,110,53,.12);
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+.biz-contact-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .7rem; color: #2d6e35; font-weight: 600;
+  text-decoration: none; transition: color .2s ease;
+}
+.biz-contact-item:hover { color: #e8651a; }
+.biz-contact-item i { font-size: .72rem; }
+
+/* Floating badges around card */
+.float-badge {
+  position: absolute; z-index: 3;
+  background: rgba(255,255,255,.12); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 12px;
+  padding: 8px 14px; font-size: .72rem; font-weight: 700;
+  color: white; display: flex; align-items: center; gap: 7px;
+  animation: float 4s ease-in-out infinite;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+.float-badge i { font-size: .85rem; }
+.badge-tl { top: 64px; left: 32px; animation-delay: -1s; }
+.badge-tr { top: 80px; right: 28px; animation-delay: -2.5s; }
+.badge-bl { bottom: 80px; left: 28px; animation-delay: -3.5s; }
+.badge-br { bottom: 64px; right: 32px; animation-delay: -0.5s; }
+
+/* Back-to-site link */
+.back-link {
+  position: absolute; top: 24px; left: 24px; z-index: 10;
+  color: rgba(255,255,255,.7); font-size: .78rem; font-weight: 600;
+  display: flex; align-items: center; gap: 7px; text-decoration: none;
+  transition: color .2s ease;
+}
+.back-link:hover { color: white; }
+
+/* ─── RIGHT — SIGN IN FORM ───────────────────────────────────────────────── */
+.form-panel {
+  background: var(--cream, #fafaf7);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 56px; overflow-y: auto;
+}
+.form-box { width: 100%; max-width: 400px; }
+.form-logo {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+  animation: fadeDown .6s ease both .1s;
+}
+.form-logo img { height: 52px; width: auto; object-fit: contain; }
+.form-logo-text .t1 {
+  font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;
+  color: var(--green-deep, #0d2b14); line-height: 1;
+}
+.form-logo-text .t2 {
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--text-light, #777); margin-top: 2px;
+}
+.form-heading { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 800; color: var(--green-deep, #0d2b14); margin-bottom: 6px; animation: fadeUp .6s ease both .2s; }
+.form-sub { color: var(--text-light, #777); font-size: .88rem; margin-bottom: 28px; animation: fadeUp .6s ease both .25s; }
+
+/* Role selector pills */
+.role-pills { display: flex; gap: 10px; margin-bottom: 24px; animation: fadeUp .6s ease both .3s; }
+.role-pill {
+  flex: 1; padding: 12px 10px; border-radius: 12px;
+  border: 2px solid var(--border, #e0e8e2);
+  background: white; cursor: pointer; text-align: center;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  font-family: 'DM Sans', sans-serif;
+}
+.role-pill:hover { transform: translateY(-2px); border-color: var(--green-mid, #2d6e35); }
+.role-pill.active {
+  border-color: var(--green-mid, #2d6e35);
+  background: var(--green-tint, #f0f8f1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(45,110,53,.15);
+}
+.role-pill-icon {
+  width: 36px; height: 36px; border-radius: 10px; margin: 0 auto 8px;
+  display: flex; align-items: center; justify-content: center; font-size: .95rem;
+  transition: all .3s ease;
+}
+.role-pill.active .role-pill-icon { background: var(--green-dark, #1a4a23); color: #c8a84b; }
+.role-pill:not(.active) .role-pill-icon { background: var(--green-tint, #f0f8f1); color: var(--green-mid, #2d6e35); }
+.role-pill-label { font-size: .78rem; font-weight: 700; color: var(--green-deep, #0d2b14); }
+.role-pill-desc { font-size: .68rem; color: var(--text-light, #777); margin-top: 2px; }
+
+.input-wrap { position: relative; }
+.input-wrap i.prefix {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text-light, #777); font-size: .85rem; pointer-events: none;
+}
+.input-wrap input {
+  width: 100%; padding: 12px 14px 12px 38px;
+  border: 2px solid var(--border, #e0e8e2); border-radius: 10px;
+  font-size: .92rem; font-family: 'DM Sans', sans-serif;
+  background: white; color: var(--text-dark, #1a1a1a);
+  transition: all .25s ease;
+}
+.input-wrap input:focus { outline: none; border-color: var(--green-mid, #2d6e35); background: white; box-shadow: 0 0 0 3px rgba(45,110,53,.08); }
+.input-wrap .eye-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-light, #777); font-size: .85rem;
+  transition: color .2s ease;
+}
+.input-wrap .eye-btn:hover { color: var(--green-mid, #2d6e35); }
+.form-label { font-size: .8rem; font-weight: 600; color: var(--text-mid, #444); margin-bottom: 6px; display: block; }
+.field-group { margin-bottom: 16px; animation: fadeUp .5s ease both; }
+
+.signin-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--green-dark, #1a4a23), var(--green-mid, #2d6e35));
+  background-size: 200% 100%;
+  color: white; border: none; border-radius: 12px;
+  font-size: .95rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all .3s ease;
+  animation: fadeUp .6s ease both .45s;
+  position: relative; overflow: hidden;
+}
+.signin-btn::before {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  transition: left .5s ease;
+}
+.signin-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(45,110,53,.35); }
+.signin-btn:hover::before { left: 100%; }
+.signin-btn:active { transform: translateY(0); }
+
+/* Demo credentials box */
+.demo-box {
+  margin-top: 24px; padding: 14px 16px;
+  background: white; border: 1.5px solid var(--border, #e0e8e2);
+  border-radius: 12px; animation: fadeUp .6s ease both .5s;
+}
+.demo-box-title { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-light, #777); margin-bottom: 10px; }
+.demo-cred {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; border-radius: 8px; cursor: pointer; margin-bottom: 6px;
+  border: 1.5px solid var(--border, #e0e8e2); background: var(--cream, #fafaf7);
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.demo-cred:last-child { margin-bottom: 0; }
+.demo-cred:hover { border-color: var(--green-mid, #2d6e35); background: var(--green-tint, #f0f8f1); transform: translateX(4px); }
+.demo-cred-info h6 { font-size: .8rem; font-weight: 700; color: var(--green-deep, #0d2b14); }
+.demo-cred-info span { font-size: .72rem; color: var(--text-light, #777); font-family: 'DM Mono', monospace; }
+.demo-cred i { color: var(--green-mid, #2d6e35); font-size: .8rem; transition: transform .2s ease; }
+.demo-cred:hover i { transform: translateX(4px); }
+
+.flash-inline { padding: 11px 14px; border-radius: 10px; font-size: .86rem; font-weight: 500; display: flex; align-items: center; gap: 9px; margin-bottom: 20px; animation: slideInRight .3s ease; }
+.flash-error { background: #fff0f0; border: 1.5px solid #f5c6c6; color: #c0392b; }
+
+@media (max-width: 860px) {
+  body { grid-template-columns: 1fr; overflow-y: auto; }
+  .card-panel { display: none; }
+  .form-panel { min-height: 100vh; padding: 40px 28px; }
+}
+</style>
+<script>
+(function(){var t=localStorage.getItem('muddo-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+</script>
+</head>
+<body>
+
+<!-- ══ LEFT — INTERACTIVE BUSINESS CARD PANEL ══════════════════════════════ -->
+<div class="card-panel">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <a href="{{ url_for('index') }}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Website
+  </a>
+
+  <!-- Floating stat badges -->
+  <div class="float-badge badge-tl"><i class="fas fa-leaf"></i> MAAIF Registered</div>
+  <div class="float-badge badge-tr"><i class="fas fa-map-marker-alt"></i> Nationwide</div>
+  <div class="float-badge badge-bl"><i class="fas fa-flask"></i> 16+ Products</div>
+  <div class="float-badge badge-br"><i class="fas fa-users"></i> Staff Portal</div>
+
+  <!-- The Business Card (right side of uploaded image, recreated as HTML) -->
+  <div class="biz-card" id="bizCard">
+    <div class="biz-card-bar"></div>
+    <div class="biz-card-header">
+      <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL Logo">
+      <div class="biz-card-header-text">
+        <div class="biz-card-name">MUDDO <span>AGRO CHEMICALS LTD</span></div>
+        <div class="biz-card-tagline">Distributor of Agricultural Chemicals</div>
+      </div>
+    </div>
+
+    <div class="biz-card-body">
+      <!-- Clickable Tabs -->
+      <div class="fact-tabs">
+        <button class="fact-tab active" onclick="showPanel('who',this)">Who We Are</button>
+        <button class="fact-tab" onclick="showPanel('what',this)">What We Do</button>
+        <button class="fact-tab" onclick="showPanel('why',this)">Why Us</button>
+      </div>
+
+      <!-- WHO WE ARE -->
+      <div class="fact-panel active" id="panel-who">
+        <div class="fact-item">
+          <div class="fact-icon fi-orange"><i class="fas fa-building"></i></div>
+          <div><h5>About MACL</h5><p>Muddo Agro Chemicals Ltd is a registered distributor of agricultural inputs, headquartered in Kampala's Container Village Nakivubo.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-green"><i class="fas fa-map-marked-alt"></i></div>
+          <div><h5>Our Reach</h5><p>Operating across all four regions of Uganda — Central, Eastern, Northern and Western — with 10+ authorised outlet stores.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-orange"><i class="fas fa-handshake"></i></div>
+          <div><h5>Our Mission</h5><p>To make quality, affordable agrochemicals accessible to every Ugandan farmer, improving yields and food security nationwide.</p></div>
+        </div>
+      </div>
+
+      <!-- WHAT WE DO -->
+      <div class="fact-panel" id="panel-what">
+        <div class="fact-item">
+          <div class="fact-icon fi-green"><i class="fas fa-bug"></i></div>
+          <div><h5>Pesticides &amp; Insecticides</h5><p>Broad-spectrum and selective solutions — Muddosate, MD FOS, MD Acelemectin, Top Fenos and more.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-orange"><i class="fas fa-seedling"></i></div>
+          <div><h5>Herbicides</h5><p>Selective and non-selective weed control — MD-Maize Plus, MAX 2.4D, MD Ametryn, Weed IT 75.7 XL, Toplaxly.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-green"><i class="fas fa-boxes"></i></div>
+          <div><h5>Fertilizers &amp; Equipment</h5><p>Urea, NPK blends, foliar feeds, and quality knapsack sprayers for complete crop nutrition and protection.</p></div>
+        </div>
+      </div>
+
+      <!-- WHY US -->
+      <div class="fact-panel" id="panel-why">
+        <div class="fact-item">
+          <div class="fact-icon fi-orange"><i class="fas fa-certificate"></i></div>
+          <div><h5>MAAIF Registered</h5><p>All products are registered with Uganda's Ministry of Agriculture, ensuring full regulatory compliance and authentic quality.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-green"><i class="fas fa-shield-alt"></i></div>
+          <div><h5>100% Authentic</h5><p>Sourced directly from manufacturers with full documentation. Zero counterfeit products — ever.</p></div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-icon fi-orange"><i class="fas fa-headset"></i></div>
+          <div><h5>Expert Support</h5><p>Our field agents provide agronomic advice, dosage guidance, and crop-specific recommendations to every customer.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="biz-card-footer">
+      <a href="tel:+256772507582" class="biz-contact-item"><i class="fas fa-phone"></i> +256 772 507582</a>
+      <a href="mailto:muddoagro811@gmail.com" class="biz-contact-item"><i class="fas fa-envelope"></i> muddoagro811@gmail.com</a>
+      <a href="{{ url_for('index') }}" class="biz-contact-item"><i class="fas fa-globe"></i> muddo.ug</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RIGHT — SIGN IN FORM ═════════════════════════════════════════════════ -->
+<div class="form-panel">
+  <div class="form-box">
+
+    <div class="form-logo">
+      <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL Logo">
+      <div class="form-logo-text">
+        <div class="t1">MUDDO AGRO CHEMICALS</div>
+        <div class="t2">Staff Portal — Secure Access</div>
+      </div>
+    </div>
+
+      <button class="theme-toggle-pill" onclick="toggleTheme()" title="Toggle theme">
+        <i class="fas fa-moon icon-moon" style="color:#6c63ff;"></i>
+        <i class="fas fa-sun icon-sun" style="color:#f39c12;display:none;"></i>
+        <span data-theme-label>Dark Mode</span>
+      </button>
+    </div>
+    <h2 class="form-heading">Sign In</h2>
+    <p class="form-sub">Select your role and enter your credentials to access the portal.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for cat,msg in messages %}
+        <div class="flash-inline flash-{{ cat }}">
+          <i class="fas fa-exclamation-circle"></i> {{ msg }}
+        </div>
+      {% endfor %}{% endif %}
+    {% endwith %}
+
+    <!-- Role Pills -->
+    <div class="role-pills" id="rolePills">
+      <div class="role-pill active" id="pill-admin" onclick="switchRole('admin')">
+        <div class="role-pill-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="role-pill-label">Administrator</div>
+        <div class="role-pill-desc">Full system access</div>
+      </div>
+      <div class="role-pill" id="pill-agent" onclick="switchRole('agent')">
+        <div class="role-pill-icon"><i class="fas fa-user-tie"></i></div>
+        <div class="role-pill-label">Field Agent</div>
+        <div class="role-pill-desc">Agent portal access</div>
+      </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('login') }}" id="loginForm" autocomplete="off">
+      <input type="hidden" name="role" id="roleInput" value="admin">
+
+      <div class="field-group" style="animation-delay:.35s;">
+        <label class="form-label" for="username"><i class="fas fa-user" style="color:var(--green-mid);margin-right:5px;"></i>Username</label>
+        <div class="input-wrap">
+          <i class="fas fa-user prefix"></i>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
+        </div>
+      </div>
+
+      <div class="field-group" style="animation-delay:.4s;">
+        <label class="form-label" for="password"><i class="fas fa-lock" style="color:var(--green-mid);margin-right:5px;"></i>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock prefix"></i>
+          <input type="password" id="password" name="password" placeholder="••••••••••" required autocomplete="current-password">
+          <button type="button" class="eye-btn" onclick="togglePwd()"><i class="fas fa-eye" id="eyeIcon"></i></button>
+        </div>
+      </div>
+
+      <button type="submit" class="signin-btn btn-ripple">
+        <i class="fas fa-sign-in-alt"></i> Sign In to Portal
+      </button>
+    </form>
+
+    <!-- Demo Credentials -->
+    <div class="demo-box">
+      <div class="demo-box-title"><i class="fas fa-key" style="margin-right:5px;"></i>Demo Credentials — Click to Fill</div>
+      <div class="demo-cred" onclick="fillCreds('admin','muddo@admin2024','admin')">
+        <div class="demo-cred-info">
+          <h6><i class="fas fa-shield-alt" style="color:var(--green-mid);margin-right:4px;"></i>Administrator</h6>
+          <span>admin / muddo@admin2024</span>
+        </div>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+      <div class="demo-cred" onclick="fillCreds('alice','agent@2024','agent')">
+        <div class="demo-cred-info">
+          <h6><i class="fas fa-user" style="color:#e8651a;margin-right:4px;"></i>Field Agent (Alice)</h6>
+          <span>alice / agent@2024</span>
+        </div>
+        <i class="fas fa-arrow-right"></i>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+/* ── ROLE SWITCHER ──────────────────────────────────────────────────────── */
+function switchRole(role) {
+  ['admin','agent'].forEach(r => {
+    document.getElementById('pill-' + r).classList.toggle('active', r === role);
+  });
+  document.getElementById('roleInput').value = role;
+  // Subtle card tilt on role switch
+  const card = document.getElementById('bizCard');
+  card.style.transform = 'scale(.97) rotate(' + (role === 'agent' ? '1' : '-1') + 'deg)';
+  setTimeout(() => card.style.transform = '', 350);
+}
+
+/* ── CARD PANELS ────────────────────────────────────────────────────────── */
+function showPanel(id, btn) {
+  document.querySelectorAll('.fact-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.fact-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+/* Auto-cycle panels every 4 seconds */
+const panels = ['who','what','why'];
+let panelIdx = 0;
+setInterval(() => {
+  panelIdx = (panelIdx + 1) % panels.length;
+  const tabs = document.querySelectorAll('.fact-tab');
+  showPanel(panels[panelIdx], tabs[panelIdx]);
+}, 4200);
+
+/* ── FILL CREDENTIALS ───────────────────────────────────────────────────── */
+function fillCreds(user, pass, role) {
+  const uEl = document.getElementById('username');
+  const pEl = document.getElementById('password');
+  // Animate input filling character by character
+  uEl.value = ''; pEl.value = '';
+  uEl.style.borderColor = 'var(--green-mid)';
+  pEl.style.borderColor = 'var(--green-mid)';
+  [...user].forEach((c, i) => setTimeout(() => uEl.value += c, i * 40));
+  setTimeout(() => { [...pass].forEach((c, i) => setTimeout(() => pEl.value += c, i * 40)); }, user.length * 40 + 60);
+  switchRole(role);
+}
+
+/* ── PASSWORD VISIBILITY ────────────────────────────────────────────────── */
+function togglePwd() {
+  const p = document.getElementById('password');
+  const e = document.getElementById('eyeIcon');
+  p.type = p.type === 'password' ? 'text' : 'password';
+  e.className = p.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+
+/* ── CARD 3D MOUSE TILT ─────────────────────────────────────────────────── */
+const card = document.getElementById('bizCard');
+const panel = document.querySelector('.card-panel');
+if (panel && card) {
+  panel.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    const dx = (e.clientX - cx) / (r.width/2);
+    const dy = (e.clientY - cy) / (r.height/2);
+    card.style.transform = `perspective(800px) rotateY(${dx*8}deg) rotateX(${-dy*6}deg) translateY(-6px)`;
+  });
+  panel.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+}
+
+/* ── RIPPLE ─────────────────────────────────────────────────────────────── */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.signin-btn');
+  if (!btn) return;
+  const r = btn.getBoundingClientRect();
+  const rip = document.createElement('span');
+  rip.className = 'ripple';
+  rip.style.left = (e.clientX - r.left) + 'px';
+  rip.style.top  = (e.clientY - r.top)  + 'px';
+  btn.appendChild(rip);
+  setTimeout(() => rip.remove(), 600);
+});
+</script>
+
+<button class="theme-fab" onclick="toggleTheme()" title="Toggle dark / light mode">
+  <i class="fas fa-moon fab-moon"></i>
+  <i class="fas fa-sun fab-sun"></i>
+</button>
+
+</body>
+</html>

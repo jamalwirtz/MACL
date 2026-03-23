@@ -1,0 +1,107 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Supply Requests{% endblock %}
+{% block content %}
+<div class="admin-page-title anim-fade-right">Supply Requests</div>
+<div class="admin-page-sub">Review and respond to product supply requests from field agents.</div>
+
+<!-- FILTER TABS -->
+<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+  {% for label,val in [('All',''),('Pending','pending'),('Approved','approved'),('Denied','denied')] %}
+  <button class="req-filter-btn {% if loop.first %}active{% endif %}" data-filter="{{ val }}"
+    style="padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:white;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s ease;color:var(--text-mid);">
+    {{ label }}
+    {% if val %}
+      {% set count = requests|selectattr('status','equalto',val)|list|length %}
+      {% if count %}<span style="background:{{'#c0392b' if val=='denied' else ('var(--green-mid)' if val=='approved' else 'var(--gold)')}}; color:white;padding:1px 7px;border-radius:100px;font-size:.65rem;margin-left:5px;">{{ count }}</span>{% endif %}
+    {% endif %}
+  </button>
+  {% endfor %}
+  <input type="text" id="supplySearch" placeholder="Search agent, product…"
+    style="padding:7px 12px;border:1.5px solid var(--border);border-radius:100px;font-size:.82rem;font-family:'DM Sans',sans-serif;min-width:220px;margin-left:auto;">
+</div>
+
+{% if requests %}
+<div style="display:flex;flex-direction:column;gap:14px;" id="supplyList">
+  {% for r in requests %}
+  <div class="admin-card supply-row hover-lift anim-fade-up" data-status="{{ r.status }}" style="animation-delay:{{ loop.index * 0.05 }}s;">
+    <div style="padding:18px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;">
+      <!-- Status stripe -->
+      <div style="width:4px;height:100%;border-radius:4px;background:{{'var(--green-mid)' if r.status=='approved' else ('#c0392b' if r.status=='denied' else 'var(--gold)')}}; min-height:60px;"></div>
+
+      <!-- Info -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--green-dark);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;">{{ r.agent_name[0]|upper }}</div>
+            <div>
+              <div style="font-weight:700;font-size:.9rem;color:var(--green-deep);">{{ r.agent_name }}</div>
+              <div style="font-size:.72rem;color:var(--text-light);">{{ r.region or 'Unknown region' }} · {{ r.created_at[:16] }}</div>
+            </div>
+          </div>
+          <span class="status-badge status-{{ r.status }}" style="margin-left:4px;">{{ r.status }}</span>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <div><span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light);">Product Requested</span><div style="font-weight:700;color:var(--text-dark);font-size:.9rem;">{{ r.product_name or 'General Supply' }}</div></div>
+          {% if r.quantity %}<div><span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light);">Quantity</span><div style="font-weight:600;color:var(--text-dark);font-size:.88rem;">{{ r.quantity }}</div></div>{% endif %}
+        </div>
+        {% if r.notes %}<div style="margin-top:8px;padding:8px 12px;background:var(--cream);border-radius:8px;font-size:.82rem;color:var(--text-mid);border-left:3px solid var(--green-light);">{{ r.notes }}</div>{% endif %}
+        {% if r.admin_response %}<div style="margin-top:8px;padding:8px 12px;background:var(--green-tint);border-radius:8px;font-size:.82rem;color:var(--green-dark);"><strong>Admin response:</strong> {{ r.admin_response }}</div>{% endif %}
+      </div>
+
+      <!-- Action -->
+      <div style="flex-shrink:0;">
+        {% if r.status == 'pending' %}
+        <button onclick="toggleRespond({{ r.id }})" class="btn-sm gold"><i class="fas fa-reply"></i> Respond</button>
+        {% else %}
+        <span style="font-size:.76rem;color:var(--text-light);">Responded</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Response Form (hidden) -->
+    {% if r.status == 'pending' %}
+    <div id="respond-{{ r.id }}" style="display:none;padding:0 20px 18px;border-top:1px solid var(--border);margin-top:0;padding-top:16px;">
+      <form method="POST" action="{{ url_for('admin_respond_supply', rid=r.id) }}" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="font-size:.78rem;font-weight:600;color:var(--text-mid);">Response Note (optional)</label>
+        <textarea name="response" placeholder="Add a note to the agent…" rows="2" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.86rem;resize:vertical;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button type="submit" name="status" value="approved" class="btn-sm green"><i class="fas fa-check"></i> Approve</button>
+          <button type="submit" name="status" value="denied" class="btn-sm red"><i class="fas fa-times"></i> Deny</button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="admin-card" style="padding:60px;text-align:center;">
+  <i class="fas fa-dolly" style="font-size:3rem;color:var(--border);display:block;margin-bottom:14px;"></i>
+  <h3 style="color:var(--text-light);">No supply requests yet</h3>
+  <p style="color:var(--text-light);font-size:.88rem;margin-top:6px;">When field agents submit requests, they'll appear here.</p>
+</div>
+{% endif %}
+
+<style>
+.req-filter-btn.active,.req-filter-btn:hover{background:var(--green-mid);color:white;border-color:var(--green-mid);}
+</style>
+<script>
+function toggleRespond(id) {
+  const el = document.getElementById('respond-'+id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+document.querySelectorAll('.req-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.req-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.supply-row').forEach(r => r.style.display = (!f || r.dataset.status===f) ? '' : 'none');
+  });
+});
+document.getElementById('supplySearch')?.addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.supply-row').forEach(r => r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
+});
+</script>
+{% endblock %}

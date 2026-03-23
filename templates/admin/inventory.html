@@ -1,0 +1,243 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Inventory{% endblock %}
+{% block extra_head %}
+<style>
+.inv-card { background:var(--admin-card);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .25s ease; }
+.inv-card:hover { box-shadow:0 6px 20px rgba(0,0,0,.1); }
+.stock-bar { height:6px;background:var(--border-color);border-radius:100px;overflow:hidden;margin-top:8px; }
+.stock-fill { height:100%;border-radius:100px;transition:width 1.2s cubic-bezier(.22,1,.36,1); }
+.stock-ok   .stock-fill { background:#2d6e35; }
+.stock-low  .stock-fill { background:#f57c00; }
+.stock-out  .stock-fill { background:#e53935; }
+.qty-ctrl { display:flex;align-items:center;gap:6px; }
+.qty-btn { width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border-color);background:var(--bg-alt);color:var(--text-secondary);font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease; }
+.qty-btn:hover { background:var(--green-mid);color:white;border-color:var(--green-mid); }
+.qty-input { width:56px;text-align:center;border:1.5px solid var(--border-color);border-radius:8px;padding:5px 4px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary); }
+.log-row { display:flex;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border-color);transition:background .2s; }
+.log-row:last-child { border:none; }
+.log-row:hover { background:var(--bg-alt); }
+.log-change { font-weight:800;font-size:.9rem; }
+.log-pos { color:#2d6e35; }
+.log-neg { color:#e53935; }
+</style>
+{% endblock %}
+{% block content %}
+
+<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+  <div>
+    <div class="admin-page-title anim-fade-right">Inventory</div>
+    <div class="admin-page-sub">Track stock levels across all products. Update when stock arrives or is dispatched.</div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    {% set low = items|selectattr('stock_qty','le',10)|list|length %}
+    {% if low > 0 %}
+    <div style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:8px 14px;font-size:.82rem;font-weight:700;color:#c77700;display:flex;align-items:center;gap:7px;">
+      <i class="fas fa-exclamation-triangle"></i> {{ low }} item(s) low / out of stock
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;">
+
+  <!-- INVENTORY GRID -->
+  <div>
+    <!-- FILTER -->
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+      {% for label in ['All','Pesticide','Herbicide','Fungicide','Other','Low Stock'] %}
+      <button class="inv-filter-btn {% if loop.first %}active{% endif %}" data-filter="{{ 'low' if label=='Low Stock' else ('' if label=='All' else label.lower()) }}"
+        style="padding:6px 16px;border-radius:100px;border:1.5px solid var(--border-color);background:var(--admin-card);font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text-secondary);transition:all .25s ease;">
+        {{ label }}{% if label=='Low Stock' and low > 0 %} <span style="background:#e53935;color:white;border-radius:100px;padding:1px 6px;font-size:.65rem;margin-left:3px;">{{ low }}</span>{% endif %}
+      </button>
+      {% endfor %}
+      <input type="text" id="invSearch" placeholder="Search product…" style="padding:6px 12px;border:1.5px solid var(--border-color);border-radius:100px;font-size:.82rem;font-family:'DM Sans',sans-serif;color:var(--text-primary);background:var(--bg-input);margin-left:auto;min-width:200px;">
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" id="invGrid">
+      {% for item in items %}
+      {% set pct = [[(item.stock_qty / item.reorder_level * 60)|int if item.reorder_level else 0, 0]|max, 100]|min %}
+      {% set status = 'out' if item.stock_qty == 0 else ('low' if item.stock_qty <= item.reorder_level else 'ok') %}
+      <div class="inv-card inv-item" data-cat="{{ item.category }}" data-status="{{ status }}" style="animation:fadeUp .45s {{ loop.index * 0.04 }}s both;">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border-color);display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--bg-alt);">
+            <img src="{{ item.image_url or 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80' }}" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:800;font-size:.88rem;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ item.name }}</div>
+            <div style="font-size:.72rem;color:var(--text-muted);text-transform:capitalize;margin-top:1px;">{{ item.category }}</div>
+          </div>
+          <span style="padding:3px 8px;border-radius:100px;font-size:.68rem;font-weight:800;background:{% if status=='ok' %}#e8f5e9{% elif status=='low' %}#fff8e1{% else %}#ffebee{% endif %};color:{% if status=='ok' %}#1b5e20{% elif status=='low' %}#c77700{% else %}#b71c1c{% endif %};">
+            {% if status=='ok' %}In Stock{% elif status=='low' %}Low{% else %}Out{% endif %}
+          </span>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+            <span style="font-size:1.5rem;font-weight:900;color:{% if status=='ok' %}var(--text-primary){% elif status=='low' %}#c77700{% else %}#e53935{% endif %};" id="qty-{{ item.id }}">{{ item.stock_qty }}</span>
+            <span style="font-size:.78rem;color:var(--text-muted);">{{ item.unit }} · reorder at {{ item.reorder_level }}</span>
+          </div>
+          <div class="stock-bar stock-{{ status }}">
+            <div class="stock-fill" style="width:{{ pct }}%;"></div>
+          </div>
+          <!-- Quick update controls -->
+          <div style="display:flex;gap:8px;margin-top:12px;align-items:center;">
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="adjustStock({{ item.id }},-1)" title="Remove 1">−</button>
+              <input class="qty-input" type="number" id="adj-{{ item.id }}" value="1" min="0" max="9999">
+              <button class="qty-btn" onclick="adjustStock({{ item.id }},1)" title="Add 1">+</button>
+            </div>
+            <button onclick="openModal({{ item.id }}, '{{ item.name }}', {{ item.stock_qty }}, '{{ item.unit }}', {{ item.reorder_level }})"
+              style="flex:1;padding:6px;border-radius:7px;border:1.5px solid var(--border-color);background:var(--bg-alt);cursor:pointer;font-size:.76rem;font-weight:700;color:var(--text-secondary);font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap;"
+              onmouseover="this.style.background='var(--green-mid)';this.style.color='#fff';this.style.borderColor='var(--green-mid)'"
+              onmouseout="this.style.background='var(--bg-alt)';this.style.color='var(--text-secondary)';this.style.borderColor='var(--border-color)'">
+              <i class="fas fa-edit"></i> Update
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ACTIVITY LOG -->
+  <div class="inv-card anim-fade-up delay-2" style="position:sticky;top:84px;">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="font-size:.9rem;font-weight:800;color:var(--text-primary);margin:0;display:flex;align-items:center;gap:7px;"><i class="fas fa-history" style="color:#1565c0;font-size:.82rem;"></i> Change Log</h3>
+      <span style="font-size:.72rem;color:var(--text-muted);">Last 40 entries</span>
+    </div>
+    <div style="max-height:480px;overflow-y:auto;">
+      {% for entry in log %}
+      <div class="log-row">
+        <div style="flex-shrink:0;margin-top:2px;">
+          <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;background:{% if entry.change_qty > 0 %}#e8f5e9{% else %}#ffebee{% endif %};color:{% if entry.change_qty > 0 %}#1b5e20{% else %}#b71c1c{% endif %};">
+            {{ '+' if entry.change_qty > 0 else '' }}{{ entry.change_qty }}
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:.82rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ entry.product_name }}</div>
+          <div style="font-size:.74rem;color:var(--text-muted);margin-top:1px;">{{ entry.reason or '—' }} · {{ entry.changed_by }}</div>
+          <div style="font-size:.7rem;color:var(--text-subtle);">{{ entry.created_at[:16] }}</div>
+        </div>
+      </div>
+      {% else %}
+      <div style="padding:24px;text-align:center;color:var(--text-muted);font-size:.88rem;">No changes logged yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE MODAL -->
+<div id="invModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--admin-card);border-radius:16px;padding:28px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);" class="anim-scale-in">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 id="modal-title" style="font-size:1.05rem;font-weight:800;color:var(--text-primary);margin:0;"></h3>
+      <button onclick="closeModal()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">×</button>
+    </div>
+    <input type="hidden" id="modal-pid">
+    <div style="margin-bottom:14px;">
+      <label style="font-size:.8rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px;">Action</label>
+      <div style="display:flex;gap:8px;">
+        {% for a,label,c in [('set','Set Exact','#1565c0'),('add','Add Stock','#1b5e20'),('remove','Remove Stock','#b71c1c')] %}
+        <button class="action-btn" data-action="{{ a }}" onclick="selectAction('{{ a }}')"
+          style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid var(--border-color);background:var(--bg-alt);cursor:pointer;font-size:.78rem;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--text-secondary);transition:all .2s;">{{ label }}</button>
+        {% endfor %}
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:.8rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px;">Quantity</label>
+      <input type="number" id="modal-qty" value="0" min="0"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:8px;font-size:1rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="font-size:.8rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px;">Reason (optional)</label>
+      <input type="text" id="modal-reason" placeholder="e.g. Stock received from supplier"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:8px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);">
+    </div>
+    <button onclick="submitUpdate()" class="btn-green btn-ripple" style="width:100%;padding:12px;border-radius:10px;font-size:.95rem;justify-content:center;">
+      <i class="fas fa-save"></i> Save Changes
+    </button>
+  </div>
+</div>
+
+<style>
+.inv-filter-btn.active,.inv-filter-btn:hover{background:var(--green-mid)!important;color:white!important;border-color:var(--green-mid)!important;}
+.action-btn.active{color:white!important;}
+</style>
+<script>
+let selectedAction='set';
+
+function selectAction(a){
+  selectedAction=a;
+  const colors={set:'#1565c0',add:'#1b5e20',remove:'#b71c1c'};
+  document.querySelectorAll('.action-btn').forEach(btn=>{
+    const isActive=btn.dataset.action===a;
+    btn.style.background=isActive?colors[a]:'var(--bg-alt)';
+    btn.style.color=isActive?'white':'var(--text-secondary)';
+    btn.style.borderColor=isActive?colors[a]:'var(--border-color)';
+    btn.classList.toggle('active',isActive);
+  });
+}
+
+function openModal(pid,name,qty,unit,reorder){
+  document.getElementById('modal-pid').value=pid;
+  document.getElementById('modal-title').textContent=name;
+  document.getElementById('modal-qty').value=qty;
+  document.getElementById('invModal').style.display='flex';
+  selectAction('set');
+}
+function closeModal(){ document.getElementById('invModal').style.display='none'; }
+
+async function submitUpdate(){
+  const pid=document.getElementById('modal-pid').value;
+  const qty=parseInt(document.getElementById('modal-qty').value)||0;
+  const reason=document.getElementById('modal-reason').value||'Manual update';
+  const el=document.getElementById('adj-'+pid);
+  const res=await fetch('/admin/inventory/update',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:`product_id=${pid}&action=${selectedAction}&qty=${qty}&reason=${encodeURIComponent(reason)}`});
+  const data=await res.json();
+  if(data.ok){
+    const qEl=document.getElementById('qty-'+pid);
+    if(qEl) qEl.textContent=data.new_qty;
+    closeModal(); showToast('Stock updated successfully!');
+    setTimeout(()=>window.location.reload(),1200);
+  }
+}
+
+function adjustStock(pid,dir){
+  const adjEl=document.getElementById('adj-'+pid);
+  const adj=parseInt(adjEl.value)||1;
+  const action=dir>0?'add':'remove';
+  fetch('/admin/inventory/update',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:`product_id=${pid}&action=${action}&qty=${Math.abs(adj)}&reason=Quick update`})
+  .then(r=>r.json()).then(d=>{
+    if(d.ok){ const qEl=document.getElementById('qty-'+pid); if(qEl) qEl.textContent=d.new_qty; showToast('Updated!'); }
+  });
+}
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:80px;right:24px;z-index:99999;background:#1b5e20;color:white;padding:12px 20px;border-radius:10px;font-size:.88rem;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2);animation:slideInRight .3s ease;';
+  t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500);
+}
+
+// Filters
+document.querySelectorAll('.inv-filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.inv-filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.inv-item').forEach(item=>{
+      if(!f) item.style.display='';
+      else if(f==='low') item.style.display=item.dataset.status==='low'||item.dataset.status==='out'?'':'none';
+      else item.style.display=item.dataset.cat===f?'':'none';
+    });
+  });
+});
+
+document.getElementById('invSearch').addEventListener('input',function(){
+  const q=this.value.toLowerCase();
+  document.querySelectorAll('.inv-item').forEach(item=>item.style.display=item.textContent.toLowerCase().includes(q)?'':'none');
+});
+
+document.getElementById('invModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+</script>
+{% endblock %}

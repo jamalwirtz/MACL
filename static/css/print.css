@@ -1,0 +1,172 @@
+/* ═══════════════════════════════════════════════════════════════
+   MUDDO AGRO — PRINT STYLESHEET
+   Optimised for printing product sheets, quotes, and pages
+   ═══════════════════════════════════════════════════════════════ */
+
+@media print {
+  /* ─── RESET FOR PRINT ─────────────────────────────────────── */
+  *, *::before, *::after { box-shadow: none !important; text-shadow: none !important; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  /* ─── HIDE NAVIGATION & UI CHROME ─────────────────────────── */
+  .topbar, .navbar, .hero, .hero-particles,
+  .footer, .flash-container, .flash,
+  .theme-fab, .whatsapp-fab,
+  .hero-scroll, .product-modal-overlay,
+  .quick-view-btn, .btn-ripple .ripple,
+  .section-alt > .container > .section-header + div > .btn-green,
+  nav, .hamburger, [class*="anim-"],
+  .modal-close-btn, .modal-image-nav, .modal-counter,
+  button:not([type="submit"]):not(.print-visible),
+  .nav-cta, .carousel-arrows, .carousel-dots {
+    display: none !important;
+  }
+
+  /* ─── PAGE BREAKS ─────────────────────────────────────────── */
+  h1, h2, h3 { page-break-after: avoid; orphans: 3; widows: 3; }
+  section { page-break-inside: avoid; }
+  .product-card { page-break-inside: avoid; }
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid; page-break-after: auto; }
+
+  /* ─── PRINT HEADER (shown at top of every printed page) ────── */
+  body::before {
+    content: 'MUDDO AGRO CHEMICALS LTD  |  Container Village Nakivubo, Kampala  |  +256 772 507582  |  muddoagro811@gmail.com';
+    display: block;
+    font-size: 8pt;
+    color: #555;
+    border-bottom: 1.5pt solid #0d2b14;
+    padding-bottom: 6pt;
+    margin-bottom: 16pt;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── LINKS ──────────────────────────────────────────────────── */
+  a[href]::after { content: ' (' attr(href) ')'; font-size: 8pt; color: #555; }
+  a[href^="#"]::after,
+  a[href^="javascript"]::after,
+  .nav-link::after, .btn-green::after, .btn-primary::after,
+  .btn-outline::after, .btn-secondary::after { content: '' !important; }
+
+  /* ─── LAYOUT REFLOW ──────────────────────────────────────────── */
+  .container { max-width: 100% !important; padding: 0 !important; }
+  .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12pt !important; }
+  .cat-grid      { grid-template-columns: repeat(2, 1fr) !important; }
+  .contact-grid  { grid-template-columns: 1fr !important; }
+  .product-detail { grid-template-columns: 1fr 1.4fr !important; gap: 20pt !important; }
+  .footer-grid   { grid-template-columns: 1fr 1fr !important; }
+
+  /* ─── SECTION PADDING ─────────────────────────────────────── */
+  .section { padding: 16pt 0 !important; }
+  .page-hero { padding: 20pt 0 12pt !important; min-height: auto !important; }
+  .page-hero::after { display: none !important; }
+
+  /* ─── COLOURS & BACKGROUNDS ──────────────────────────────────── */
+  .page-hero, .page-hero * { background: #fff !important; }
+  .page-hero h1 { color: #0d2b14 !important; font-size: 18pt !important; text-shadow: none !important; }
+  .page-hero p  { color: #333 !important; }
+  .page-hero-tag { color: #2d6e35 !important; }
+
+  .section-title { color: #0d2b14 !important; font-size: 16pt !important; }
+  .section-tag   { background: #e8f5e9 !important; color: #1b5e20 !important; border: 0.5pt solid #a5d6a7 !important; }
+
+  /* ─── PRODUCT CARDS (print-friendly) ─────────────────────────── */
+  .product-card {
+    border: 0.75pt solid #ccc !important;
+    border-radius: 4pt !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .product-card h3 { color: #0d2b14 !important; font-size: 12pt !important; }
+  .product-card p  { font-size: 9pt !important; color: #444 !important; }
+  .product-card-img { height: 120pt !important; }
+  .product-card-img img { height: 100% !important; object-fit: cover !important; }
+  .product-card-footer .btn-outline,
+  .product-card-footer .btn-green { display: none !important; }
+  .spec-row { background: #f5f5f5 !important; font-size: 8.5pt !important; padding: 4pt 6pt !important; }
+  .spec-row strong { color: #1b5e20 !important; }
+
+  /* ─── PRODUCT DETAIL (full spec sheet) ───────────────────────── */
+  .product-detail-info h1 { color: #0d2b14 !important; font-size: 16pt !important; }
+  .product-desc { font-size: 10pt !important; color: #333 !important; }
+  .detail-specs { border: 0.75pt solid #ccc !important; padding: 10pt !important; border-radius: 4pt !important; }
+  .detail-specs h3 { color: #1b5e20 !important; font-size: 8pt !important; border-bottom: 0.5pt solid #ccc !important; padding-bottom: 4pt !important; margin-bottom: 8pt !important; }
+  .spec-table td { font-size: 9pt !important; padding: 5pt 4pt !important; border-color: #ddd !important; }
+  .spec-table td:last-child { font-weight: bold !important; }
+
+  /* ─── SAFETY NOTE ─────────────────────────────────────────────── */
+  div[style*="border-left:4px solid var(--green-mid)"] {
+    border-left: 2pt solid #2d6e35 !important;
+    background: #f5faf5 !important;
+    padding: 8pt !important;
+  }
+
+  /* ─── CONTACT PAGE ──────────────────────────────────────────────── */
+  .contact-form { box-shadow: none !important; border: 0.75pt solid #ccc !important; }
+  .contact-item { border: 0.5pt solid #ccc !important; box-shadow: none !important; }
+  iframe { display: none !important; }
+
+  /* ─── DISTRIBUTOR PAGE ──────────────────────────────────────────── */
+  .dist-layout { grid-template-columns: 1fr !important; }
+  #map { display: none !important; }
+  .dist-sidebar { width: 100% !important; border: 0.75pt solid #ccc !important; }
+  .dist-item { border: 0.5pt solid #eee !important; }
+
+  /* ─── WHY CARDS ──────────────────────────────────────────────────── */
+  .why-card { border: 0.5pt solid #ccc !important; background: #fff !important; box-shadow: none !important; }
+  .why-card h3 { color: #0d2b14 !important; }
+  .why-card p  { color: #444 !important; }
+  .why-icon { background: #e8f5e9 !important; color: #1b5e20 !important; }
+
+  /* ─── PRINT FOOTER ──────────────────────────────────────────────── */
+  body::after {
+    content: 'Printed from muddoagrochemicals.ug  |  All products MAAIF-registered  |  © Muddo Agro Chemicals LTD';
+    display: block;
+    font-size: 7.5pt;
+    color: #888;
+    border-top: 0.5pt solid #ccc;
+    padding-top: 6pt;
+    margin-top: 24pt;
+    text-align: center;
+  }
+
+  /* ─── PRINT BUTTON (visible only when printing from product pages) */
+  .print-btn { display: none !important; }
+
+  /* ─── PAGE SIZE ─────────────────────────────────────────────────── */
+  @page {
+    size: A4 portrait;
+    margin: 18mm 15mm 18mm 15mm;
+  }
+  @page :first { margin-top: 12mm; }
+}
+
+/* ─── PRINT BUTTON (shown on screen, hidden in print) ─────────────── */
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-color, #e0e8e2);
+  background: var(--bg-card, #fff);
+  color: var(--text-secondary, #444);
+  font-size: .82rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.print-btn:hover {
+  border-color: var(--green-mid);
+  color: var(--green-dark);
+  background: var(--bg-alt);
+}

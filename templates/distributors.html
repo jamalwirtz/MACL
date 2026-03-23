@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Find a Distributor — Muddo Agro Chemicals{% endblock %}
+{% block extra_head %}
+<!-- Replace YOUR_GOOGLE_MAPS_API_KEY below with an actual key from Google Cloud Console -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:14px;">
+      <a href="/">Home</a><span class="sep">/</span><span class="current">Find a Distributor</span>
+    </div>
+    <div class="page-hero-tag"><i class="fas fa-store"></i> Nationwide Network</div>
+    <h1>Find a Distributor Near You</h1>
+    <p>Muddo Agro products are available at outlets across Uganda. Use the map and filters below to locate your nearest distributor.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <!-- REGION QUICK FILTERS -->
+    <div style="display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;">
+      <button class="region-btn active" data-region="">All Regions</button>
+      {% for r in regions %}
+      <button class="region-btn" data-region="{{ r.region }}">{{ r.region }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="dist-layout">
+      <!-- SIDEBAR -->
+      <div class="dist-sidebar">
+        <div>
+          <h3><i class="fas fa-map-marker-alt" style="color:var(--green-mid);"></i> Store Locator</h3>
+          <p style="font-size:.82rem;color:var(--text-light);margin-top:4px;">{{ distributors|length }} outlets across Uganda</p>
+        </div>
+        <div class="dist-filters">
+          <div class="filter-group">
+            <label>Filter by Region</label>
+            <select id="regionFilter">
+              <option value="">All Regions</option>
+              {% for r in regions %}
+              <option value="{{ r.region }}">{{ r.region }} Region</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Search by Name / District</label>
+            <input type="text" id="distSearch" placeholder="e.g. Jinja, Mbarara…">
+          </div>
+        </div>
+        <div class="dist-list" id="distList">
+          {% for d in distributors %}
+          <div class="dist-item" data-id="{{ d.id }}" data-lat="{{ d.lat }}" data-lng="{{ d.lng }}" data-region="{{ d.region }}" onclick="focusMarker({{ d.id }},{{ d.lat }},{{ d.lng }})">
+            <div class="dist-region">{{ d.region }} Region · {{ d.district }}</div>
+            <h4>{{ d.name }}</h4>
+            <div class="dist-addr"><i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-top:2px;"></i>{{ d.address }}</div>
+            <div class="dist-phone"><i class="fas fa-phone" style="color:var(--green-mid);"></i><a href="tel:{{ d.phone }}" style="color:var(--text-mid);">{{ d.phone }}</a></div>
+            {% if d.email %}<div class="dist-phone"><i class="fas fa-envelope" style="color:var(--green-mid);"></i><a href="mailto:{{ d.email }}" style="color:var(--text-mid);">{{ d.email }}</a></div>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- MAP -->
+      <div id="map"></div>
+    </div>
+
+    <!-- MAP FALLBACK / NOTE -->
+    <div id="mapNote" style="display:none;background:var(--green-tint);border:1px solid var(--green-pale);border-radius:var(--radius);padding:20px 24px;margin-top:16px;">
+      <p style="font-size:.88rem;color:var(--text-mid);"><i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
+        Map requires a Google Maps API key. To enable: replace <code>YOUR_GOOGLE_MAPS_API_KEY</code> in <code>templates/distributors.html</code> with your key from
+        <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--green-mid);">Google Cloud Console</a>.
+        Distributor list above is fully functional.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.region-btn {
+  padding: 8px 18px; border-radius: 100px; border: 1.5px solid var(--border);
+  background: var(--white); font-size: .84rem; font-weight: 600; cursor: pointer;
+  transition: all var(--transition); color: var(--text-mid); font-family: 'DM Sans', sans-serif;
+}
+.region-btn:hover, .region-btn.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+</style>
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+// ─── ALL DISTRIBUTOR DATA ─────────────────────────────────────────────────
+const DISTRIBUTORS = {{ distributors | tojson }};
+let map, markers = {}, infoWindow;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 1.3733, lng: 32.2903 },
+    zoom: 7,
+    styles: [
+      { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+      { elementType: 'geometry', stylers: [{ color: '#f5faf5' }] },
+      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+      { featureType: 'water', stylers: [{ color: '#b3d9f5' }] },
+    ]
+  });
+  infoWindow = new google.maps.InfoWindow();
+
+  DISTRIBUTORS.forEach(d => {
+    const marker = new google.maps.Marker({
+      position: { lat: d.lat, lng: d.lng },
+      map: map,
+      title: d.name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#2d6e35',
+        fillOpacity: 1,
+        strokeColor: '#ffffff',
+        strokeWeight: 2,
+        scale: 9
+      }
+    });
+    marker.addListener('click', () => {
+      infoWindow.setContent(`
+        <div style="font-family:'DM Sans',sans-serif;padding:6px;max-width:220px;">
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#2d6e35;margin-bottom:4px;">${d.region} Region · ${d.district}</div>
+          <div style="font-weight:700;color:#0d2b14;margin-bottom:6px;font-size:.95rem;">${d.name}</div>
+          <div style="font-size:.8rem;color:#666;margin-bottom:3px;"><i>📍</i> ${d.address}</div>
+          <div style="font-size:.8rem;color:#444;"><i>📞</i> <a href="tel:${d.phone}" style="color:#2d6e35;">${d.phone}</a></div>
+        </div>`);
+      infoWindow.open(map, marker);
+      document.querySelectorAll('.dist-item').forEach(el => el.classList.remove('active'));
+      const el = document.querySelector(`.dist-item[data-id="${d.id}"]`);
+      if (el) { el.classList.add('active'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    });
+    markers[d.id] = marker;
+  });
+}
+
+function focusMarker(id, lat, lng) {
+  if (!map) return;
+  map.panTo({ lat, lng });
+  map.setZoom(13);
+  google.maps.event.trigger(markers[id], 'click');
+}
+
+// ─── FILTERS ──────────────────────────────────────────────────────────────
+function filterDists() {
+  const region = document.getElementById('regionFilter').value.toLowerCase();
+  const search = document.getElementById('distSearch').value.toLowerCase();
+  document.querySelectorAll('.dist-item').forEach(el => {
+    const elRegion = el.dataset.region.toLowerCase();
+    const text = el.textContent.toLowerCase();
+    const show = (!region || elRegion.includes(region)) && (!search || text.includes(search));
+    el.style.display = show ? '' : 'none';
+    if (markers[el.dataset.id]) markers[el.dataset.id].setVisible(show);
+  });
+}
+document.getElementById('regionFilter').addEventListener('change', filterDists);
+document.getElementById('distSearch').addEventListener('input', filterDists);
+
+// ─── REGION QUICK BUTTONS ─────────────────────────────────────────────────
+document.querySelectorAll('.region-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('regionFilter').value = btn.dataset.region;
+    filterDists();
+  });
+});
+
+// ─── MAP LOAD ERROR HANDLING ──────────────────────────────────────────────
+window.gm_authFailure = () => {
+  document.getElementById('map').style.background = '#f0f8f1';
+  document.getElementById('map').innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;padding:40px;text-align:center;">
+    <i class="fas fa-map" style="font-size:3rem;color:var(--green-light);"></i>
+    <h3 style="color:var(--green-deep);font-family:'Playfair Display',serif;">Map Not Available</h3>
+    <p style="color:var(--text-light);font-size:.88rem;max-width:300px;">Add a valid Google Maps API key to enable the interactive map. Distributor list is available on the left.</p>
+  </div>`;
+  document.getElementById('mapNote').style.display = 'block';
+};
+</script>
+{% endblock %}

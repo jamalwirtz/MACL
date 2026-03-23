@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="font-family:'Segoe UI',sans-serif;background:#f0f8f1;padding:32px 0;">
+<div style="max-width:540px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);">
+  <div style="background:#0d2b14;padding:28px;text-align:center;">
+    <div style="color:#f5c842;font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;">Welcome to the Team</div>
+    <div style="color:#fff;font-size:1.5rem;font-weight:900;margin-top:8px;">Muddo Agro Chemicals LTD</div>
+  </div>
+  <div style="padding:32px;">
+    <p style="font-size:1rem;color:#111;margin:0 0 16px;">Hi <strong>{{ name }}</strong>,</p>
+    <p style="color:#484848;line-height:1.75;margin:0 0 24px;">Your field agent account has been created. You can now sign in to the Agent Portal to submit supply requests, view the product catalogue, and communicate directly with headquarters.</p>
+    <div style="background:#e8f5e9;border-radius:10px;padding:20px;margin-bottom:24px;">
+      <div style="font-weight:800;color:#0d2b14;margin-bottom:12px;font-size:.9rem;">Your Login Details</div>
+      <table style="width:100%;">
+        <tr><td style="padding:6px 0;font-size:.85rem;color:#565656;width:110px;">Portal URL</td><td style="font-size:.85rem;font-weight:700;color:#2d6e35;"><a href="{{ url_for('login', _external=True) }}" style="color:#2d6e35;">{{ url_for('login', _external=True) }}</a></td></tr>
+        <tr><td style="padding:6px 0;font-size:.85rem;color:#565656;">Username</td><td style="font-size:.85rem;font-weight:700;color:#111;font-family:monospace;">{{ username }}</td></tr>
+        <tr><td style="padding:6px 0;font-size:.85rem;color:#565656;">Role</td><td style="font-size:.85rem;font-weight:700;color:#111;">Field Agent</td></tr>
+      </table>
+    </div>
+    <p style="color:#565656;font-size:.85rem;line-height:1.6;background:#fff8e1;padding:12px;border-radius:8px;border-left:3px solid #f5c842;margin:0;">⚠️ For security, please sign in and update your password at your earliest convenience.</p>
+  </div>
+</div>
+</body></html>

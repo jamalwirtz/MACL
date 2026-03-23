@@ -1,0 +1,165 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+
+<div class="admin-page-title">Product Management</div>
+<div class="admin-page-sub">Add, edit, or remove products from the catalogue.</div>
+
+<!-- ADD PRODUCT FORM -->
+<div class="admin-card" style="margin-bottom:24px;">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:6px;"></i> Add New Product</span>
+  </div>
+  <div class="admin-card-body">
+    <form method="POST" action="{{ url_for('admin_add_product') }}" class="admin-form" enctype="multipart/form-data">
+      <div class="admin-form-row">
+        <div class="admin-input-group">
+          <label>Product Name *</label>
+          <input type="text" name="name" placeholder="e.g. BULLDOCK 25EC" required>
+        </div>
+        <div class="admin-input-group">
+          <label>Category *</label>
+          <select name="category" required>
+            <option value="">Select…</option>
+            <option value="pesticide">Pesticide</option>
+            <option value="herbicide">Herbicide</option>
+            <option value="fungicide">Fungicide</option>
+            <option value="other">Other / Fertilizer</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-input-group">
+        <label>Description *</label>
+        <textarea name="description" rows="3" placeholder="Describe the product, target pests/weeds/diseases, and key benefits…" required></textarea>
+      </div>
+      <div class="admin-form-row-3">
+        <div class="admin-input-group">
+          <label>Active Ingredient</label>
+          <input type="text" name="active_ingredient" placeholder="e.g. Glyphosate 480g/l">
+        </div>
+        <div class="admin-input-group">
+          <label>Formulation</label>
+          <input type="text" name="formulation" placeholder="e.g. Emulsifiable Concentrate">
+        </div>
+        <div class="admin-input-group">
+          <label>Target Crops</label>
+          <input type="text" name="crops" placeholder="e.g. Maize, Beans, Coffee">
+        </div>
+      </div>
+      <div class="admin-form-row">
+        <div class="admin-input-group">
+          <label>Application Dosage</label>
+          <input type="text" name="dosage" placeholder="e.g. 1–2 L/ha in 300 L water">
+        </div>
+        <div class="admin-input-group">
+          <label>Pack Sizes</label>
+          <input type="text" name="packing" placeholder="e.g. 250ml, 500ml, 1L">
+        </div>
+      </div>
+      <div class="admin-input-group">
+        <label>Product Image URL (optional)</label>
+        <input type="url" name="image_url" placeholder="https://…">
+      </div>
+      <div class="admin-form-row">
+        <div class="admin-input-group">
+          <label>📷 Upload Product Photo <small style="color:var(--text-muted)">(PNG/JPG — replaces URL)</small></label>
+          <input type="file" name="product_image" accept="image/*" style="border:1.5px dashed var(--border-color);border-radius:8px;padding:8px;cursor:pointer;background:var(--bg-alt);">
+        </div>
+        <div class="admin-input-group">
+          <label>Or Image URL</label>
+          <input type="url" name="image_url" placeholder="https://…">
+        </div>
+      </div>
+      <div class="admin-form-row-3">
+        <div class="admin-input-group">
+          <label>Initial Stock Qty</label>
+          <input type="number" name="stock_qty" placeholder="0" min="0" value="0">
+        </div>
+        <div class="admin-input-group">
+          <label>Reorder Level</label>
+          <input type="number" name="reorder_level" placeholder="10" min="0" value="10">
+        </div>
+        <div class="admin-input-group">
+          <label>Stock Unit</label>
+          <select name="unit">
+            <option value="units">units</option>
+            <option value="litres">litres</option>
+            <option value="kg">kg</option>
+            <option value="bags">bags</option>
+            <option value="bottles">bottles</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn-sm green" style="padding:10px 20px;font-size:.88rem;">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PRODUCTS TABLE -->
+<div class="admin-card">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-flask" style="color:var(--green-mid);margin-right:6px;"></i> All Products ({{ products|length }})</span>
+    <input type="text" id="productTableSearch" placeholder="Search…" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:'DM Sans',sans-serif;">
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table" id="productsTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Active Ingredient</th>
+          <th>Crops</th>
+          <th>Packing</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td style="color:var(--text-light);font-size:.78rem;">{{ p.id }}</td>
+          <td>
+            <strong>{{ p.name }}</strong>
+            {% if p.image_url %}<br><span style="font-size:.72rem;color:var(--text-light);">Has image</span>{% endif %}
+          </td>
+          <td><span class="product-tag tag-{{ p.category }}" style="font-size:.68rem;">{{ p.category|title }}</span></td>
+          <td style="font-size:.82rem;max-width:160px;">{{ p.active_ingredient or '—' }}</td>
+          <td style="font-size:.82rem;max-width:140px;">{{ p.crops or '—' }}</td>
+          <td style="font-size:.82rem;">{{ p.packing or '—' }}</td>
+          <td>
+            {% if p.stock_qty is defined %}
+            <span style="font-weight:700;font-size:.88rem;color:{% if p.stock_qty == 0 %}#e53935{% elif p.stock_qty <= p.reorder_level %}#f57c00{% else %}#2d6e35{% endif %};">
+              {{ p.stock_qty }} {{ p.unit or '' }}
+            </span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn-sm gold" target="_blank" title="View"><i class="fas fa-eye"></i></a>
+              <form method="POST" action="{{ url_for('admin_delete_product', pid=p.id) }}" onsubmit="return confirm('Delete {{ p.name }}?')">
+                <button type="submit" class="btn-sm red" title="Delete"><i class="fas fa-trash"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.getElementById('productTableSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('#productsTable tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

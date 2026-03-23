@@ -1,0 +1,21 @@
+{
+  "name": "Muddo Agro Chemicals LTD",
+  "short_name": "Muddo Agro",
+  "description": "Uganda's trusted MAAIF-registered agrochemical distributor. Pesticides, herbicides, fungicides and fertilizers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d2b14",
+  "theme_color": "#0d2b14",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/static/images/macl_logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/images/macl_logo.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["shopping", "business", "agriculture"],
+  "lang": "en-UG",
+  "shortcuts": [
+    { "name": "Products", "url": "/pesticides", "description": "Browse our product catalogue" },
+    { "name": "Find a Store", "url": "/distributors", "description": "Locate a distributor near you" },
+    { "name": "Contact Us", "url": "/contact", "description": "Get in touch with our team" }
+  ]
+}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — Muddo Agro Chemicals{% endblock %}
+{% block extra_head %}
+<meta property="og:title"       content="{{ product.name }} — Muddo Agro Chemicals LTD">
+<meta property="og:description" content="{{ product.description[:160] }}">
+<meta property="og:image"       content="{{ get_product_image(product) }}">
+<meta property="og:type"        content="product">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "description": "{{ product.description | replace('"', '\\"') }}",
+  "image": "{{ get_product_image(product) }}",
+  "category": "{{ product.category | title }}",
+  "brand": { "@type": "Brand", "name": "Muddo Agro Chemicals LTD" },
+  "offers": { "@type": "Offer", "availability": "{% if product.stock_qty > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}", "priceCurrency": "UGX", "seller": { "@type": "Organization", "name": "Muddo Agro Chemicals LTD" } }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero-{{ product.category }}">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:14px;">
+      <a href="/">Home</a><span class="sep">/</span>
+      <a href="{% if product.category=='pesticide' %}{{ url_for('pesticides') }}{% elif product.category=='herbicide' %}{{ url_for('herbicides') }}{% elif product.category=='fungicide' %}{{ url_for('fungicides') }}{% else %}{{ url_for('other_products') }}{% endif %}">
+        {% if product.category=='pesticide' %}Pesticides{% elif product.category=='herbicide' %}Herbicides{% elif product.category=='fungicide' %}Fungicides{% else %}Other Products{% endif %}
+      </a>
+      <span class="sep">/</span><span class="current">{{ product.name }}</span>
+    </div>
+    <div class="page-hero-tag anim-fade-down">
+      {% if product.category=='pesticide' %}<i class="fas fa-bug"></i> Pesticide
+      {% elif product.category=='herbicide' %}<i class="fas fa-seedling"></i> Herbicide
+      {% elif product.category=='fungicide' %}<i class="fas fa-microscope"></i> Fungicide
+      {% else %}<i class="fas fa-boxes"></i> Agri Input{% endif %}
+    </div>
+    <h1 class="anim-fade-up">{{ product.name }}</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="product-detail">
+
+      <!-- IMAGE COLUMN -->
+      <div>
+        <div class="product-detail-img anim-fade-right" style="position:relative;">
+          <img src="{{ get_product_image(product) }}" alt="{{ product.name }}" id="mainProductImg" style="cursor:zoom-in;" onclick="openProductLightbox(this.src)">
+          <!-- Stock badge -->
+          <div style="position:absolute;top:16px;left:16px;z-index:3;">
+            {% if product.stock_qty is defined %}
+              {% if product.stock_qty == 0 %}
+              <span style="background:rgba(183,28,28,.9);color:white;padding:5px 12px;border-radius:100px;font-size:.76rem;font-weight:800;backdrop-filter:blur(4px);"><i class="fas fa-times-circle" style="margin-right:5px;"></i>Out of Stock</span>
+              {% elif product.stock_qty <= 10 %}
+              <span style="background:rgba(199,119,0,.9);color:white;padding:5px 12px;border-radius:100px;font-size:.76rem;font-weight:800;backdrop-filter:blur(4px);"><i class="fas fa-exclamation-circle" style="margin-right:5px;"></i>Low Stock</span>
+              {% else %}
+              <span style="background:rgba(27,94,32,.9);color:white;padding:5px 12px;border-radius:100px;font-size:.76rem;font-weight:800;backdrop-filter:blur(4px);"><i class="fas fa-check-circle" style="margin-right:5px;"></i>In Stock</span>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Safety notice -->
+        <div style="margin-top:18px;padding:14px 16px;background:var(--bg-alt);border-radius:12px;border-left:4px solid var(--green-mid);">
+          <div style="font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--green-mid);margin-bottom:6px;"><i class="fas fa-shield-alt" style="margin-right:5px;"></i>Safe Use</div>
+          <p style="font-size:.84rem;line-height:1.65;color:var(--text-secondary);margin:0;">Read label fully before use. Wear PPE. Keep away from children and water sources. Observe pre-harvest intervals.</p>
+        </div>
+      </div>
+
+      <!-- INFO COLUMN -->
+      <div class="product-detail-info anim-fade-left">
+
+        <span class="product-tag tag-{{ product.category }}" style="margin-bottom:14px;display:inline-flex;">
+          {% if product.category=='pesticide' %}<i class="fas fa-bug" style="margin-right:5px;"></i>Pesticide
+          {% elif product.category=='herbicide' %}<i class="fas fa-seedling" style="margin-right:5px;"></i>Herbicide
+          {% elif product.category=='fungicide' %}<i class="fas fa-microscope" style="margin-right:5px;"></i>Fungicide
+          {% else %}<i class="fas fa-boxes" style="margin-right:5px;"></i>Agri Input{% endif %}
+        </span>
+
+        <h1>{{ product.name }}</h1>
+        <p class="product-desc">{{ product.description }}</p>
+
+        <!-- TABBED SPECS -->
+        <div style="margin:22px 0;">
+          <div style="display:flex;gap:6px;border-bottom:2px solid var(--border-color);margin-bottom:16px;">
+            {% for tab_id, tab_label in [('specs','Specifications'),('usage','Application'),('safety','Safety')] %}
+            <button class="spec-tab {% if loop.first %}active{% endif %}" data-tab="{{ tab_id }}"
+              onclick="switchTab('{{ tab_id }}', this)"
+              style="padding:8px 16px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:{% if loop.first %}700{% else %}500{% endif %};cursor:pointer;color:{% if loop.first %}var(--green-mid){% else %}var(--text-muted){% endif %};border-bottom:2.5px solid {% if loop.first %}var(--green-mid){% else %}transparent{% endif %};margin-bottom:-2px;transition:all .2s ease;">
+              {{ tab_label }}
+            </button>
+            {% endfor %}
+          </div>
+
+          <!-- SPECS TAB -->
+          <div class="tab-panel active" id="tab-specs">
+            <div class="detail-specs" style="border-radius:12px;">
+              <table class="spec-table" style="width:100%;">
+                {% for label, value in [
+                  ('Active Ingredient', product.active_ingredient),
+                  ('Formulation Type', product.formulation),
+                  ('Target Crops', product.crops),
+                  ('Application Rate', product.dosage),
+                  ('Pack Sizes Available', product.packing),
+                ] %}
+                {% if value and value != 'N/A' %}
+                <tr>
+                  <td style="color:var(--text-muted);font-weight:600;min-width:150px;padding:10px 8px;border-bottom:1px solid var(--border-color);font-size:.88rem;">{{ label }}</td>
+                  <td style="font-weight:700;font-size:.9rem;padding:10px 8px;border-bottom:1px solid var(--border-color);color:var(--text-primary);">{{ value }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% if product.stock_qty is defined %}
+                <tr>
+                  <td style="color:var(--text-muted);font-weight:600;padding:10px 8px;font-size:.88rem;">Stock Status</td>
+                  <td style="font-weight:700;font-size:.9rem;padding:10px 8px;color:{% if product.stock_qty == 0 %}#e53935{% elif product.stock_qty <= 10 %}#f57c00{% else %}#1b5e20{% endif %};">
+                    {% if product.stock_qty == 0 %}Out of Stock{% elif product.stock_qty <= 10 %}Low Stock ({{ product.stock_qty }} {{ product.unit or 'units' }}){% else %}In Stock ({{ product.stock_qty }} {{ product.unit or 'units' }}){% endif %}
+                  </td>
+                </tr>
+                {% endif %}
+              </table>
+            </div>
+          </div>
+
+          <!-- USAGE TAB -->
+          <div class="tab-panel" id="tab-usage" style="display:none;">
+            <div style="background:var(--bg-alt);border-radius:12px;padding:18px 20px;">
+              {% for tip in [
+                ('fa-tint','Dilution Rate', product.dosage or 'See product label'),
+                ('fa-leaf','Target Crops', product.crops or 'See product label'),
+                ('fa-clock','Timing', 'Apply during calm conditions. Avoid rain within 4–6 hours of application.'),
+                ('fa-spray-can','Equipment', 'Use calibrated knapsack or boom sprayer. Rinse equipment after use.'),
+                ('fa-calendar','Re-entry Interval','Observe the Pre-Harvest Interval (PHI) stated on the product label.'),
+              ] %}
+              <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;{% if loop.last %}margin-bottom:0;{% endif %}padding-bottom:14px;border-bottom:{% if loop.last %}none{% else %}1px solid var(--border-color){% endif %};">
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--green-tint);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;"><i class="fas {{ tip[0] }}"></i></div>
+                <div>
+                  <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px;">{{ tip[1] }}</div>
+                  <div style="font-size:.9rem;color:var(--text-secondary);line-height:1.6;">{{ tip[2] }}</div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- SAFETY TAB -->
+          <div class="tab-panel" id="tab-safety" style="display:none;">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              {% for item in [
+                ('#e3f2fd','#1565c0','fa-hard-hat','Personal Protective Equipment','Wear chemical-resistant gloves, goggles, face mask, long-sleeved shirt and rubber boots when handling.'),
+                ('#fff8e1','#c77700','fa-exclamation-triangle','First Aid','If swallowed: seek medical help immediately. If in eyes: rinse with water 15 mins. If on skin: wash with soap.'),
+                ('#e8f5e9','#1b5e20','fa-recycle','Disposal','Triple-rinse empty containers. Puncture and bury at NEMA-approved site. Never reuse for food or water storage.'),
+                ('#fce4ec','#880e4f','fa-warehouse','Storage','Store in original sealed containers in a cool, dry, ventilated place away from sunlight, food, feed, and ignition.'),
+              ] %}
+              <div style="padding:14px 16px;background:{{ item[0] }};border-radius:10px;display:flex;gap:12px;align-items:flex-start;">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.6);color:{{ item[1] }};display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;"><i class="fas {{ item[2] }}"></i></div>
+                <div>
+                  <div style="font-weight:800;font-size:.86rem;color:{{ item[1] }};margin-bottom:4px;">{{ item[3] }}</div>
+                  <div style="font-size:.84rem;line-height:1.65;color:var(--text-secondary);">{{ item[4] }}</div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="{{ url_for('contact') }}?subject=Enquiry+{{ product.name|urlencode }}" class="btn-primary btn-ripple" style="flex:1;min-width:160px;justify-content:center;text-align:center;"><i class="fas fa-envelope"></i> Enquire Now</a>
+          <a href="{{ url_for('distributors') }}" class="btn-outline"><i class="fas fa-store"></i> Find a Store</a>
+          <button onclick="window.print()" class="print-btn" title="Print spec sheet"><i class="fas fa-print"></i> Print</button>
+        </div>
+
+        <!-- SHARE BAR -->
+        <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border-color);">
+          <div style="font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-share-alt" style="color:var(--green-mid);"></i> Share This Product</div>
+          <div class="share-bar">
+            <button class="share-btn wa" onclick="shareProduct('wa','{{ product.name }}','{{ request.url }}')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+            <button class="share-btn fb" onclick="shareProduct('fb','{{ product.name }}','{{ request.url }}')"><i class="fab fa-facebook-f"></i> Facebook</button>
+            <button class="share-btn cp" onclick="shareProduct('copy','{{ product.name }}','{{ request.url }}')"><i class="fas fa-link"></i> Copy Link</button>
+            <button class="share-btn pr" onclick="shareProduct('print','{{ product.name }}')"><i class="fas fa-print"></i> Print</button>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /product-detail -->
+
+    <!-- RELATED PRODUCTS -->
+    {% if related %}
+    <div style="margin-top:64px;" data-reveal="up">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;color:var(--text-primary);margin:0;">Related Products</h2>
+        <a href="{% if product.category=='pesticide' %}{{ url_for('pesticides') }}{% elif product.category=='herbicide' %}{{ url_for('herbicides') }}{% elif product.category=='fungicide' %}{{ url_for('fungicides') }}{% else %}{{ url_for('other_products') }}{% endif %}" class="btn-outline" style="font-size:.84rem;">View All <i class="fas fa-arrow-right" style="margin-left:4px;"></i></a>
+      </div>
+      <div class="products-grid">
+        {% for r in related %}
+        <div class="product-card hover-lift" data-reveal="up" data-reveal-delay="{{ loop.index * 70 }}"
+          data-id="{{ r.id }}" data-name="{{ r.name }}" data-cat="{{ r.category }}"
+          data-desc="{{ r.description }}" data-img="{{ get_product_image(r) }}"
+          data-ingr="{{ r.active_ingredient }}" data-form="{{ r.formulation }}"
+          data-crops="{{ r.crops }}" data-dose="{{ r.dosage }}" data-pack="{{ r.packing }}">
+          <div class="product-card-img">
+            <img src="{{ get_product_image(r) }}" alt="{{ r.name }}" loading="lazy">
+            <button class="quick-view-btn"><i class="fas fa-eye" style="margin-right:5px;"></i>Quick View</button>
+          </div>
+          <div class="product-card-body">
+            <span class="product-tag tag-{{ r.category }}">{{ r.category|title }}</span>
+            <h3>{{ r.name }}</h3>
+            <p>{{ r.description[:100] }}…</p>
+            <div class="product-card-footer">
+              <a href="{{ url_for('product_detail', product_id=r.id) }}" class="btn-outline" onclick="event.stopPropagation();"><i class="fas fa-eye"></i> View</a>
+              <a href="{{ url_for('contact') }}" class="btn-green" style="flex:1;text-align:center;justify-content:center;" onclick="event.stopPropagation();"><i class="fas fa-envelope"></i> Enquire</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- IMAGE LIGHTBOX -->
+<div id="productLightbox" style="display:none;position:fixed;inset:0;z-index:60000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 32px 80px rgba(0,0,0,.5);object-fit:contain;animation:scaleSpring .45s cubic-bezier(.34,1.56,.64,1);">
+  <button style="position:absolute;top:20px;right:20px;background:rgba(255,255,255,.12);border:none;color:white;width:44px;height:44px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease;" onclick="closeLightbox()" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.spec-tab').forEach(b => {
+    b.style.fontWeight = '500'; b.style.color = 'var(--text-muted)'; b.style.borderBottomColor = 'transparent';
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+  btn.style.fontWeight = '700'; btn.style.color = 'var(--green-mid)'; btn.style.borderBottomColor = 'var(--green-mid)';
+  document.getElementById('tab-' + id).style.display = 'block';
+}
+
+function openProductLightbox(src) {
+  const lb = document.getElementById('productLightbox');
+  document.getElementById('lightboxImg').src = src;
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('productLightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+{% endblock %}

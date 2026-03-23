@@ -1,0 +1,164 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+
+<div style="margin-bottom:24px;">
+  <div class="admin-page-title anim-fade-right">Settings</div>
+  <div class="admin-page-sub">Manage your account, reset agent passwords, and configure site options.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+
+  <!-- ADMIN PASSWORD -->
+  <div class="dash-panel anim-fade-up delay-1">
+    <div class="dash-panel-head">
+      <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
+        <span style="width:26px;height:26px;border-radius:7px;background:#e3f2fd;color:#1565c0;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-lock"></i></span>
+        Change Admin Password
+      </h3>
+    </div>
+    <div class="admin-card-body" style="padding:20px;">
+      <form method="POST" action="{{ url_for('admin_settings') }}">
+        <input type="hidden" name="action" value="change_password">
+        <div class="admin-form" style="gap:14px;">
+          <div class="admin-input-group">
+            <label>Current Password</label>
+            <div style="position:relative;">
+              <input type="password" name="old_password" id="cur-pw" placeholder="Enter current password" required>
+              <button type="button" onclick="togglePw('cur-pw','eye1')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.85rem;">
+                <i class="fas fa-eye" id="eye1"></i>
+              </button>
+            </div>
+          </div>
+          <div class="admin-input-group">
+            <label>New Password <small style="color:var(--text-muted);">(min. 8 characters)</small></label>
+            <div style="position:relative;">
+              <input type="password" name="new_password" id="new-pw" placeholder="Enter new password" required minlength="8">
+              <button type="button" onclick="togglePw('new-pw','eye2')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.85rem;">
+                <i class="fas fa-eye" id="eye2"></i>
+              </button>
+            </div>
+          </div>
+          <div class="admin-input-group">
+            <label>Confirm New Password</label>
+            <input type="password" name="confirm_password" placeholder="Re-enter new password" required>
+          </div>
+          <button type="submit" class="btn-sm" style="background:#1565c0;color:#fff;border-radius:8px;padding:10px 18px;"><i class="fas fa-save"></i> Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RESET AGENT PASSWORD -->
+  <div class="dash-panel anim-fade-up delay-2">
+    <div class="dash-panel-head">
+      <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
+        <span style="width:26px;height:26px;border-radius:7px;background:#e0f2f1;color:#00695c;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-key"></i></span>
+        Reset Agent Password
+      </h3>
+    </div>
+    <div class="admin-card-body" style="padding:20px;">
+      <form method="POST" action="{{ url_for('admin_settings') }}">
+        <input type="hidden" name="action" value="reset_agent_password">
+        <div class="admin-form" style="gap:14px;">
+          <div class="admin-input-group">
+            <label>Select Agent</label>
+            <select name="agent_id" required>
+              <option value="">Choose an agent…</option>
+              {% for agent in agents %}
+              <option value="{{ agent.id }}">{{ agent.name }} (@{{ agent.username }}) — {{ agent.region or 'No region' }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="admin-input-group">
+            <label>New Password <small style="color:var(--text-muted);">(min. 6 characters)</small></label>
+            <div style="position:relative;">
+              <input type="password" name="new_agent_password" id="agent-pw" placeholder="Set new password for agent" required minlength="6">
+              <button type="button" onclick="togglePw('agent-pw','eye3')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.85rem;">
+                <i class="fas fa-eye" id="eye3"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-sm" style="background:#00695c;color:#fff;border-radius:8px;padding:10px 18px;" onclick="return confirm('Reset this agent\'s password?')"><i class="fas fa-key"></i> Reset Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SITE CONFIGURATION INFO -->
+  <div class="dash-panel anim-fade-up delay-3">
+    <div class="dash-panel-head">
+      <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
+        <span style="width:26px;height:26px;border-radius:7px;background:#fff8e1;color:#c77700;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-cog"></i></span>
+        Site Configuration
+      </h3>
+    </div>
+    <div class="admin-card-body" style="padding:20px;">
+      <table style="width:100%;border-collapse:collapse;">
+        {% for label, key, example in [
+          ('Google Analytics ID', 'GA_MEASUREMENT_ID', 'G-XXXXXXXXXX'),
+          ('Email Password', 'MAIL_PASSWORD', 'Set via environment variable'),
+          ('Mail Username', 'MAIL_USERNAME', 'muddoagro811@gmail.com'),
+          ('WhatsApp Number', 'WHATSAPP_NUMBER', '256772507582 (no +)'),
+        ] %}
+        <tr style="border-bottom:1px solid var(--border-color);">
+          <td style="padding:10px 6px;font-size:.82rem;font-weight:700;color:var(--text-muted);min-width:140px;">{{ label }}</td>
+          <td style="padding:10px 6px;">
+            <code style="font-size:.82rem;background:var(--bg-alt);padding:3px 8px;border-radius:5px;color:var(--green-mid);">{{ key }}</code>
+            <div style="font-size:.74rem;color:var(--text-subtle);margin-top:3px;">{{ example }}</div>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <div style="margin-top:14px;padding:12px;background:var(--bg-alt);border-radius:8px;font-size:.82rem;color:var(--text-muted);border-left:3px solid #c77700;">
+        <strong style="color:var(--text-primary);">How to set environment variables:</strong><br>
+        <code style="display:block;margin-top:6px;font-size:.78rem;color:var(--green-mid);">export MAIL_PASSWORD=your_gmail_app_password</code>
+        <code style="display:block;margin-top:3px;font-size:.78rem;color:var(--green-mid);">export GA_MEASUREMENT_ID=G-XXXXXXXXXX</code>
+        <div style="margin-top:8px;">Then restart the server. For permanent config, add these to a <code>.env</code> file.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM INFO -->
+  <div class="dash-panel anim-fade-up delay-4">
+    <div class="dash-panel-head">
+      <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
+        <span style="width:26px;height:26px;border-radius:7px;background:#fce4ec;color:#880e4f;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-info-circle"></i></span>
+        System Info
+      </h3>
+    </div>
+    <div class="admin-card-body" style="padding:20px;">
+      <table style="width:100%;border-collapse:collapse;">
+        {% for label, value in [
+          ('Application', 'Muddo Agro Chemicals v6'),
+          ('Framework', 'Flask / Python'),
+          ('Database', 'SQLite (muddo.db)'),
+          ('Admin Login', '/login (role: admin)'),
+          ('Agent Login', '/login (role: agent)'),
+          ('Public Site', '/'),
+          ('Upload Path', 'static/uploads/products/'),
+        ] %}
+        <tr style="border-bottom:1px solid var(--border-color);">
+          <td style="padding:9px 6px;font-size:.82rem;font-weight:700;color:var(--text-muted);min-width:130px;">{{ label }}</td>
+          <td style="padding:9px 6px;font-size:.85rem;color:var(--text-primary);">{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="{{ url_for('index') }}" target="_blank" class="btn-sm" style="background:var(--green-mid);color:#fff;border-radius:8px;"><i class="fas fa-external-link-alt"></i> View Site</a>
+        <a href="{{ url_for('admin_inventory') }}" class="btn-sm" style="background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border-color);border-radius:8px;"><i class="fas fa-boxes"></i> Inventory</a>
+        <a href="{{ url_for('admin_quotes') }}" class="btn-sm" style="background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border-color);border-radius:8px;"><i class="fas fa-file-pdf"></i> Quotes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePw(inputId, eyeId) {
+  const input = document.getElementById(inputId);
+  const eye   = document.getElementById(eyeId);
+  input.type  = input.type === 'password' ? 'text' : 'password';
+  eye.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+</script>
+{% endblock %}

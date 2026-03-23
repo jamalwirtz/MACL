@@ -1,0 +1,201 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Quote Generator{% endblock %}
+{% block extra_head %}
+<style>
+.quote-builder { display:grid; grid-template-columns:1fr 340px; gap:20px; align-items:start; }
+.q-item { display:grid; grid-template-columns:auto 1fr 90px 110px 28px; gap:10px; align-items:center;
+  padding:12px 14px; background:var(--bg-alt); border-radius:10px; border:1px solid var(--border-color); margin-bottom:8px; }
+.q-num { width:24px; height:24px; border-radius:50%; background:var(--green-mid); color:white; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0; }
+.q-product-name { font-weight:700; font-size:.9rem; color:var(--text-primary); }
+.q-product-cat  { font-size:.74rem; color:var(--text-muted); }
+.q-input { border:1.5px solid var(--border-color); border-radius:7px; padding:7px 9px; font-size:.88rem; font-family:'DM Sans',sans-serif; background:var(--bg-input); color:var(--text-primary); width:100%; text-align:right; }
+.q-input:focus { outline:none; border-color:var(--green-mid); }
+.q-remove { background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1rem; transition:color .2s; padding:0; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:6px; }
+.q-remove:hover { background:#ffebee; color:#e53935; }
+.total-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color); font-size:.9rem; color:var(--text-secondary); }
+.total-row:last-child { border:none; font-size:1.05rem; font-weight:800; color:var(--text-primary); }
+</style>
+{% endblock %}
+{% block content %}
+<div style="margin-bottom:24px;">
+  <div class="admin-page-title anim-fade-right">PDF Quote Generator</div>
+  <div class="admin-page-sub">Build a professional branded quotation PDF to send to customers.</div>
+</div>
+
+<div class="quote-builder">
+  <!-- LEFT: Builder -->
+  <div>
+    <!-- Client Info -->
+    <div class="dash-panel anim-fade-up delay-1" style="margin-bottom:18px;">
+      <div class="dash-panel-head" style="padding:14px 18px;">
+        <h3 style="color:var(--text-primary);font-size:.94rem;font-weight:800;display:flex;align-items:center;gap:8px;margin:0;">
+          <span style="width:26px;height:26px;border-radius:7px;background:#e3f2fd;color:#1565c0;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-user"></i></span>
+          Client Information
+        </h3>
+      </div>
+      <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:5px;">Client Name *</label>
+          <input id="q-cname" type="text" placeholder="e.g. John Ssekabira / Nile Farms Ltd" class="q-input" style="text-align:left;">
+        </div>
+        <div>
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:5px;">Phone Number</label>
+          <input id="q-cphone" type="text" placeholder="+256 7XX XXX XXX" class="q-input" style="text-align:left;">
+        </div>
+        <div>
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:5px;">Email Address</label>
+          <input id="q-cemail" type="email" placeholder="client@example.com" class="q-input" style="text-align:left;">
+        </div>
+        <div>
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:5px;">Valid for (days)</label>
+          <input id="q-valid" type="number" value="30" min="1" max="365" class="q-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Search & Items -->
+    <div class="dash-panel anim-fade-up delay-2" style="margin-bottom:18px;">
+      <div class="dash-panel-head" style="padding:14px 18px;">
+        <h3 style="color:var(--text-primary);font-size:.94rem;font-weight:800;display:flex;align-items:center;gap:8px;margin:0;">
+          <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#1b5e20;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-flask"></i></span>
+          Add Products
+        </h3>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border-color);">
+        <div style="position:relative;margin-bottom:10px;">
+          <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.82rem;"></i>
+          <input id="prod-search" type="text" placeholder="Search and add products…"
+            style="width:100%;padding:10px 12px 10px 36px;border:1.5px solid var(--border-color);border-radius:9px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);"
+            oninput="filterProducts()">
+        </div>
+        <div id="prod-list" style="max-height:220px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+          {% for p in products %}
+          <div class="prod-option" data-id="{{ p.id }}" data-name="{{ p.name }}" data-cat="{{ p.category }}" data-pack="{{ p.packing }}"
+            onclick="addItem(this)"
+            style="padding:9px 11px;border:1.5px solid var(--border-color);border-radius:8px;cursor:pointer;transition:all .2s ease;">
+            <div style="font-weight:700;font-size:.82rem;color:var(--text-primary);">{{ p.name }}</div>
+            <div style="font-size:.72rem;color:var(--text-muted);text-transform:capitalize;">{{ p.category }} · {{ p.packing }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- Items list -->
+      <div style="padding:14px 18px;">
+        <div id="quote-items" style="min-height:60px;">
+          <div id="empty-items" style="text-align:center;padding:20px;color:var(--text-muted);font-size:.88rem;">
+            <i class="fas fa-plus-circle" style="display:block;font-size:1.5rem;margin-bottom:8px;color:var(--border-color);"></i>
+            Click products above to add them to the quote
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="dash-panel anim-fade-up delay-3">
+      <div class="dash-panel-head" style="padding:14px 18px;">
+        <h3 style="color:var(--text-primary);font-size:.94rem;font-weight:800;display:flex;align-items:center;gap:8px;margin:0;">
+          <span style="width:26px;height:26px;border-radius:7px;background:#fff8e1;color:#c77700;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-sticky-note"></i></span>
+          Additional Notes
+        </h3>
+      </div>
+      <div style="padding:14px 18px;">
+        <textarea id="q-notes" placeholder="Delivery arrangements, special conditions, discounts, payment terms…"
+          style="width:100%;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:9px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);resize:vertical;min-height:80px;" rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Summary -->
+  <div style="position:sticky;top:84px;">
+    <div class="dash-panel anim-fade-up delay-2">
+      <div style="background:var(--green-dark,#1a4a23);padding:18px 20px;">
+        <div style="color:#fff;font-weight:800;font-size:1rem;display:flex;align-items:center;gap:8px;"><i class="fas fa-file-pdf" style="color:#f5c842;"></i> Quote Summary</div>
+      </div>
+      <div id="summary" style="padding:16px 18px;min-height:180px;">
+        <div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:.88rem;">No items added yet</div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--border-color);">
+        <button id="gen-btn" onclick="generatePDF()"
+          class="btn-green btn-ripple"
+          style="width:100%;padding:13px;border-radius:10px;font-size:.95rem;justify-content:center;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-file-pdf"></i> Generate &amp; Download PDF
+        </button>
+        <div style="font-size:.74rem;color:var(--text-muted);text-align:center;margin-top:8px;">Professional branded A4 quotation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let quoteItems=[];
+
+function filterProducts(){
+  const q=document.getElementById('prod-search').value.toLowerCase();
+  document.querySelectorAll('.prod-option').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'':'none';});
+}
+
+function addItem(el){
+  const id=el.dataset.id,name=el.dataset.name,cat=el.dataset.cat,pack=el.dataset.pack;
+  if(quoteItems.find(i=>i.product_id===id)) return;
+  quoteItems.push({product_id:id,name,cat,pack,qty:1,unit_price:0});
+  renderItems(); el.style.background='var(--green-tint,#f0f8f1)'; el.style.borderColor='var(--green-mid)';
+  setTimeout(()=>{el.style.background='';el.style.borderColor='var(--border-color)';},600);
+}
+
+function removeItem(id){ quoteItems=quoteItems.filter(i=>i.product_id!==id); renderItems(); }
+
+function renderItems(){
+  const container=document.getElementById('quote-items');
+  const empty=document.getElementById('empty-items');
+  if(!quoteItems.length){ container.innerHTML='<div id="empty-items" style="text-align:center;padding:20px;color:var(--text-muted);font-size:.88rem;"><i class="fas fa-plus-circle" style="display:block;font-size:1.5rem;margin-bottom:8px;color:var(--border-color);"></i>Click products above to add them</div>'; updateSummary(); return; }
+  container.innerHTML=quoteItems.map((item,i)=>`
+    <div class="q-item">
+      <div class="q-num">${i+1}</div>
+      <div><div class="q-product-name">${item.name}</div><div class="q-product-cat">${item.cat} · ${item.pack}</div></div>
+      <input class="q-input" type="number" min="1" value="${item.qty}" onchange="updateItem('${item.product_id}','qty',this.value)" placeholder="Qty" title="Quantity">
+      <input class="q-input" type="number" min="0" value="${item.unit_price}" onchange="updateItem('${item.product_id}','unit_price',this.value)" placeholder="Unit Price" title="Unit Price (UGX)">
+      <button class="q-remove" onclick="removeItem('${item.product_id}')" title="Remove"><i class="fas fa-times"></i></button>
+    </div>`).join('');
+  updateSummary();
+}
+
+function updateItem(id,field,val){
+  const item=quoteItems.find(i=>i.product_id===id);
+  if(item){ item[field]=parseFloat(val)||0; updateSummary(); }
+}
+
+function updateSummary(){
+  const container=document.getElementById('summary');
+  if(!quoteItems.length){ container.innerHTML='<div style="text-align:center;padding:24px 0;color:var(--text-muted);font-size:.88rem;">No items added yet</div>'; return; }
+  const grand=quoteItems.reduce((s,i)=>s+(i.qty*i.unit_price),0);
+  container.innerHTML=`
+    <div style="font-size:.78rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">${quoteItems.length} item(s)</div>
+    ${quoteItems.map(i=>`<div class="total-row"><span style="font-size:.84rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${i.name}</span><span>UGX ${(i.qty*i.unit_price).toLocaleString()}</span></div>`).join('')}
+    <div class="total-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--border-color);"><span>Grand Total</span><span style="color:var(--green-mid);">UGX ${grand.toLocaleString()}</span></div>
+  `;
+}
+
+async function generatePDF(){
+  const cname=document.getElementById('q-cname').value.trim()||'Valued Customer';
+  if(!quoteItems.length){ alert('Please add at least one product.'); return; }
+  const btn=document.getElementById('gen-btn');
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating…';
+  try{
+    const res=await fetch('/admin/quotes/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({client_name:cname,client_email:document.getElementById('q-cemail').value,
+        client_phone:document.getElementById('q-cphone').value,
+        valid_days:parseInt(document.getElementById('q-valid').value)||30,
+        notes:document.getElementById('q-notes').value,items:quoteItems})});
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=`Muddo_Agro_Quote.pdf`; a.click(); URL.revokeObjectURL(url);
+  }catch(e){alert('Error generating PDF. Please try again.');}
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-file-pdf"></i> Generate &amp; Download PDF';
+}
+
+document.querySelectorAll('.prod-option').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{el.style.background='var(--green-tint,#f0f8f1)';el.style.borderColor='var(--green-mid)';});
+  el.addEventListener('mouseleave',()=>{el.style.background='';el.style.borderColor='var(--border-color)';});
+});
+</script>
+{% endblock %}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Agent Portal{% endblock %} — Muddo Agro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block extra_head %}{% endblock %}
+<script>
+(function(){var t=localStorage.getItem('muddo-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+</script>
+</head>
+<body class="admin-body" data-user-role="agent" data-user-id="{{ session.get('user_id','') }}" data-user-initial="{{ (session.get('user_name','A') or 'A')[0]|upper }}">
+
+<!-- AGENT TOPNAV -->
+<nav class="admin-navbar" style="background:linear-gradient(135deg,#0d2b14,#1a4a23);">
+  <div class="logo" style="gap:10px;">
+    <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="MACL" style="height:36px;width:auto;filter:brightness(1.1);">
+    <span style="color:rgba(255,255,255,.4);margin:0 4px;">|</span>
+    <span style="color:rgba(255,255,255,.7);font-size:.85rem;">Agent Portal</span>
+  </div>
+  <div class="admin-nav-actions" style="align-items:center;gap:14px;">
+    <!-- Unread messages badge -->
+    <a href="{{ url_for('agent_chat') }}" style="position:relative;" title="Messages">
+      <div class="notif-bell"><i class="fas fa-comments"></i></div>
+      {% if agent_unread and agent_unread > 0 %}
+      <span class="notif-count" id="notifCount">{{ agent_unread }}</span>
+      {% endif %}
+    </a>
+    <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);">
+      <div style="width:30px;height:30px;border-radius:50%;background:rgba(200,168,75,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:var(--gold);">
+        {{ (session.get('user_name','A') or 'A')[0]|upper }}
+      </div>
+      <span style="font-size:.84rem;">{{ session.get('user_name','Agent') }}</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+      <i class="fas fa-moon toggle-moon"></i><i class="fas fa-sun toggle-sun"></i>
+      <span data-theme-label>Dark</span>
+    </button>
+    <a href="{{ url_for('index') }}" target="_blank"><i class="fas fa-external-link-alt"></i> Website</a>
+    <a href="{{ url_for('logout') }}" style="color:#ff7979;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+<div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);">Agent</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--green-deep);margin-top:2px;">{{ session.get('user_name','') }}</div>
+      <div style="font-size:.76rem;color:var(--text-light);">{{ session.get('agent_region','') }}</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <a href="{{ url_for('agent_dashboard') }}" class="sidebar-link {% if request.endpoint == 'agent_dashboard' %}active{% endif %}"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="{{ url_for('agent_chat') }}" class="sidebar-link {% if request.endpoint == 'agent_chat' %}active{% endif %}" style="position:relative;">
+        <i class="fas fa-comments"></i> Chat with Admin
+        {% if agent_unread and agent_unread > 0 %}<span class="sidebar-badge">{{ agent_unread }}</span>{% endif %}
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Catalogue</div>
+      <a href="{{ url_for('pesticides') }}" class="sidebar-link" target="_blank"><i class="fas fa-bug"></i> Pesticides</a>
+      <a href="{{ url_for('herbicides') }}" class="sidebar-link" target="_blank"><i class="fas fa-seedling"></i> Herbicides</a>
+      <a href="{{ url_for('fungicides') }}" class="sidebar-link" target="_blank"><i class="fas fa-microscope"></i> Fungicides</a>
+      <a href="{{ url_for('other_products') }}" class="sidebar-link" target="_blank"><i class="fas fa-boxes"></i> Other Products</a>
+    </div>
+    <div class="sidebar-section" style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
+      <a href="{{ url_for('index') }}" class="sidebar-link" target="_blank"><i class="fas fa-globe"></i> Main Website</a>
+      <a href="{{ url_for('logout') }}" class="sidebar-link" style="color:#c0392b;"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for cat,msg in messages %}
+        <div class="flash flash-{{ cat }}" style="margin-bottom:16px;max-width:500px;"><i class="fas {% if cat=='success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i> {{ msg }}</div>
+      {% endfor %}{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_scripts %}{% endblock %}
+
+<button class="theme-fab" onclick="toggleTheme()" title="Toggle dark / light mode">
+  <i class="fas fa-moon fab-moon"></i>
+  <i class="fas fa-sun fab-sun"></i>
+</button>
+
+</body>
+</html>

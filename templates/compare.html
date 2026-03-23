@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Compare Products — Muddo Agro Chemicals{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:14px;"><a href="/">Home</a><span class="sep">/</span><span class="current">Compare Products</span></div>
+    <div class="page-hero-tag anim-fade-down"><i class="fas fa-balance-scale"></i> Side-by-Side</div>
+    <h1 class="anim-fade-up">Compare Products</h1>
+    <p class="anim-fade-up delay-1">Select up to 3 products to compare their specifications side by side.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <!-- PRODUCT SELECTOR -->
+    <div style="background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:16px;padding:24px;margin-bottom:32px;" data-reveal="up">
+      <h3 style="font-size:1rem;font-weight:800;color:var(--text-primary);margin-bottom:16px;font-family:'DM Sans',sans-serif;">
+        <i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:8px;"></i>Add Products to Compare
+      </h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+        <div style="flex:1;min-width:220px;">
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">Filter by Category</label>
+          <select id="catFilter" onchange="filterProducts()" style="width:100%;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:var(--bg-input);color:var(--text-primary);">
+            <option value="">All Categories</option>
+            <option value="pesticide">Pesticides</option>
+            <option value="herbicide">Herbicides</option>
+            <option value="fungicide">Fungicides</option>
+            <option value="other">Other Products</option>
+          </select>
+        </div>
+        <div style="flex:2;min-width:260px;">
+          <label style="font-size:.78rem;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">Search & Select Product</label>
+          <div style="position:relative;">
+            <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.82rem;"></i>
+            <input type="text" id="prodSearch" placeholder="Type product name…" oninput="filterProducts()"
+              style="width:100%;padding:10px 12px 10px 36px;border:1.5px solid var(--border-color);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:var(--bg-input);color:var(--text-primary);"
+              onfocus="this.style.borderColor='var(--green-mid)'" onblur="this.style.borderColor='var(--border-color)'">
+          </div>
+        </div>
+      </div>
+      <div id="productGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;max-height:280px;overflow-y:auto;padding-right:4px;">
+        {% for p in all_products %}
+        <div class="pick-card" data-id="{{ p.id }}" data-cat="{{ p.category }}" data-name="{{ p.name|lower }}"
+          onclick="toggleProduct({{ p.id }}, '{{ p.name }}', '{{ p.category }}', '{{ get_product_image(p) }}')"
+          style="padding:10px;border:1.5px solid var(--border-color);border-radius:10px;cursor:pointer;transition:all .22s ease;text-align:center;background:var(--bg-card);">
+          <img src="{{ get_product_image(p) }}" alt="{{ p.name }}" style="width:100%;height:56px;object-fit:cover;border-radius:7px;margin-bottom:7px;">
+          <div style="font-size:.76rem;font-weight:700;color:var(--text-primary);line-height:1.3;">{{ p.name }}</div>
+          <div style="font-size:.66rem;color:var(--text-muted);text-transform:capitalize;margin-top:2px;">{{ p.category }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div style="margin-top:12px;font-size:.8rem;color:var(--text-muted);">
+        <i class="fas fa-info-circle" style="color:var(--green-mid);margin-right:5px;"></i>
+        Click products to add/remove from comparison. Maximum 3 products.
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div id="comparisonArea" style="display:none;" data-reveal="up">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="font-size:1.05rem;font-weight:800;color:var(--text-primary);font-family:'DM Sans',sans-serif;">
+          <i class="fas fa-balance-scale" style="color:var(--green-mid);margin-right:8px;"></i>Comparison
+        </h3>
+        <button onclick="clearAll()" style="font-size:.8rem;font-weight:600;color:#e53935;background:none;border:1.5px solid #e53935;border-radius:8px;padding:6px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;">
+          <i class="fas fa-times"></i> Clear All
+        </button>
+      </div>
+      <div style="overflow-x:auto;border-radius:14px;border:1.5px solid var(--border-color);box-shadow:0 4px 20px rgba(0,0,0,.07);">
+        <table id="compTable" style="width:100%;border-collapse:collapse;min-width:500px;">
+          <thead>
+            <tr id="headerRow" style="background:var(--green-dark);">
+              <th style="padding:16px 18px;text-align:left;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.6);width:160px;position:sticky;left:0;background:var(--green-dark);">Attribute</th>
+              <!-- Product headers injected by JS -->
+            </tr>
+          </thead>
+          <tbody id="compBody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;text-align:center;">
+        <a href="{{ url_for('contact') }}" class="btn-green btn-ripple"><i class="fas fa-envelope"></i> Enquire About These Products</a>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" style="text-align:center;padding:56px 20px;color:var(--text-muted);" data-reveal="up">
+      <i class="fas fa-balance-scale" style="font-size:3rem;display:block;margin-bottom:16px;color:var(--border-color);"></i>
+      <h3 style="font-size:1.1rem;font-weight:700;color:var(--text-secondary);margin-bottom:8px;">Select products to compare</h3>
+      <p style="font-size:.9rem;">Click any product card above to add it to your comparison. Up to 3 products at once.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const productData = {{ all_products | tojson }};
+let selected = [];
+
+const ROWS = [
+  ['Category',          p => p.category ? p.category.charAt(0).toUpperCase()+p.category.slice(1) : '—'],
+  ['Active Ingredient', p => p.active_ingredient || '—'],
+  ['Formulation',       p => p.formulation || '—'],
+  ['Target Crops',      p => p.crops || '—'],
+  ['Dosage / Rate',     p => p.dosage || '—'],
+  ['Pack Sizes',        p => p.packing || '—'],
+  ['Stock Status',      p => p.stock_qty > 10 ? '<span style="color:#1b5e20;font-weight:700;">✓ In Stock</span>' : p.stock_qty > 0 ? '<span style="color:#c77700;font-weight:700;">⚠ Low Stock</span>' : '<span style="color:#e53935;font-weight:700;">✗ Out of Stock</span>'],
+];
+
+function toggleProduct(id, name, cat, img) {
+  const card = document.querySelector(`.pick-card[data-id="${id}"]`);
+  const idx  = selected.findIndex(p => p.id === id);
+  if (idx >= 0) {
+    selected.splice(idx, 1);
+    card.style.borderColor = 'var(--border-color)';
+    card.style.background  = 'var(--bg-card)';
+  } else {
+    if (selected.length >= 3) { window.toast?.warning('Maximum 3 products for comparison.'); return; }
+    const full = productData.find(p => p.id === id) || {id,name,category:cat,image:img};
+    selected.push(full);
+    card.style.borderColor = 'var(--green-mid)';
+    card.style.background  = 'var(--green-tint,#f0f8f1)';
+  }
+  renderTable();
+}
+
+function clearAll() {
+  selected = [];
+  document.querySelectorAll('.pick-card').forEach(c => { c.style.borderColor='var(--border-color)'; c.style.background='var(--bg-card)'; });
+  renderTable();
+}
+
+function renderTable() {
+  const area  = document.getElementById('comparisonArea');
+  const empty = document.getElementById('emptyState');
+  const hdr   = document.getElementById('headerRow');
+  const body  = document.getElementById('compBody');
+
+  if (!selected.length) { area.style.display='none'; empty.style.display='block'; return; }
+  area.style.display='block'; empty.style.display='none';
+
+  // Header
+  let hdrHtml = '<th style="padding:16px 18px;text-align:left;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.6);width:160px;position:sticky;left:0;background:var(--green-dark);">Attribute</th>';
+  selected.forEach(p => {
+    hdrHtml += `<th style="padding:14px 16px;text-align:center;color:white;">
+      <img src="${p.image_url||p.image||''}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 8px;border:2px solid rgba(255,255,255,.2);">
+      <div style="font-size:.82rem;font-weight:700;line-height:1.3;">${p.name}</div>
+      <div style="font-size:.68rem;opacity:.6;text-transform:capitalize;margin-top:2px;">${p.category||''}</div>
+    </th>`;
+  });
+  hdr.innerHTML = hdrHtml;
+
+  // Body
+  body.innerHTML = ROWS.map(([label, fn], i) => {
+    const bg = i%2===0 ? 'var(--bg-card)' : 'var(--bg-alt,#f5f5f5)';
+    let row = `<tr style="background:${bg};">
+      <td style="padding:13px 18px;font-size:.82rem;font-weight:700;color:var(--text-muted);position:sticky;left:0;background:${bg};border-right:1px solid var(--border-color);">${label}</td>`;
+    selected.forEach(p => {
+      const val = fn(p);
+      row += `<td style="padding:12px 16px;font-size:.88rem;color:var(--text-primary);text-align:center;border-right:1px solid var(--border-color);">${val}</td>`;
+    });
+    row += '</tr>';
+    return row;
+  }).join('');
+
+  // Action row
+  body.innerHTML += `<tr style="background:var(--green-tint,#e8f5e9);">
+    <td style="padding:14px 18px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);position:sticky;left:0;background:var(--green-tint,#e8f5e9);border-right:1px solid var(--border-color);">Actions</td>
+    ${selected.map(p => `<td style="padding:12px 14px;text-align:center;border-right:1px solid var(--border-color);">
+      <a href="/product/${p.id}" style="display:block;padding:7px 12px;background:var(--green-mid);color:white;border-radius:8px;font-size:.78rem;font-weight:700;text-decoration:none;margin-bottom:6px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"><i class="fas fa-eye"></i> Details</a>
+      <a href="/contact?subject=Enquiry+${encodeURIComponent(p.name)}" style="display:block;padding:6px 12px;background:transparent;color:var(--green-mid);border:1.5px solid var(--green-mid);border-radius:8px;font-size:.76rem;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--green-mid)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='var(--green-mid)'"><i class="fas fa-envelope"></i> Enquire</a>
+    </td>`).join('')}
+  </tr>`;
+}
+
+function filterProducts() {
+  const cat = document.getElementById('catFilter').value;
+  const q   = document.getElementById('prodSearch').value.toLowerCase();
+  document.querySelectorAll('.pick-card').forEach(card => {
+    const matchCat  = !cat  || card.dataset.cat === cat;
+    const matchText = !q    || card.dataset.name.includes(q);
+    card.style.display = matchCat && matchText ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

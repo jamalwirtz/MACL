@@ -1,0 +1,157 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MUDDO AGRO — TYPOGRAPHY & READABILITY SYSTEM
+   WCAG AA: 4.5:1 for normal text, 3:1 for large/bold text
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html { font-size: 17px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  font-size: 1rem; line-height: 1.78; letter-spacing: .01em;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Heading scale */
+h1,h2,h3,h4,h5,h6 { font-family:'Playfair Display',Georgia,serif; line-height:1.2; letter-spacing:-.01em; font-weight:700; }
+h1 { font-size:clamp(2rem,4.5vw,3.4rem); font-weight:900; line-height:1.1; }
+h2 { font-size:clamp(1.55rem,3vw,2.4rem); font-weight:800; }
+h3 { font-size:clamp(1.2rem,2vw,1.5rem);  font-weight:700; }
+h4 { font-size:1.02rem; font-weight:700;  font-family:'DM Sans',sans-serif; }
+h5 { font-size:.94rem;  font-weight:700;  font-family:'DM Sans',sans-serif; }
+
+p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); margin-bottom:.9em; }
+
+/* ─── LIGHT MODE HIGH-CONTRAST PALETTE ─────────────────────────────────── */
+:root {
+  --text-primary:   #111111;   /* 21:1 on white */
+  --text-secondary: #383838;   /* 10.6:1 */
+  --text-muted:     #565656;   /* 7.0:1  */
+  --text-subtle:    #767676;   /* 4.54:1 WCAG AA minimum */
+}
+[data-theme="dark"] {
+  --text-primary:   #edf5ee;
+  --text-secondary: #c0d4c2;
+  --text-muted:     #8aad8d;
+  --text-subtle:    #6b8a6e;
+}
+
+/* ─── HERO ────────────────────────────────────────────────────────────────── */
+.hero-text h1          { font-size:clamp(2.1rem,5vw,3.8rem)!important; font-weight:900!important; color:#fff!important; text-shadow:0 2px 20px rgba(0,0,0,.35); }
+.hero-text h1 span     { color:#f5c842!important; }
+.hero-text p           { font-size:clamp(.98rem,1.8vw,1.12rem)!important; line-height:1.82!important; color:rgba(255,255,255,.9)!important; text-shadow:0 1px 8px rgba(0,0,0,.2); }
+.hero-stat-card .stat-label { font-size:.82rem!important; font-weight:600!important; color:rgba(255,255,255,.85)!important; }
+.stat-num              { font-size:2.2rem!important; color:#f5c842!important; }
+
+/* ─── SECTION HEADERS ───────────────────────────────────────────────────── */
+.section-title { font-size:clamp(1.7rem,3vw,2.5rem)!important; font-weight:800!important; color:#0d2b14!important; }
+[data-theme="dark"] .section-title { color:#d6edd8!important; }
+.section-tag   { font-size:.76rem!important; font-weight:800!important; letter-spacing:.12em!important; }
+.section-desc  { font-size:1.02rem!important; line-height:1.78!important; }
+
+/* ─── CATEGORY CARDS ────────────────────────────────────────────────────── */
+.cat-card h3 { font-size:1.18rem!important; font-weight:800!important; color:#0d2b14!important; }
+[data-theme="dark"] .cat-card h3 { color:#d6edd8!important; }
+.cat-card p  { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
+[data-theme="dark"] .cat-card p  { color:#8aad8d!important; }
+
+/* ─── PRODUCT CARDS ─────────────────────────────────────────────────────── */
+.product-card h3 { font-size:1.08rem!important; font-weight:800!important; color:#0d2b14!important; }
+[data-theme="dark"] .product-card h3 { color:#d6edd8!important; }
+.product-card-body > p { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
+[data-theme="dark"] .product-card-body > p { color:#8aad8d!important; }
+.spec-row { font-size:.85rem!important; }
+.spec-row strong { font-weight:700!important; }
+
+/* ─── PAGE HERO ─────────────────────────────────────────────────────────── */
+.page-hero h1 { font-size:clamp(1.9rem,4vw,3rem)!important; font-weight:900!important; color:#fff!important; text-shadow:0 2px 16px rgba(0,0,0,.4); line-height:1.1!important; }
+.page-hero p  { font-size:1.02rem!important; line-height:1.78!important; color:rgba(255,255,255,.92)!important; }
+.page-hero-tag { font-size:.8rem!important; font-weight:800!important; letter-spacing:.1em!important; color:#f5c842!important; }
+.breadcrumb    { font-size:.82rem!important; }
+.breadcrumb a  { color:rgba(255,255,255,.78)!important; }
+.breadcrumb .current { color:#f5c842!important; font-weight:700!important; }
+
+/* ─── WHY CARDS ─────────────────────────────────────────────────────────── */
+.why-card h3 { font-size:1.05rem!important; font-weight:800!important; color:#0d2b14!important; }
+[data-theme="dark"] .why-card h3 { color:#d6edd8!important; }
+.why-card p  { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
+[data-theme="dark"] .why-card p { color:#8aad8d!important; }
+
+/* ─── MODAL ─────────────────────────────────────────────────────────────── */
+.modal-product-name { font-size:1.7rem!important; font-weight:900!important; line-height:1.15!important; }
+.modal-desc   { font-size:.97rem!important; line-height:1.82!important; color:#484848!important; }
+[data-theme="dark"] .modal-desc { color:#8aad8d!important; }
+.modal-spec-label { font-size:.72rem!important; font-weight:800!important; letter-spacing:.08em!important; }
+.modal-spec-value { font-size:.92rem!important; font-weight:600!important; }
+
+/* ─── CONTACT PAGE ──────────────────────────────────────────────────────── */
+.contact-item h4 { font-size:.72rem!important; font-weight:800!important; letter-spacing:.1em!important; }
+.contact-item p  { font-size:.97rem!important; font-weight:600!important; color:#111!important; }
+[data-theme="dark"] .contact-item p { color:#d6edd8!important; }
+.form-group label { font-size:.86rem!important; font-weight:700!important; color:#2a2a2a!important; }
+[data-theme="dark"] .form-group label { color:#c0d4c2!important; }
+.form-group input, .form-group select, .form-group textarea { font-size:.97rem!important; color:#111!important; }
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea { color:#edf5ee!important; }
+
+/* ─── PRODUCT DETAIL ────────────────────────────────────────────────────── */
+.product-detail-info h1 { font-size:clamp(1.5rem,3vw,2.2rem)!important; font-weight:900!important; color:#0d2b14!important; }
+[data-theme="dark"] .product-detail-info h1 { color:#d6edd8!important; }
+.product-desc { font-size:1rem!important; line-height:1.84!important; color:#3d3d3d!important; }
+[data-theme="dark"] .product-desc { color:#b0c4b3!important; }
+.spec-table td { font-size:.92rem!important; padding:10px 8px!important; }
+.spec-table td:last-child { font-weight:700!important; }
+
+/* ─── DISTRIBUTOR SIDEBAR ───────────────────────────────────────────────── */
+.dist-item h4  { font-size:.96rem!important; font-weight:700!important; color:#0d2b14!important; }
+[data-theme="dark"] .dist-item h4 { color:#d6edd8!important; }
+.dist-item .dist-addr, .dist-item .dist-phone { font-size:.85rem!important; line-height:1.55!important; }
+
+/* ─── FOOTER ────────────────────────────────────────────────────────────── */
+.footer-brand p   { font-size:.92rem!important; line-height:1.72!important; color:rgba(255,255,255,.78)!important; }
+.footer-col h4    { font-size:1rem!important;   font-weight:800!important; color:#fff!important; }
+.footer-col ul li a { font-size:.9rem!important; color:rgba(255,255,255,.72)!important; }
+.footer-contact li { font-size:.9rem!important; line-height:1.65!important; color:rgba(255,255,255,.78)!important; }
+.footer-bottom p   { font-size:.8rem!important;  color:rgba(255,255,255,.48)!important; }
+.topbar-left span, .topbar-right a { font-size:.8rem!important; color:rgba(255,255,255,.85)!important; }
+
+/* ─── BUTTONS ───────────────────────────────────────────────────────────── */
+.btn-primary,.btn-secondary,.btn-green,.btn-outline { font-size:.97rem!important; font-weight:700!important; letter-spacing:.02em; }
+.btn-sm { font-size:.82rem!important; font-weight:700!important; }
+.nav-cta { font-size:.9rem!important; font-weight:700!important; }
+.nav-link { font-size:.94rem!important; font-weight:500!important; }
+.nav-link.active { font-weight:700!important; }
+
+/* ─── ADMIN TEXT ────────────────────────────────────────────────────────── */
+.admin-page-title { font-size:1.65rem!important; font-weight:900!important; letter-spacing:-.02em; }
+.admin-page-sub   { font-size:.95rem!important;  line-height:1.6!important; }
+.admin-card-title { font-size:.96rem!important;  font-weight:800!important; }
+.stat-card-value  { font-size:2rem!important;    font-weight:900!important; line-height:1!important; }
+.stat-card-label  { font-size:.8rem!important;   font-weight:600!important; letter-spacing:.02em; line-height:1.4!important; }
+.sidebar-label    { font-size:.68rem!important;  font-weight:800!important; letter-spacing:.14em!important; }
+.sidebar-link     { font-size:.9rem!important;   font-weight:500!important; }
+.sidebar-link.active { font-weight:700!important; }
+.data-table th    { font-size:.76rem!important;  font-weight:800!important; letter-spacing:.08em!important; }
+.data-table td    { font-size:.9rem!important;   line-height:1.52!important; }
+.status-badge     { font-size:.72rem!important;  font-weight:800!important; letter-spacing:.06em!important; }
+.admin-input-group label { font-size:.84rem!important; font-weight:700!important; }
+.admin-input-group input,
+.admin-input-group select,
+.admin-input-group textarea { font-size:.96rem!important; }
+
+/* ─── CHAT ──────────────────────────────────────────────────────────────── */
+.chat-contact-name    { font-size:.92rem!important; font-weight:700!important; }
+.chat-contact-preview { font-size:.8rem!important;  line-height:1.45!important; }
+.msg-bubble { font-size:.93rem!important; line-height:1.7!important; }
+.chat-header-name   { font-size:1rem!important;  font-weight:800!important; }
+.chat-input-area textarea { font-size:.95rem!important; line-height:1.6!important; }
+
+/* ─── AGENT CARDS ───────────────────────────────────────────────────────── */
+.agent-card h4   { font-size:.93rem!important; font-weight:800!important; }
+.agent-card .region { font-size:.77rem!important; font-weight:600!important; }
+
+/* ─── ACCESSIBILITY ─────────────────────────────────────────────────────── */
+:focus-visible { outline:3px solid #2d6e35; outline-offset:2px; border-radius:4px; }
+strong, b { font-weight:700; }
+small { font-size:.82rem; }

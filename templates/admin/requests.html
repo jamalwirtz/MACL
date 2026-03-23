@@ -1,0 +1,116 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Contact Requests{% endblock %}
+{% block content %}
+
+<div class="admin-page-title">Contact Requests</div>
+<div class="admin-page-sub">All messages submitted via the website contact form.</div>
+
+<!-- FILTER BAR -->
+<div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+  <div style="display:flex;gap:8px;">
+    <button class="req-filter-btn active" data-filter="">All</button>
+    <button class="req-filter-btn" data-filter="new">New</button>
+    <button class="req-filter-btn" data-filter="pending">Pending</button>
+    <button class="req-filter-btn" data-filter="resolved">Resolved</button>
+  </div>
+  <input type="text" id="reqSearch" placeholder="Search by name, email, subject…"
+    style="padding:7px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;font-family:'DM Sans',sans-serif;min-width:260px;">
+  <span style="font-size:.82rem;color:var(--text-light);margin-left:auto;">{{ requests|length }} total message(s)</span>
+</div>
+
+<div class="admin-card">
+  <div style="overflow-x:auto;">
+    <table class="data-table" id="reqTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>From</th>
+          <th>Subject</th>
+          <th>Message Preview</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+        <tr data-status="{{ r.status }}" class="req-row">
+          <td style="color:var(--text-light);font-size:.78rem;">{{ r.id }}</td>
+          <td>
+            <strong style="font-size:.88rem;">{{ r.name }}</strong><br>
+            <a href="mailto:{{ r.email }}" style="font-size:.75rem;color:var(--green-mid);">{{ r.email }}</a><br>
+            {% if r.phone %}<span style="font-size:.75rem;color:var(--text-light);">{{ r.phone }}</span>{% endif %}
+          </td>
+          <td style="font-size:.86rem;font-weight:600;color:var(--green-deep);max-width:140px;">{{ r.subject }}</td>
+          <td style="font-size:.82rem;color:var(--text-mid);max-width:220px;">
+            {{ r.message[:100] }}{% if r.message|length > 100 %}…{% endif %}
+            <br>
+            <button onclick="toggleMessage({{ r.id }})" style="background:none;border:none;color:var(--green-mid);font-size:.75rem;cursor:pointer;padding:2px 0;">Show full ↓</button>
+            <div id="msg-{{ r.id }}" style="display:none;font-size:.82rem;color:var(--text-dark);margin-top:6px;padding:8px;background:var(--cream);border-radius:6px;border-left:3px solid var(--green-light);">{{ r.message }}</div>
+          </td>
+          <td>
+            <span class="status-badge status-{{ r.status }}">{{ r.status }}</span>
+          </td>
+          <td style="font-size:.78rem;color:var(--text-light);white-space:nowrap;">{{ r.created_at[:16] }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin_update_request', rid=r.id) }}" style="display:flex;gap:6px;flex-wrap:wrap;">
+              {% if r.status != 'resolved' %}
+              <button type="submit" name="status" value="resolved" class="btn-sm green" title="Mark Resolved"><i class="fas fa-check"></i> Resolve</button>
+              {% endif %}
+              {% if r.status == 'new' %}
+              <button type="submit" name="status" value="pending" class="btn-sm gold" title="Mark Pending"><i class="fas fa-clock"></i></button>
+              {% endif %}
+              {% if r.status != 'new' %}
+              <button type="submit" name="status" value="new" class="btn-sm" style="background:var(--border);color:var(--text-dark);" title="Mark New"><i class="fas fa-redo"></i></button>
+              {% endif %}
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center;padding:36px;color:var(--text-light);font-size:.9rem;">
+          <i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:10px;color:var(--border);"></i>
+          No contact requests yet.
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.req-filter-btn {
+  padding: 6px 16px; border-radius: 100px; border: 1.5px solid var(--border);
+  background: var(--white); font-size: .82rem; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all var(--transition); color: var(--text-mid);
+}
+.req-filter-btn.active, .req-filter-btn:hover { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+</style>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+function toggleMessage(id) {
+  const el = document.getElementById('msg-' + id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// Filter by status
+document.querySelectorAll('.req-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.req-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.req-row').forEach(row => {
+      row.style.display = (!f || row.dataset.status === f) ? '' : 'none';
+    });
+  });
+});
+
+// Search
+document.getElementById('reqSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.req-row').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}
