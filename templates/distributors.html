@@ -1,185 +1,152 @@
-{% extends "base.html" %}
-{% block title %}Find a Distributor — Muddo Agro Chemicals{% endblock %}
-{% block extra_head %}
-<!-- Replace YOUR_GOOGLE_MAPS_API_KEY below with an actual key from Google Cloud Console -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
-{% endblock %}
+{% extends "admin/base_admin.html" %}
+{% block title %}Distributors{% endblock %}
 {% block content %}
 
-<section class="page-hero">
-  <div class="container">
-    <div class="breadcrumb" style="margin-bottom:14px;">
-      <a href="/">Home</a><span class="sep">/</span><span class="current">Find a Distributor</span>
-    </div>
-    <div class="page-hero-tag"><i class="fas fa-store"></i> Nationwide Network</div>
-    <h1>Find a Distributor Near You</h1>
-    <p>Muddo Agro products are available at outlets across Uganda. Use the map and filters below to locate your nearest distributor.</p>
+<div class="admin-page-title">Distributor Management</div>
+<div class="admin-page-sub">Manage the nationwide network of Muddo Agro outlet stores.</div>
+
+<!-- ADD DISTRIBUTOR FORM -->
+<div class="admin-card" style="margin-bottom:24px;">
+  <div class="admin-card-header">
+    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:6px;"></i> Add New Distributor Outlet</span>
+    <button onclick="toggleForm()" id="formToggleBtn" class="btn-sm green"><i class="fas fa-chevron-down"></i> Show Form</button>
   </div>
-</section>
-
-<section class="section">
-  <div class="container">
-
-    <!-- REGION QUICK FILTERS -->
-    <div style="display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;">
-      <button class="region-btn active" data-region="">All Regions</button>
-      {% for r in regions %}
-      <button class="region-btn" data-region="{{ r.region }}">{{ r.region }}</button>
-      {% endfor %}
-    </div>
-
-    <div class="dist-layout">
-      <!-- SIDEBAR -->
-      <div class="dist-sidebar">
-        <div>
-          <h3><i class="fas fa-map-marker-alt" style="color:var(--green-mid);"></i> Store Locator</h3>
-          <p style="font-size:.82rem;color:var(--text-light);margin-top:4px;">{{ distributors|length }} outlets across Uganda</p>
-        </div>
-        <div class="dist-filters">
-          <div class="filter-group">
-            <label>Filter by Region</label>
-            <select id="regionFilter">
-              <option value="">All Regions</option>
-              {% for r in regions %}
-              <option value="{{ r.region }}">{{ r.region }} Region</option>
-              {% endfor %}
+  <div id="addDistForm" style="display:none;">
+    <div class="admin-card-body">
+      <form method="POST" action="{{ url_for('admin_add_distributor') }}" class="admin-form">
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>Store / Outlet Name *</label>
+            <input type="text" name="name" placeholder="e.g. Mbarara Western Hub" required>
+          </div>
+          <div class="admin-input-group">
+            <label>Region *</label>
+            <select name="region" required>
+              <option value="">Select…</option>
+              <option value="Central">Central</option>
+              <option value="Eastern">Eastern</option>
+              <option value="Northern">Northern</option>
+              <option value="Western">Western</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label>Search by Name / District</label>
-            <input type="text" id="distSearch" placeholder="e.g. Jinja, Mbarara…">
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>District *</label>
+            <input type="text" name="district" placeholder="e.g. Kampala, Jinja, Gulu…" required>
+          </div>
+          <div class="admin-input-group">
+            <label>Physical Address</label>
+            <input type="text" name="address" placeholder="e.g. Main Street, Plot 45, Jinja Town">
           </div>
         </div>
-        <div class="dist-list" id="distList">
-          {% for d in distributors %}
-          <div class="dist-item" data-id="{{ d.id }}" data-lat="{{ d.lat }}" data-lng="{{ d.lng }}" data-region="{{ d.region }}" onclick="focusMarker({{ d.id }},{{ d.lat }},{{ d.lng }})">
-            <div class="dist-region">{{ d.region }} Region · {{ d.district }}</div>
-            <h4>{{ d.name }}</h4>
-            <div class="dist-addr"><i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-top:2px;"></i>{{ d.address }}</div>
-            <div class="dist-phone"><i class="fas fa-phone" style="color:var(--green-mid);"></i><a href="tel:{{ d.phone }}" style="color:var(--text-mid);">{{ d.phone }}</a></div>
-            {% if d.email %}<div class="dist-phone"><i class="fas fa-envelope" style="color:var(--green-mid);"></i><a href="mailto:{{ d.email }}" style="color:var(--text-mid);">{{ d.email }}</a></div>{% endif %}
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>Phone Number *</label>
+            <input type="text" name="phone" placeholder="+256 7XX XXX XXX" required>
           </div>
-          {% endfor %}
+          <div class="admin-input-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="outlet@muddo.ug">
+          </div>
         </div>
-      </div>
-
-      <!-- MAP -->
-      <div id="map"></div>
+        <div class="admin-form-row">
+          <div class="admin-input-group">
+            <label>GPS Latitude <span style="font-size:.72rem;color:var(--text-light);">(for map pin)</span></label>
+            <input type="number" name="lat" step="0.0001" placeholder="e.g. 0.3136" min="-2" max="5">
+          </div>
+          <div class="admin-input-group">
+            <label>GPS Longitude <span style="font-size:.72rem;color:var(--text-light);">(for map pin)</span></label>
+            <input type="number" name="lng" step="0.0001" placeholder="e.g. 32.5811" min="29" max="36">
+          </div>
+        </div>
+        <div style="padding:10px 12px;background:var(--green-tint);border-radius:6px;font-size:.78rem;color:var(--text-mid);margin-top:-4px;">
+          <i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
+          To get GPS coordinates: open <a href="https://www.google.com/maps" target="_blank" style="color:var(--green-mid);">Google Maps</a>, right-click the location, and copy the coordinates shown.
+        </div>
+        <div>
+          <button type="submit" class="btn-sm green" style="padding:10px 20px;font-size:.88rem;">
+            <i class="fas fa-plus"></i> Add Distributor
+          </button>
+        </div>
+      </form>
     </div>
-
-    <!-- MAP FALLBACK / NOTE -->
-    <div id="mapNote" style="display:none;background:var(--green-tint);border:1px solid var(--green-pale);border-radius:var(--radius);padding:20px 24px;margin-top:16px;">
-      <p style="font-size:.88rem;color:var(--text-mid);"><i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
-        Map requires a Google Maps API key. To enable: replace <code>YOUR_GOOGLE_MAPS_API_KEY</code> in <code>templates/distributors.html</code> with your key from
-        <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--green-mid);">Google Cloud Console</a>.
-        Distributor list above is fully functional.
-      </p>
-    </div>
-
   </div>
-</section>
+</div>
 
-<style>
-.region-btn {
-  padding: 8px 18px; border-radius: 100px; border: 1.5px solid var(--border);
-  background: var(--white); font-size: .84rem; font-weight: 600; cursor: pointer;
-  transition: all var(--transition); color: var(--text-mid); font-family: 'DM Sans', sans-serif;
-}
-.region-btn:hover, .region-btn.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
-</style>
+<!-- DISTRIBUTORS BY REGION -->
+{% set regions = ['Central', 'Eastern', 'Northern', 'Western'] %}
+{% for region in regions %}
+  {% set region_dists = distributors | selectattr('region', 'equalto', region) | list %}
+  {# works with dicts since selectattr checks dict keys too #}
+  {% if region_dists %}
+  <div class="admin-card" style="margin-bottom:20px;">
+    <div class="admin-card-header">
+      <span class="admin-card-title">
+        <i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-right:6px;"></i>
+        {{ region }} Region
+        <span style="margin-left:8px;background:var(--green-pale);color:var(--green-dark);padding:2px 8px;border-radius:100px;font-size:.72rem;">{{ region_dists|length }} outlet(s)</span>
+      </span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Name</th><th>District</th><th>Address</th><th>Contact</th><th>Coordinates</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for d in region_dists %}
+          <tr>
+            <td><strong>{{ d.name }}</strong></td>
+            <td style="font-size:.84rem;">{{ d.district }}</td>
+            <td style="font-size:.82rem;color:var(--text-mid);max-width:180px;">{{ d.address or '—' }}</td>
+            <td>
+              <a href="tel:{{ d.phone }}" style="font-size:.82rem;color:var(--green-mid);display:block;">{{ d.phone }}</a>
+              {% if d.email %}<a href="mailto:{{ d.email }}" style="font-size:.75rem;color:var(--text-light);">{{ d.email }}</a>{% endif %}
+            </td>
+            <td style="font-size:.75rem;color:var(--text-light);font-family:'DM Mono',monospace;">
+              {% if d.lat and d.lng %}
+              {{ "%.4f"|format(d.lat) }}, {{ "%.4f"|format(d.lng) }}
+              <br>
+              <a href="https://www.google.com/maps?q={{ d.lat }},{{ d.lng }}" target="_blank" style="color:var(--green-mid);font-size:.72rem;"><i class="fas fa-external-link-alt"></i> View on Maps</a>
+              {% else %}—{% endif %}
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin_delete_distributor', did=d.id) }}"
+                    onsubmit="return confirm('Remove {{ d.name }} from the distributor network?')">
+                <button type="submit" class="btn-sm red"><i class="fas fa-trash"></i> Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+
+<!-- EMPTY STATE -->
+{% if not distributors %}
+<div class="admin-card">
+  <div class="admin-card-body" style="text-align:center;padding:48px;">
+    <i class="fas fa-store" style="font-size:3rem;color:var(--border);display:block;margin-bottom:12px;"></i>
+    <h3 style="color:var(--text-light);font-weight:600;">No distributors yet</h3>
+    <p style="color:var(--text-light);font-size:.88rem;margin-top:6px;">Use the form above to add your first outlet.</p>
+  </div>
+</div>
+{% endif %}
 
 {% endblock %}
 {% block extra_scripts %}
 <script>
-// ─── ALL DISTRIBUTOR DATA ─────────────────────────────────────────────────
-const DISTRIBUTORS = {{ distributors | tojson }};
-let map, markers = {}, infoWindow;
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 1.3733, lng: 32.2903 },
-    zoom: 7,
-    styles: [
-      { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-      { elementType: 'geometry', stylers: [{ color: '#f5faf5' }] },
-      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
-      { featureType: 'water', stylers: [{ color: '#b3d9f5' }] },
-    ]
-  });
-  infoWindow = new google.maps.InfoWindow();
-
-  DISTRIBUTORS.forEach(d => {
-    const marker = new google.maps.Marker({
-      position: { lat: d.lat, lng: d.lng },
-      map: map,
-      title: d.name,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#2d6e35',
-        fillOpacity: 1,
-        strokeColor: '#ffffff',
-        strokeWeight: 2,
-        scale: 9
-      }
-    });
-    marker.addListener('click', () => {
-      infoWindow.setContent(`
-        <div style="font-family:'DM Sans',sans-serif;padding:6px;max-width:220px;">
-          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#2d6e35;margin-bottom:4px;">${d.region} Region · ${d.district}</div>
-          <div style="font-weight:700;color:#0d2b14;margin-bottom:6px;font-size:.95rem;">${d.name}</div>
-          <div style="font-size:.8rem;color:#666;margin-bottom:3px;"><i>📍</i> ${d.address}</div>
-          <div style="font-size:.8rem;color:#444;"><i>📞</i> <a href="tel:${d.phone}" style="color:#2d6e35;">${d.phone}</a></div>
-        </div>`);
-      infoWindow.open(map, marker);
-      document.querySelectorAll('.dist-item').forEach(el => el.classList.remove('active'));
-      const el = document.querySelector(`.dist-item[data-id="${d.id}"]`);
-      if (el) { el.classList.add('active'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-    });
-    markers[d.id] = marker;
-  });
+function toggleForm() {
+  const form = document.getElementById('addDistForm');
+  const btn = document.getElementById('formToggleBtn');
+  const showing = form.style.display !== 'none';
+  form.style.display = showing ? 'none' : 'block';
+  btn.innerHTML = showing
+    ? '<i class="fas fa-chevron-down"></i> Show Form'
+    : '<i class="fas fa-chevron-up"></i> Hide Form';
 }
-
-function focusMarker(id, lat, lng) {
-  if (!map) return;
-  map.panTo({ lat, lng });
-  map.setZoom(13);
-  google.maps.event.trigger(markers[id], 'click');
-}
-
-// ─── FILTERS ──────────────────────────────────────────────────────────────
-function filterDists() {
-  const region = document.getElementById('regionFilter').value.toLowerCase();
-  const search = document.getElementById('distSearch').value.toLowerCase();
-  document.querySelectorAll('.dist-item').forEach(el => {
-    const elRegion = el.dataset.region.toLowerCase();
-    const text = el.textContent.toLowerCase();
-    const show = (!region || elRegion.includes(region)) && (!search || text.includes(search));
-    el.style.display = show ? '' : 'none';
-    if (markers[el.dataset.id]) markers[el.dataset.id].setVisible(show);
-  });
-}
-document.getElementById('regionFilter').addEventListener('change', filterDists);
-document.getElementById('distSearch').addEventListener('input', filterDists);
-
-// ─── REGION QUICK BUTTONS ─────────────────────────────────────────────────
-document.querySelectorAll('.region-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('regionFilter').value = btn.dataset.region;
-    filterDists();
-  });
-});
-
-// ─── MAP LOAD ERROR HANDLING ──────────────────────────────────────────────
-window.gm_authFailure = () => {
-  document.getElementById('map').style.background = '#f0f8f1';
-  document.getElementById('map').innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;padding:40px;text-align:center;">
-    <i class="fas fa-map" style="font-size:3rem;color:var(--green-light);"></i>
-    <h3 style="color:var(--green-deep);font-family:'Playfair Display',serif;">Map Not Available</h3>
-    <p style="color:var(--text-light);font-size:.88rem;max-width:300px;">Add a valid Google Maps API key to enable the interactive map. Distributor list is available on the left.</p>
-  </div>`;
-  document.getElementById('mapNote').style.display = 'block';
-};
 </script>
 {% endblock %}

@@ -17,7 +17,7 @@ import qrcode
 from PIL import Image
 
 app = Flask(__name__)
-app.secret_key = 'muddo_agro_v6_XK9_2024'
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'muddo_agro_dev_only_change_in_prod_XK9_2024')
 DB_PATH     = os.path.join(os.path.dirname(__file__), 'muddo.db')
 UPLOAD_DIR  = os.path.join(os.path.dirname(__file__), 'static', 'uploads', 'products')
 ALLOWED_EXT = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
@@ -657,6 +657,10 @@ def uploaded_product_image(filename):
     return send_file(os.path.join(UPLOAD_DIR,filename))
 
 if __name__=='__main__':
+    # Warn if using default secret key in what looks like production
+    if app.secret_key.startswith('muddo_agro_dev_only') and os.environ.get('PORT'):
+        import warnings
+        warnings.warn('⚠️  Using default secret key in production! Set FLASK_SECRET_KEY env var.')
     os.makedirs(UPLOAD_DIR,exist_ok=True); init_db()
     app.run(debug=True,port=5000)
 

@@ -1,32 +1,31 @@
+# /etc/systemd/system/muddo_agro.service
 [Unit]
 Description=Muddo Agro Chemicals LTD — Flask Web Application
 After=network.target
 
 [Service]
-User=www-data
-Group=www-data
-WorkingDirectory=/var/www/muddo_agro
-Environment="PATH=/var/www/muddo_agro/venv/bin"
+User=muddo
+Group=muddo
+WorkingDirectory=/home/muddo/muddo_agro
+Environment="PATH=/home/muddo/muddo_agro/venv/bin"
+Environment="FLASK_ENV=production"
+# Set your actual secrets here:
+# Environment="MAIL_PASSWORD=your_gmail_app_password"
+# Environment="GA_MEASUREMENT_ID=G-XXXXXXXXXX"
+# Environment="FLASK_SECRET_KEY=change_this_to_a_long_random_string"
 
-# Load environment variables from .env file
-EnvironmentFile=/var/www/muddo_agro/.env
-
-ExecStart=/var/www/muddo_agro/venv/bin/gunicorn \
-    --config /var/www/muddo_agro/gunicorn.conf.py \
+ExecStart=/home/muddo/muddo_agro/venv/bin/gunicorn \
+    --config gunicorn.conf.py \
     app:app
 
-ExecReload=/bin/kill -s HUP $MAINPID
-ExecStop=/bin/kill -s TERM $MAINPID
-
+# Restart on failure
 Restart=on-failure
 RestartSec=5s
+
+# Logging → systemd journal (no file paths needed)
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=muddo_agro
-
-# Security hardening
-NoNewPrivileges=true
-PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
