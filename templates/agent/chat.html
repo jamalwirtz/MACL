@@ -19,7 +19,8 @@
     <div class="chat-contacts">
       <div class="chat-contact active" data-id="{{ admin_id }}" data-role="admin" data-name="Admin" data-status="online" id="contact-{{ admin_id }}">
         <div class="chat-avatar" style="background:var(--green-deep);">
-          <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;padding:4px;">
+          <img src="{{ url_for('static', filename='images/logo.jpg') }}"
+       alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;background:#fff;padding:3px;">
           <span class="status-dot online"></span>
         </div>
         <div class="chat-contact-info">
@@ -49,7 +50,7 @@
   <div class="chat-main" id="chatMainArea" style="display:flex;flex-direction:column;">
     <div class="chat-header">
       <div class="chat-header-avatar" style="background:var(--green-deep);padding:4px;overflow:hidden;" id="chatHeaderAvatar">
-        <img src="{{ url_for('static', filename='images/macl_logo.png') }}" alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="HQ" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">
       </div>
       <div>
         <div class="chat-header-name" id="chatHeaderName">MACL Headquarters</div>
