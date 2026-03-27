@@ -9,14 +9,14 @@
 <meta property="og:title" content="Muddo Agro Chemicals LTD — Uganda's Trusted Agrochemical Partner">
 <meta property="og:description" content="Professional-grade pesticides, herbicides, fungicides and fertilizers. MAAIF-registered distributor serving all regions of Uganda.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="{{ url_for('static', filename='images/logo.jpg', _external=True) }}">
+<meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Muddo Agro Chemicals LTD">
 <meta name="twitter:description" content="Uganda's trusted MAAIF-registered agrochemical distributor.">
 <link rel="canonical" href="{{ request.url }}">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 <meta name="theme-color" content="#0d2b14">
-<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.jpg') }}">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}" media="print">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_theme.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 {% block extra_head %}{% endblock %}
@@ -67,7 +68,7 @@
     "opens": "08:00", "closes": "18:00"
   }],
   "sameAs": ["https://www.facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/"],
-  "logo": "{{ url_for('static', filename='images/logo.jpg', _external=True) }}",
+  "logo": "{{ url_for('static', filename='images/logo.png', _external=True) }}",
   "currenciesAccepted": "UGX",
   "priceRange": "$$"
 }
@@ -83,26 +84,11 @@
 <body data-user-role="{{ session.get('role','') }}" data-user-id="{{ session.get('user_id','') }}" data-user-initial="{{ (session.get('user_name','U') or 'U')[0]|upper }}">
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
-<div class="topbar"><div class="topbar-inner">
-  <div class="topbar-left">
-    <span><i class="fas fa-map-marker-alt"></i> Container Village Nakivubo, Kampala</span>
-    <span><i class="fas fa-clock"></i> Mon–Sat: 8:00am – 6:00pm</span>
-  </div>
-  <div class="topbar-right">
-    <a href="tel:+256772507582"><i class="fas fa-phone"></i> +256 772 507582</a>
-    <a href="mailto:muddoagro811@gmail.com"><i class="fas fa-envelope"></i> muddoagro811@gmail.com</a>
-    <a href="https://facebook.com/p/MUDDO-AGRO-Chemicals-LTD-100063836929481/" target="_blank"><i class="fab fa-facebook"></i></a>
-    {% if session.get('role') == 'admin' %}<a href="{{ url_for('admin_dashboard') }}" style="background:rgba(200,168,75,.2);padding:2px 10px;border-radius:100px;"><i class="fas fa-shield-alt"></i> Admin</a>
-    {% elif session.get('role') == 'agent' %}<a href="{{ url_for('agent_dashboard') }}" style="background:rgba(200,168,75,.2);padding:2px 10px;border-radius:100px;"><i class="fas fa-user"></i> {{ session.get('user_name','') }}</a>
-    {% endif %}
-  </div>
-</div></div>
 
 <nav class="navbar" id="navbar"><div class="nav-inner">
   <a href="{{ url_for('index') }}" class="nav-logo">
-    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="MACL"
-       style="height:48px;width:48px;border-radius:10px;object-fit:contain;
-              background:#fff;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.15);">
+    <img src="{{ url_for('static', filename='images/logo_full.png') }}" alt="MACL"
+       style="height:42px;width:auto;max-width:200px;object-fit:contain;">
     <div class="logo-text"><span class="logo-main">MUDDO AGRO</span><span class="logo-sub">Chemicals LTD</span></div>
   </a>
   <div class="nav-links" id="navLinks">
@@ -214,7 +200,7 @@
   <div class="footer-wave"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C300,80 900,0 1200,40 L1200,80 L0,80 Z" fill="var(--green-deep)"/></svg></div>
   <div class="footer-body"><div class="footer-grid">
     <div class="footer-brand">
-      <div class="footer-logo"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="MACL"
+      <div class="footer-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="MACL"
        style="height:44px;width:44px;border-radius:9px;object-fit:contain;background:#fff;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.2);"></div>
       <p>Providing premium agrochemical solutions to Ugandan farmers. Registered distributors of pesticides, herbicides, and fungicides.</p>
       <div class="footer-social">

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_theme.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -21,9 +22,8 @@
 
 <nav class="admin-navbar">
   <div class="logo" style="gap:12px;">
-    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="MACL"
-       style="height:40px;width:40px;border-radius:8px;object-fit:contain;
-              background:#fff;padding:2px;box-shadow:0 1px 6px rgba(0,0,0,.25);">
+    <img src="{{ url_for('static', filename='images/logo_full.png') }}" alt="MACL"
+       style="height:36px;width:auto;max-width:180px;object-fit:contain;">
     <span style="color:rgba(255,255,255,.35);margin:0 2px;">|</span>
     <span style="color:rgba(255,255,255,.65);font-weight:400;font-size:.82rem;">Admin Portal</span>
   </div>

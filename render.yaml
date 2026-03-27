@@ -13,7 +13,9 @@ services:
       - key: MAIL_PASSWORD
         sync: false                  # Set manually in Render dashboard
       - key: GA_MEASUREMENT_ID
-        sync: false                  # Set manually in Render dashboard
+        sync: false
+      - key: GOOGLE_MAPS_KEY
+        sync: false                  # Get from console.cloud.google.com (enable Maps JS API + Places API)                  # Set manually in Render dashboard
       - key: PYTHON_VERSION
         value: 3.12.0
     plan: free

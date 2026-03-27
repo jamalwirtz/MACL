@@ -1,4 +1,4 @@
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/5a8c7b1a-16ab-4eed-8048-e796563c5db6" /># 🌿 Muddo Agro Chemicals LTD — Website
+# 🌿 Muddo Agro Chemicals LTD — Website
 
 A professional Flask web application for **Muddo Agro Chemicals LTD**, Uganda's trusted agrochemical distributor.
 
@@ -124,5 +124,3 @@ muddo_agro/
 ---
 
 *Built for Muddo Agro Chemicals LTD — Kampala, Uganda*
-
-also change the green theme u have used for the  and put more colorful themes of  tanned red blue and green for the website , and  then work on the failing pages and the admin whole system and also check why tthhe admin can`t login   also check that search for oulets /distributors on the map  can also use google maps so that the user can get updated info about the places. then replace this image as the logo and also the buisness card. for the biusness card, place on the login page with some extended discription of the company. then remove the header with the contacts  and address of the company and only include them in the footer

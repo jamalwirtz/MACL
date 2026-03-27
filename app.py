@@ -32,6 +32,7 @@ app.config.update(
 mail = Mail(app)
 GA_ID    = os.environ.get('GA_MEASUREMENT_ID','G-XXXXXXXXXX')
 WA_NUM   = '256772507582'
+GOOGLE_MAPS_KEY = os.environ.get('GOOGLE_MAPS_KEY', '')
 
 def get_db():
     conn = sqlite3.connect(DB_PATH); conn.row_factory = sqlite3.Row; return conn
@@ -155,7 +156,7 @@ def update_last_seen():
 
 @app.context_processor
 def inject_globals():
-    ctx={'now':datetime.now(),'ga_id':GA_ID,'wa_number':WA_NUM}
+    ctx={'now':datetime.now(),'ga_id':GA_ID,'wa_number':WA_NUM,'google_maps_key':GOOGLE_MAPS_KEY}
     if session.get('role')=='admin':
         try:
             conn=get_db()
