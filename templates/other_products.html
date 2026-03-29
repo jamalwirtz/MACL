@@ -1,58 +1,151 @@
 {% extends "base.html" %}
-{% block title %}Other Products — Muddo Agro Chemicals{% endblock %}
+{% block title %}Fertilizers & Equipment — Muddo Agro Chemicals LTD{% endblock %}
+{% block extra_head %}
+<style>
+.cat-hero{background:linear-gradient(135deg,#1a1000 0%,#4a3000 50%,#8a5a00 100%);padding:52px 0 36px;position:relative;overflow:hidden;}
+.cat-hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800')center/cover;opacity:.1;pointer-events:none;}
+.cat-hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;background:rgba(200,160,80,.2);border:1px solid rgba(200,160,80,.4);color:#f5d090;font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-family:'DM Sans',sans-serif;}
+.cat-tabs{display:flex;gap:0;background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:12px;overflow:hidden;margin-bottom:24px;}
+.cat-tab{flex:1;padding:11px 14px;text-align:center;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;color:var(--text-secondary);background:var(--bg-alt);border:none;border-right:1px solid var(--border-color);transition:all .25s ease;}
+.cat-tab:last-child{border-right:none;}
+.cat-tab.active{background:var(--macl-orange,#e8651a);color:white;border-color:var(--macl-orange,#e8651a);}
+.cat-tab:hover:not(.active){background:var(--macl-orange-pale,#fef0e4);color:var(--macl-orange,#e8651a);}
+.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:26px;padding:14px 18px;background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:12px;}
+.fsearch{position:relative;flex:1;min-width:200px;}
+.fsearch i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.82rem;}
+.fsearch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--border-color);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);}
+.fsearch input:focus{outline:none;border-color:#c8a050;}
+.fpill{padding:6px 13px;border-radius:100px;font-size:.76rem;font-weight:700;border:1.5px solid var(--border-color);background:var(--bg-alt);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.fpill.active,.fpill:hover{background:#c8a050;border-color:#c8a050;color:white;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;}
+.pcard{background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;}
+.pcard:hover{transform:translateY(-4px);border-color:#c8a050;box-shadow:0 10px 30px rgba(200,160,80,.14);}
+.pcard-img{height:170px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fff8e8,#fdf5e0);display:flex;align-items:center;justify-content:center;}
+[data-theme="dark"] .pcard-img{background:linear-gradient(135deg,#1a1000,#0f0a00);}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.pcard:hover .pcard-img img{transform:scale(1.07);}
+.pcard-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:7px;}
+.pcard-ph i{font-size:2.2rem;color:rgba(200,160,80,.25);}
+.pcard-ph span{font-size:.7rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;}
+.pcard-body{padding:15px;}
+.ptag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Sans',sans-serif;}
+.ptag-other{background:#fff8e8;color:#8a5a00;}
+[data-theme="dark"] .ptag-other{background:#1a1000;color:#f5d090;}
+.pcard-body h3{font-size:.95rem;font-weight:800;color:var(--text-primary);margin-bottom:5px;line-height:1.3;}
+.pcard-body p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pspec{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.67rem;font-weight:700;background:var(--bg-alt);color:var(--text-muted);margin:2px;font-family:'DM Sans',sans-serif;}
+.pfoot{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--border-color);margin-top:8px;}
+.pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;border:none;display:flex;align-items:center;justify-content:center;gap:5px;}
+.pbtn-main{background:#c8a050;color:white;}.pbtn-main:hover{background:#a07030;}
+.pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--border-color);color:var(--text-secondary);}.pbtn-enq:hover{border-color:#c8a050;color:#8a5a00;}
+.schip{position:absolute;top:9px;left:9px;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:800;font-family:'DM Sans',sans-serif;}
+.chip-in{background:rgba(45,110,53,.85);color:white;}.chip-low{background:rgba(232,101,26,.85);color:white;}.chip-out{background:rgba(184,58,26,.85);color:white;}
+.no-res{grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--text-muted);}
+.products-banner{display:flex;gap:20px;align-items:center;background:linear-gradient(135deg,#fff8e8,#fdf5e0);border:2px solid #f0d070;border-radius:18px;padding:24px;margin-bottom:32px;overflow:hidden;position:relative;}
+[data-theme="dark"] .products-banner{background:linear-gradient(135deg,#1a1000,#0f0a00);border-color:#3a2800;}
+.products-banner img{width:180px;height:140px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 6px 14px rgba(0,0,0,.15));}
+.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+.icard{padding:20px;border-radius:12px;border:1.5px solid var(--border-color);background:var(--bg-card);border-top:3px solid #c8a050;}
+.icard h4{font-size:.88rem;font-weight:800;color:var(--text-primary);margin-bottom:7px;font-family:'DM Sans',sans-serif;}
+.icard p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;}
+.icard i{font-size:1.1rem;margin-bottom:10px;display:block;color:#c8a050;}
+@media(max-width:640px){.products-banner{flex-direction:column;}.products-banner img{width:140px;height:100px;}.info-strip{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
 {% block content %}
-<section class="page-hero">
-  <div class="container">
-    <div class="breadcrumb" style="margin-bottom:14px;"><a href="/">Home</a><span class="sep">/</span><span class="current">Other Products</span></div>
-    <div class="page-hero-tag anim-fade-down"><i class="fas fa-boxes"></i> Agri Inputs</div>
-    <h1 class="anim-fade-up">Other Products</h1>
-    <p class="anim-fade-up delay-1">SUBOther Products</p>
+<section class="cat-hero">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="breadcrumb" style="margin-bottom:12px;"><a href="/">Home</a><span class="sep">/</span><span class="current" style="color:#f5d090;">Other Products</span></div>
+    <div class="cat-hero-tag anim-fade-down"><i class="fas fa-boxes"></i> Fertilizers & Equipment</div>
+    <h1 class="anim-fade-up" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;">Fertilizers & Equipment</h1>
+    <p class="anim-fade-up delay-1" style="color:rgba(255,255,255,.82);max-width:55ch;line-height:1.75;font-size:.97rem;">Complete plant nutrition solutions — NPK, Urea, and foliar fertilizers — plus spraying equipment to apply your agrochemicals efficiently.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;" class="anim-fade-up delay-2">
+      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#c8a050;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;color:#1a1000;font-weight:700;"><i class="fas fa-envelope"></i>Request Quote</a>
+      <a href="tel:+256772507582" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.88rem;text-decoration:none;"><i class="fas fa-phone"></i>+256 772 507582</a>
+    </div>
   </div>
 </section>
-<section class="section">
+
+<section class="section" style="padding-top:36px;">
   <div class="container">
-    <div style="display:flex;gap:14px;margin-bottom:36px;flex-wrap:wrap;align-items:center;justify-content:space-between;" data-reveal="up">
-      <div style="position:relative;max-width:360px;width:100%;">
-        <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:.85rem;"></i>
-        <input id="productSearch" type="text" placeholder="Search products…" style="width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--white);" onfocus="this.style.borderColor='var(--green-mid)'" onblur="this.style.borderColor='var(--border)'">
+
+    <!-- Products range banner -->
+    <div class="products-banner" data-reveal="up">
+      <img src="{{ url_for('static', filename='images/products_all.png') }}" alt="MACL Product Range" onerror="this.style.display='none'">
+      <div>
+        <h3 style="font-size:1.1rem;font-weight:900;color:#8a5a00;margin-bottom:8px;font-family:'Playfair Display',serif;">The Full MACL Range</h3>
+        <p style="font-size:.86rem;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Muddo Agro Chemicals LTD distributes fertilizers, micronutrients, foliar feeds, and spraying equipment to ensure your crops get complete care — from soil nutrition to pest and disease control.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:700;background:rgba(200,160,80,.15);border:1px solid rgba(200,160,80,.3);color:#8a5a00;font-family:'DM Sans',sans-serif;">NPK Fertilizers</span>
+          <span style="padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:700;background:rgba(200,160,80,.15);border:1px solid rgba(200,160,80,.3);color:#8a5a00;font-family:'DM Sans',sans-serif;">Urea 46%N</span>
+          <span style="padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:700;background:rgba(200,160,80,.15);border:1px solid rgba(200,160,80,.3);color:#8a5a00;font-family:'DM Sans',sans-serif;">Foliar Feeds</span>
+          <span style="padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:700;background:rgba(200,160,80,.15);border:1px solid rgba(200,160,80,.3);color:#8a5a00;font-family:'DM Sans',sans-serif;">Knapsack Sprayers</span>
+        </div>
       </div>
-      <p style="color:var(--text-light);font-size:.85rem;">Showing <strong style="color:var(--green-dark);">{{ products|length }}</strong> product(s) — click any card for details</p>
     </div>
-    <div class="products-grid">
+
+    <!-- Category tabs -->
+    <div class="cat-tabs" data-reveal="up">
+      <button class="cat-tab active" onclick="filterCat(this,'all')">All Products</button>
+      <button class="cat-tab" onclick="filterCat(this,'fertilizer')">Fertilizers</button>
+      <button class="cat-tab" onclick="filterCat(this,'equipment')">Equipment</button>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="fbar" data-reveal="up">
+      <div class="fsearch"><i class="fas fa-search"></i><input type="text" id="prodSearch" placeholder="Search fertilizers, equipment…" oninput="filterProds()"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="fpill active" onclick="setF(this,'all')">All</button>
+        <button class="fpill" onclick="setF(this,'npk')">NPK</button>
+        <button class="fpill" onclick="setF(this,'urea')">Urea/Nitrogen</button>
+        <button class="fpill" onclick="setF(this,'foliar')">Foliar</button>
+      </div>
+      <span id="rcount" style="font-size:.82rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;white-space:nowrap;">{{ products|length }} products</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="pgrid" id="prodGrid">
       {% for p in products %}
-      <div class="product-card hover-lift" data-reveal="up" data-reveal-delay="{{ loop.index * 70 }}"
-        data-id="{{ p.id }}" data-stock="{{ p.stock_qty if p.stock_qty is defined else -1 }}" data-name="{{ p.name }}" data-cat="{{ p.category }}"
-        data-desc="{{ p.description }}" data-img="{{ p.image_url }}"
-        data-ingr="{{ p.active_ingredient }}" data-form="{{ p.formulation }}"
-        data-crops="{{ p.crops }}" data-dose="{{ p.dosage }}" data-pack="{{ p.packing }}">
-        <div class="product-card-img">
-          <img src="{{ get_product_image(p) }}" alt="{{ p.name }}" loading="lazy">
-          <button class="quick-view-btn"><i class="fas fa-eye" style="margin-right:5px;"></i>Quick View</button>
+      {% set is_equip = 'sprayer' in p.name.lower() or 'equipment' in (p.formulation or '').lower() %}
+      <div class="pcard" data-name="{{ p.name|lower }}" data-ai="{{ (p.active_ingredient or '')|lower }}" data-crops="{{ (p.crops or '')|lower }}" data-cat="{{ 'equipment' if is_equip else 'fertilizer' }}" onclick="location.href='{{ url_for('product_detail', product_id=p.id) }}'">
+        <div class="pcard-img">
+          {% if p.image_file %}<img src="{{ url_for('uploaded_product_image', filename=p.image_file) }}" alt="{{ p.name }}" loading="lazy">
+          {% elif p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy" onerror="this.parentElement.style.background='var(--bg-alt)';this.remove()">
+          {% else %}<div class="pcard-ph"><i class="fas {{ 'fa-spray-can' if is_equip else 'fa-seedling' }}"></i><span>{{ 'Equipment' if is_equip else 'Fertilizer' }}</span></div>{% endif %}
+          {% if p.stock_qty is defined %}{% if p.stock_qty==0 %}<span class="schip chip-out">Out of Stock</span>{% elif p.stock_qty<=10 %}<span class="schip chip-low">Low Stock</span>{% else %}<span class="schip chip-in">✓ In Stock</span>{% endif %}{% endif %}
         </div>
-        <div class="product-card-body">
-          <span class="product-tag tag-other"><i class="fas fa-boxes2"></i> Agri Input</span>
+        <div class="pcard-body">
+          <span class="ptag ptag-other"><i class="fas {{ 'fa-tools' if is_equip else 'fa-seedling' }}"></i> {{ 'Equipment' if is_equip else 'Fertilizer' }}</span>
           <h3>{{ p.name }}</h3>
-          <p>{{ p.description[:120] }}{% if p.description|length > 120 %}…{% endif %}</p>
-          <div class="product-specs">
-            <div class="spec-row"><strong>Active Ingr.:</strong><span>{{ p.active_ingredient }}</span></div>
-            <div class="spec-row"><strong>Formulation:</strong><span>{{ p.formulation }}</span></div>
-            <div class="spec-row"><strong>Crops:</strong><span>{{ p.crops }}</span></div>
-          </div>
-          <div class="product-card-footer">
-            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn-outline" onclick="event.stopPropagation();"><i class="fas fa-external-link-alt"></i> Full Details</a>
-            <a href="{{ url_for('contact') }}" class="btn-green" style="flex:1;justify-content:center;text-align:center;" onclick="event.stopPropagation();"><i class="fas fa-envelope"></i> Enquire</a>
+          <p>{{ p.description or ('Spraying equipment for efficient agrochemical application.' if is_equip else 'Plant nutrition for healthy crop growth and maximum yield.') }}</p>
+          <div>{% if p.formulation %}<span class="pspec">{{ p.formulation }}</span>{% endif %}{% if p.dosage %}<span class="pspec">{{ p.dosage }}</span>{% endif %}{% if p.packing %}<span class="pspec">{{ p.packing }}</span>{% endif %}</div>
+          {% if p.crops and not is_equip %}<p style="font-size:.72rem;color:var(--text-muted);margin-top:6px;margin-bottom:0;"><i class="fas fa-seedling" style="color:#2d6e35;margin-right:3px;"></i>{{ p.crops[:55] }}{% if p.crops|length>55 %}…{% endif %}</p>{% endif %}
+          <div class="pfoot" onclick="event.stopPropagation()">
+            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Details</a>
+            <a href="{{ url_for('contact') }}" class="pbtn-enq"><i class="fas fa-envelope"></i>Enquire</a>
           </div>
         </div>
       </div>
+      {% else %}
+      <div class="no-res"><i class="fas fa-boxes" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--border-color);"></i><strong>No products found</strong></div>
       {% endfor %}
     </div>
-    <div style="margin-top:48px;background:var(--green-deep);border:1.5px solid var(--green-dark);border-radius:var(--radius);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;" data-reveal="up">
-      <i class="fas fa-phone-alt" style="color:fas fa-phone-alt_COLOR;font-size:1.4rem;margin-top:2px;flex-shrink:0;"></i>
-      <div>
-        <h4 style="font-weight:700;color:var(--green-deep) !important;margin-bottom:6px;">TIP_Other Products</h4>
-        <p style="color:var(--text-mid);font-size:.88rem;line-height:1.7;">We supply fertilizers, chemicals, and equipment in bulk for distributors, cooperatives, and large-scale farmers. Contact us for a competitive wholesale quote.</p>
-      </div>
+
+    <div class="info-strip" data-reveal="up">
+      <div class="icard"><i class="fas fa-seedling"></i><h4>Balanced Nutrition</h4><p>NPK 17:17:17 provides equal nitrogen, phosphorus, and potassium for balanced growth. Ideal for transplanting, vegetative stage, and all-round crop nutrition.</p></div>
+      <div class="icard" style="border-top-color:#e8651a;"><i class="fas fa-tint" style="color:#e8651a;"></i><h4>Foliar Feeding</h4><p>FOLIAR BOOST 20-20-20 gives quick results — absorbed through leaves for immediate effect. Use when soil conditions limit root nutrient uptake.</p></div>
+      <div class="icard" style="border-top-color:#1a5fa8;"><i class="fas fa-spray-can" style="color:#1a5fa8;"></i><h4>Quality Sprayers</h4><p>Our 16L knapsack sprayers with anti-drip valves and adjustable nozzles ensure accurate, efficient application of all your agrochemicals.</p></div>
+    </div>
+
+    <div style="margin-top:36px;padding:24px 28px;border-radius:14px;background:linear-gradient(135deg,#4a3000,#8a5a00);color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;" data-reveal="up">
+      <div><h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;margin-bottom:3px;">Need a complete crop nutrition programme?</h3><p style="opacity:.85;font-size:.85rem;margin:0;">We can recommend the right fertilizer combination for your soil and crop type.</p></div>
+      <a href="{{ url_for('contact') }}" style="padding:10px 22px;background:white;color:#4a3000;border-radius:9px;font-weight:800;font-size:.88rem;text-decoration:none;white-space:nowrap;"><i class="fas fa-envelope" style="margin-right:6px;"></i>Get Advice</a>
     </div>
   </div>
 </section>
+<script>
+function filterProds(){const q=document.getElementById('prodSearch').value.toLowerCase();let c=0;document.querySelectorAll('.pcard').forEach(card=>{const m=card.dataset.name.includes(q)||card.dataset.ai.includes(q)||card.dataset.crops.includes(q);card.style.display=m?'':'none';if(m)c++;});document.getElementById('rcount').textContent=c+' product'+(c!==1?'s':'');}
+function setF(btn,f){document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const ai=card.dataset.ai||'';const name=card.dataset.name||'';const show=f==='all'||name.includes(f)||ai.includes(f)||(f==='foliar'&&name.includes('foliar'));card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rcount').textContent=v+' product'+(v!==1?'s':'');}
+function filterCat(btn,cat){document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const show=cat==='all'||card.dataset.cat===cat;card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rcount').textContent=v+' product'+(v!==1?'s':'');}
+</script>
 {% endblock %}
