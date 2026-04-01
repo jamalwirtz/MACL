@@ -1,120 +1,216 @@
 {% extends "base.html" %}
-{% block title %}Muddo Agro Chemicals LTD — Uganda's Trusted Agrochemical Partner{% endblock %}
+{% block title %}Muddo Agro Chemicals LTD — Uganda's Trusted Agrochemical Distributor{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ── HERO ── */
+.hero-wrap{min-height:88vh;display:flex;align-items:center;position:relative;overflow:hidden;background:#1a0808;}
+.hero-bg-img{position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 70% at 65% 45%,rgba(232,101,26,.28) 0%,transparent 65%),linear-gradient(135deg,#1a0808 0%,#2a1208 55%,#1a0f08 100%);z-index:0;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;z-index:1;padding:80px 0 60px;}
+.hero-left h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
+.hero-left h1 span{color:#e8b84a;}
+.hero-left p{font-size:1rem;color:rgba(255,255,255,.85);line-height:1.78;margin-bottom:24px;max-width:52ch;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;background:rgba(232,101,26,.15);border:1px solid rgba(232,101,26,.3);color:#ffb07a;font-size:.75rem;font-weight:700;letter-spacing:.06em;font-family:'DM Sans',sans-serif;}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.hstat{text-align:center;padding:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;}
+.hstat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:#e8b84a;line-height:1;}
+.hstat-label{font-size:.72rem;color:rgba(255,255,255,.65);margin-top:4px;font-weight:600;letter-spacing:.04em;}
+/* Hero right: product showcase */
+.hero-products{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hero-prod-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;text-decoration:none;}
+.hero-prod-card:hover{background:rgba(255,255,255,.12);border-color:rgba(232,101,26,.4);transform:translateY(-3px);}
+.hero-prod-card img{width:100%;height:100px;object-fit:cover;display:block;}
+.hero-prod-info{padding:10px 12px;}
+.hero-prod-name{font-size:.78rem;font-weight:700;color:#fff;margin-bottom:2px;}
+.hero-prod-cat{font-size:.65rem;color:rgba(255,255,255,.55);text-transform:capitalize;}
+
+/* ── PRODUCT CATEGORIES ── */
+.cat-grid-home{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.cat-home{background:var(--bg-card);border:1.5px solid var(--bd);border-radius:16px;overflow:hidden;transition:all .3s ease;cursor:pointer;text-decoration:none;display:block;}
+.cat-home:hover{transform:translateY(-5px);box-shadow:var(--sh2);border-color:var(--or);}
+.cat-home-img{height:140px;overflow:hidden;position:relative;}
+.cat-home-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.cat-home:hover .cat-home-img img{transform:scale(1.08);}
+.cat-home-bar{height:4px;width:100%;}
+.cat-home-body{padding:16px 18px;}
+.cat-home-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.88rem;margin-bottom:10px;}
+.cat-home-title{font-size:.98rem;font-weight:800;color:var(--bl-dark);margin-bottom:4px;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .cat-home-title{color:#f5d0a0;}
+.cat-home-desc{font-size:.78rem;color:var(--tx3);line-height:1.55;}
+.cat-home-count{font-size:.7rem;font-weight:700;color:var(--tx4);margin-top:8px;}
+
+/* ── PRODUCTS SECTION ── */
+.prod-grid-home{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
+.prod-card-home{background:var(--bg-card);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;text-decoration:none;display:block;}
+.prod-card-home:hover{transform:translateY(-4px);border-color:var(--or);box-shadow:0 10px 30px rgba(200,80,20,.13);}
+.prod-card-home-img{height:160px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);}
+.prod-card-home-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.prod-card-home:hover .prod-card-home-img img{transform:scale(1.07);}
+.prod-card-home-body{padding:14px 16px;}
+.prod-cat-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Sans',sans-serif;}
+.prod-card-home h3{font-size:.92rem;font-weight:800;color:var(--bl-dark);margin-bottom:5px;line-height:1.3;}
+[data-theme="dark"] .prod-card-home h3{color:#f5d0a0;}
+.prod-card-home p{font-size:.78rem;color:var(--tx3);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.prod-card-home-foot{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--bd);margin-top:8px;}
+.prod-link{font-size:.76rem;font-weight:700;color:var(--or);display:flex;align-items:center;gap:4px;}
+
+/* ── WHY MACL ── */
+.why-grid-home{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.why-card-home{padding:22px;border-radius:14px;background:var(--bg-card);border:1.5px solid var(--bd);transition:all .3s ease;}
+.why-card-home:hover{transform:translateY(-4px);box-shadow:var(--sh2);border-color:var(--or);}
+.why-icon-home{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:14px;}
+.why-card-home h3{font-size:.95rem;font-weight:800;color:var(--bl-dark);margin-bottom:8px;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .why-card-home h3{color:#f5d0a0;}
+.why-card-home p{font-size:.82rem;color:var(--tx3);line-height:1.68;}
+[data-theme="dark"] .why-card-home{background:#1e1210;border-color:#3a2010;}
+
+/* ── STORE PHOTOS ── */
+.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;}
+.store-img{border-radius:16px;overflow:hidden;height:280px;}
+.store-img img{width:100%;height:100%;object-fit:cover;}
+.stock-img{border-radius:12px;overflow:hidden;height:130px;}
+.stock-img img{width:100%;height:100%;object-fit:cover;}
+
+/* ── CTA SECTION ── */
+.cta-section{background:linear-gradient(135deg,#1c0e06,#2a1408,#1a1008)!important;padding:60px 0;}
+.cta-section h2{color:#fff;font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;margin-bottom:10px;}
+.cta-section p{color:rgba(255,255,255,.78);font-size:1rem;line-height:1.75;}
+
+@media(max-width:960px){.cat-grid-home{grid-template-columns:1fr 1fr;}.why-grid-home{grid-template-columns:1fr 1fr;}.store-grid{grid-template-columns:1fr;}.hero-grid{grid-template-columns:1fr;}.hero-products{display:none;}}
+@media(max-width:600px){.cat-grid-home{grid-template-columns:1fr;}.why-grid-home{grid-template-columns:1fr;}.hero-stats{grid-template-columns:1fr 1fr 1fr;}}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <!-- ══ HERO ════════════════════════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-pattern"></div>
-  <div class="hero-particles"></div>
+<div class="hero-wrap">
+  <div class="hero-bg-img"></div>
+  <div class="container" style="position:relative;z-index:1;width:100%;">
+    <div class="hero-grid">
 
-  <div class="hero-content">
-    <!-- LEFT: Text -->
-    <div class="hero-text">
-      <div class="badge anim-fade-down"><i class="fas fa-certificate"></i> MAAIF Registered Distributor — Uganda</div>
-      <h1 class="anim-fade-up">
-        Uganda's Trusted
-        <span data-typewriter="Agrochemical Partner" style="display:block;overflow:hidden;white-space:nowrap;border-right:3px solid var(--gold);padding-right:4px;animation:typewriter 1.8s steps(22,end) .8s both, blinkCursor .7s step-end infinite 2.6s;width:0;"></span>
-      </h1>
-      <p class="anim-fade-up delay-2">Professional-grade pesticides, herbicides, and fungicides sourced from world-class manufacturers. Helping Ugandan farmers protect their crops and maximise yields since 2020.</p>
-      <div class="hero-actions anim-fade-up delay-3">
-        <a href="{{ url_for('pesticides') }}" class="btn-primary btn-ripple"><i class="fas fa-flask"></i> Browse Products</a>
-        <a href="{{ url_for('distributors') }}" class="btn-secondary"><i class="fas fa-map-marker-alt"></i> Find a Distributor</a>
-      </div>
-      <!-- MACL Branding strip -->
-      <div class="anim-fade-up delay-4" style="display:flex;align-items:center;gap:14px;margin-top:32px;padding:14px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;backdrop-filter:blur(6px);max-width:440px;">
-        <img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL"
-       style="height:44px;width:44px;border-radius:9px;object-fit:contain;background:#fff;padding:3px;">
-        <div>
-          <div style="color:white;font-weight:700;font-size:.88rem;letter-spacing:.03em;">MUDDO AGRO CHEMICALS LTD</div>
-          <div style="color:rgba(255,255,255,.55);font-size:.72rem;margin-top:2px;">Distributor of Agricultural Chemicals · Kampala, Uganda</div>
+      <!-- Left: Text -->
+      <div class="hero-left">
+        <div class="hero-badge anim-fade-down"><i class="fas fa-certificate"></i> MAAIF-Registered Distributor</div>
+        <h1 class="anim-fade-up" style="margin-top:14px;">
+          Uganda's Trusted<br><span>Agrochemical</span><br>Partner
+        </h1>
+        <p class="anim-fade-up delay-1">
+          Muddo Agro Chemicals LTD (MACL) distributes high-quality pesticides, herbicides, fungicides, fertilizers and equipment to farmers across all regions of Uganda. Genuine products. Expert advice. Nationwide reach.
+        </p>
+        <div class="hero-actions anim-fade-up delay-2">
+          <a href="{{ url_for('pesticides') }}" class="btn-primary btn-ripple" style="padding:12px 24px;border-radius:10px;font-size:.93rem;border:none;"><i class="fas fa-flask"></i> Browse Products</a>
+          <a href="{{ url_for('contact') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:10px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.9rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'"><i class="fas fa-envelope"></i> Get a Quote</a>
+        </div>
+        <div class="hero-stats anim-fade-up delay-3">
+          <div class="hstat"><div class="hstat-num">{{ stats.pesticides + stats.herbicides + stats.fungicides + stats.other }}+</div><div class="hstat-label">Products</div></div>
+          <div class="hstat"><div class="hstat-num">{{ stats.distributors }}+</div><div class="hstat-label">Outlets</div></div>
+          <div class="hstat"><div class="hstat-num">4</div><div class="hstat-label">Regions</div></div>
         </div>
       </div>
-    </div>
 
-    <!-- RIGHT: Carousel + Stats -->
-    <div class="anim-scale-in delay-2" style="display:flex;flex-direction:column;gap:20px;">
-      <!-- Image Carousel -->
-      <div class="hero-carousel" style="border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.45);">
-        <div class="hero-slides" style="display:flex;transition:transform .65s cubic-bezier(.77,0,.175,1);">
-          {% set slides = [
-            ('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700', 'MD-Maize Plus 40OD', 'Selective herbicide for maize'),
-            ('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700', 'Weed Master 480SL', 'Non-selective total vegetation control'),
-            ('https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=700', 'Bulldock 25EC', 'Broad-spectrum pyrethroid insecticide'),
-            ('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700', 'Ridomil Gold 68WP', 'Industry-gold fungicide for tomatoes & potatoes'),
+      <!-- Right: Product showcase grid -->
+      <div class="anim-fade-left delay-2">
+        <div class="hero-products">
+          {% set hero_prods = [
+            ('product_mdfos.png', 'M-D FOS 48% EC', 'pesticide'),
+            ('product_maizeplus.png', 'MD Maize Plus', 'herbicide'),
+            ('product_toplaxym.png', 'Top-Laxly M', 'fungicide'),
+            ('product_acelemectin.png', 'Acelemectin 48EC', 'pesticide'),
           ] %}
-          {% for img, title, sub in slides %}
-          <div class="hero-slide" style="min-width:100%;position:relative;aspect-ratio:16/10;overflow:hidden;">
-            <img src="{{ img }}" alt="{{ title }}" style="width:100%;height:100%;object-fit:cover;transition:transform .4s ease;" loading="lazy">
-            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 55%);"></div>
-            <div class="hero-slide-caption" style="position:absolute;bottom:0;left:0;right:0;padding:18px 20px;">
-              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;">{{ title }}</div>
-              <div style="font-size:.74rem;color:rgba(255,255,255,.75);margin-top:3px;">{{ sub }}</div>
+          {% for img, name, cat in hero_prods %}
+          <a href="{{ url_for(cat+'s') }}" class="hero-prod-card">
+            <img src="{{ url_for('static', filename='images/'+img) }}" alt="{{ name }}" loading="lazy"
+                 onerror="this.style.display='none'">
+            <div class="hero-prod-info">
+              <div class="hero-prod-name">{{ name }}</div>
+              <div class="hero-prod-cat">{{ cat.title() }}</div>
             </div>
-          </div>
+          </a>
           {% endfor %}
         </div>
-        <div class="carousel-dots" style="position:absolute;bottom:14px;right:14px;display:flex;gap:6px;">
-          {% for i in range(4) %}<button class="carousel-dot {% if i==0 %}active{% endif %}"></button>{% endfor %}
-        </div>
-        <div class="carousel-arrows" style="position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 10px;pointer-events:none;">
-          <button class="carousel-arrow carousel-prev" style="pointer-events:all;"><i class="fas fa-chevron-left"></i></button>
-          <button class="carousel-arrow carousel-next" style="pointer-events:all;"><i class="fas fa-chevron-right"></i></button>
+        <!-- Muddosate + Stock photos -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+          <a href="{{ url_for('herbicides') }}" class="hero-prod-card">
+            <img src="{{ url_for('static', filename='images/product_muddosate.png') }}" alt="Muddosate" loading="lazy" style="height:90px;" onerror="this.style.display='none'">
+            <div class="hero-prod-info"><div class="hero-prod-name">Muddosate</div><div class="hero-prod-cat">Herbicide</div></div>
+          </a>
+          <a href="{{ url_for('other_products') }}" class="hero-prod-card">
+            <img src="{{ url_for('static', filename='images/product_max24d_selective.png') }}" alt="MAX 2,4-D" loading="lazy" style="height:90px;" onerror="this.style.display='none'">
+            <div class="hero-prod-info"><div class="hero-prod-name">MAX 2,4-D</div><div class="hero-prod-cat">Herbicide</div></div>
+          </a>
         </div>
       </div>
 
-      <!-- Stats grid under carousel -->
-      <div class="hero-stats" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
-        {% for icon,key,label in [
-          ('fa-bug','pesticides','Pesticide Products'),
-          ('fa-seedling','herbicides','Herbicide Products'),
-          ('fa-microscope','fungicides','Fungicide Products'),
-          ('fa-store','distributors','Distributor Outlets'),
-        ] %}
-        <div class="hero-stat-card" style="padding:16px 14px;">
-          <div class="stat-icon" style="width:34px;height:34px;border-radius:8px;background:rgba(200,168,75,.15);display:flex;align-items:center;justify-content:center;color:var(--gold);margin:0 auto 8px;">
-            <i class="fas {{ icon }}" style="font-size:.85rem;"></i>
-          </div>
-          <span class="stat-num" data-target="{{ stats[key] }}" style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);display:block;line-height:1;">0</span>
-          <span class="stat-label" style="color:rgba(255,255,255,.6);font-size:.76rem;margin-top:3px;display:block;">{{ label }}</span>
-        </div>
-        {% endfor %}
-      </div>
     </div>
   </div>
+</div>
 
-  <div class="hero-scroll"><i class="fas fa-chevron-down"></i><span>Scroll to explore</span></div>
+<!-- ══ CATEGORIES ═════════════════════════════════════════════════════════ -->
+<section class="section" style="padding:56px 0 48px;">
+  <div class="container">
+    <div class="section-header" style="text-align:center;margin-bottom:36px;" data-reveal="up">
+      <div class="section-tag"><i class="fas fa-th"></i> Product Categories</div>
+      <h2 class="section-title" style="margin-top:10px;">Everything Your Farm Needs</h2>
+      <p class="section-desc">MAAIF-registered agrochemicals sourced directly from certified manufacturers.</p>
+    </div>
+    <div class="cat-grid-home">
+      {% set cats = [
+        ('pesticides', 'Pesticides', 'fa-bug', 'rd', '#b83a1a', 'rgba(184,58,26,.1)', stats.pesticides, 'Fast-acting insecticides for crop and public health pest control.', 'product_mdfos.png'),
+        ('herbicides', 'Herbicides', 'fa-leaf', 'gr', '#3a6020', 'rgba(90,138,58,.1)', stats.herbicides, 'Selective and non-selective weed control for all major crops.', 'product_maizeplus.png'),
+        ('fungicides', 'Fungicides', 'fa-shield-virus', 'bl', '#0f3d72', 'rgba(26,95,168,.1)', stats.fungicides, 'Systemic and contact fungicides to protect crops from disease.', 'product_toplaxym.png'),
+        ('other_products', 'Fertilizers & Equipment', 'fa-seedling', 'tan', '#9a6e1a', 'rgba(200,146,42,.1)', stats.other, 'NPK fertilizers, foliar feeds and knapsack sprayers.', 'product_muddosate_stock.png'),
+      ] %}
+      {% for endpoint, title, icon, color, hex, bghex, count, desc, img in cats %}
+      <a href="{{ url_for(endpoint) }}" class="cat-home" data-reveal="up" data-reveal-delay="{{ loop.index * 80 }}">
+        <div class="cat-home-img">
+          <img src="{{ url_for('static', filename='images/'+img) }}" alt="{{ title }}" loading="lazy"
+               onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400'">
+        </div>
+        <div class="cat-home-bar" style="background:{{ hex }};"></div>
+        <div class="cat-home-body">
+          <div class="cat-home-icon" style="background:{{ bghex }};color:{{ hex }};"><i class="fas {{ icon }}"></i></div>
+          <div class="cat-home-title">{{ title }}</div>
+          <div class="cat-home-desc">{{ desc }}</div>
+          <div class="cat-home-count">{{ count }} products available →</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
-<!-- ══ CATEGORY CARDS ══════════════════════════════════════════════════════ -->
-<section class="section">
+<!-- ══ FEATURED PRODUCTS ══════════════════════════════════════════════════ -->
+<section class="section-alt" style="padding:48px 0;">
   <div class="container">
-    <div class="section-header" data-reveal="up">
-      <div class="section-tag"><i class="fas fa-th-large"></i> Product Categories</div>
-      <h2 class="section-title">Everything Your Farm Needs</h2>
-      <p class="section-desc">From selective herbicides to broad-spectrum fungicides, we carry MAAIF-registered products you can trust.</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px;" data-reveal="up">
+      <div>
+        <div class="section-tag"><i class="fas fa-star"></i> MACL Products</div>
+        <h2 class="section-title" style="margin-top:8px;margin-bottom:0;">Featured Products</h2>
+      </div>
+      <a href="{{ url_for('pesticides') }}" style="font-size:.88rem;font-weight:700;color:var(--or);display:flex;align-items:center;gap:6px;text-decoration:none;">View All Products <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
     </div>
-    <div class="cat-grid">
-      {% set cats = [
-        (url_for('pesticides'),  'https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=600', 'pest', 'Insecticides', 'fas fa-bug', 'icon-pest', 'Pesticides',   'Broad-spectrum and selective insecticides to protect your crops from damaging pests.', stats.pesticides),
-        (url_for('herbicides'),  'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600', 'herb', 'Weed Control',  'fas fa-seedling', 'icon-herb', 'Herbicides',  'Selective and non-selective herbicides for pre- and post-emergence weed management.', stats.herbicides),
-        (url_for('fungicides'),  'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600', 'fung', 'Disease Control','fas fa-microscope','icon-fung','Fungicides', 'Systemic and contact fungicides to prevent and cure blight, mildew, and rust.', stats.fungicides),
-        (url_for('other_products'),'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600','other','Fertilizers & More','fas fa-boxes','icon-other','Other Products','Fertilizers, foliar feeds, and quality spraying equipment for complete crop management.', stats.other),
-      ] %}
-      {% for href,img,badge,badge_label,icon,icon_cls,name,desc,count in cats %}
-      <a href="{{ href }}" class="cat-card hover-lift" data-reveal="up" data-reveal-delay="{{ loop.index * 90 }}">
-        <div class="cat-card-img">
-          <img src="{{ img }}" alt="{{ name }}" loading="lazy">
-          <div class="cat-card-overlay"></div>
-          <span class="cat-card-badge {{ badge }}">{{ badge_label }}</span>
+    <div class="prod-grid-home">
+      {% for p in featured %}
+      <a href="{{ url_for('product_detail', product_id=p.id) }}" class="prod-card-home" data-reveal="up" data-reveal-delay="{{ loop.index * 60 }}">
+        <div class="prod-card-home-img">
+          {% if p.image_file %}
+            <img src="{{ url_for('uploaded_product_image', filename=p.image_file) }}" alt="{{ p.name }}" loading="lazy">
+          {% elif p.image_url %}
+            <img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy"
+                 onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;\'><i class=\'fas fa-flask\' style=\'font-size:2.5rem;color:rgba(200,100,20,.2);\'></i></div>'">
+          {% else %}
+            <div style="display:flex;align-items:center;justify-content:center;height:100%;"><i class="fas fa-flask" style="font-size:2.5rem;color:rgba(200,100,20,.2);"></i></div>
+          {% endif %}
         </div>
-        <div class="cat-card-body">
-          <div class="cat-card-icon {{ icon_cls }}"><i class="{{ icon }}"></i></div>
-          <h3>{{ name }}</h3>
-          <p>{{ desc }}</p>
-          <div class="cat-card-footer">
-            <span class="cat-count"><i class="fas fa-box-open"></i> {{ count }} products</span>
-            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="prod-card-home-body">
+          <span class="prod-cat-tag tag-{{ p.category }}"><i class="fas {{ 'fa-bug' if p.category=='pesticide' else 'fa-leaf' if p.category=='herbicide' else 'fa-shield-virus' if p.category=='fungicide' else 'fa-seedling' }}"></i> {{ p.category.title() }}</span>
+          <h3>{{ p.name }}</h3>
+          <p>{{ p.description[:80] if p.description else 'Quality agrochemical from Muddo Agro Chemicals LTD.' }}{{ '…' if p.description and p.description|length > 80 else '' }}</p>
+          <div class="prod-card-home-foot">
+            <span class="prod-link"><i class="fas fa-eye"></i> View Details</span>
+            {% if p.packing %}<span style="font-size:.7rem;color:var(--tx4);">{{ p.packing }}</span>{% endif %}
           </div>
         </div>
       </a>
@@ -123,73 +219,75 @@
   </div>
 </section>
 
-<!-- ══ FEATURED PRODUCTS (MODAL-ENABLED) ══════════════════════════════════ -->
-<section class="section section-alt">
+<!-- ══ STORE / STOCK PHOTOS ═══════════════════════════════════════════════ -->
+<section class="section" style="padding:48px 0;">
   <div class="container">
-    <div class="section-header" data-reveal="up">
-      <div class="section-tag"><i class="fas fa-star"></i> Featured Products</div>
-      <h2 class="section-title">Popular Lines</h2>
-      <p class="section-desc">Click any card or the Quick View button for a full product specification popup.</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px;" data-reveal="up">
+      <div>
+        <div class="section-tag"><i class="fas fa-store"></i> Our Store & Stock</div>
+        <h2 class="section-title" style="margin-top:8px;margin-bottom:4px;">In Stock — Ready to Deliver</h2>
+        <p class="section-desc">Visit us at Container Village Nakivubo, Equity Bank Basement, Kampala.</p>
+      </div>
     </div>
-    <div class="products-grid">
-      {% for p in featured %}
-      <div class="product-card hover-lift" data-reveal="up" data-reveal-delay="{{ loop.index * 60 }}"
-        data-id="{{ p.id }}" data-stock="{{ p.stock_qty if p.stock_qty is defined else -1 }}" data-name="{{ p.name }}" data-cat="{{ p.category }}"
-        data-desc="{{ p.description }}" data-img="{{ p.image_url }}"
-        data-ingr="{{ p.active_ingredient }}" data-form="{{ p.formulation }}"
-        data-crops="{{ p.crops }}" data-dose="{{ p.dosage }}" data-pack="{{ p.packing }}">
-        <div class="product-card-img">
-          <img src="{{ get_product_image(p) }}" alt="{{ p.name }}" loading="lazy">
-          <button class="quick-view-btn"><i class="fas fa-eye" style="margin-right:5px;"></i>Quick View</button>
+    <div class="store-grid" data-reveal="up">
+      <div>
+        <div class="store-img" style="margin-bottom:14px;">
+          <img src="{{ url_for('static', filename='images/product_store.png') }}" alt="MACL Store" loading="lazy">
         </div>
-        <div class="product-card-body">
-          <span class="product-tag tag-{{ p.category }}">
-            {% if p.category == 'pesticide' %}<i class="fas fa-bug"></i> Pesticide
-            {% elif p.category == 'herbicide' %}<i class="fas fa-seedling"></i> Herbicide
-            {% elif p.category == 'fungicide' %}<i class="fas fa-microscope"></i> Fungicide
-            {% else %}<i class="fas fa-boxes"></i> Agri Input{% endif %}
-          </span>
-          <h3>{{ p.name }}</h3>
-          <p>{{ p.description[:110] }}…</p>
-          <div class="product-specs">
-            <div class="spec-row"><strong>Active Ingr.:</strong><span>{{ p.active_ingredient[:40] }}</span></div>
-            <div class="spec-row"><strong>Crops:</strong><span>{{ p.crops[:40] }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="stock-img"><img src="{{ url_for('static', filename='images/product_muddosate_stock.png') }}" alt="Muddosate Stock" loading="lazy"></div>
+          <div class="stock-img"><img src="{{ url_for('static', filename='images/product_maizeplus_stock.png') }}" alt="Maize Plus Stock" loading="lazy"></div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--bg-card);border:1.5px solid var(--bd);border-radius:18px;padding:28px;height:100%;">
+          <div class="section-tag" style="margin-bottom:14px;"><i class="fas fa-check-circle"></i> Why Shop at MACL?</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            {% for icon, color, title, desc in [
+              ('certificate','var(--or)','100% Genuine Products','All products are MAAIF-registered. We source directly from certified manufacturers — no counterfeit chemicals.'),
+              ('boxes','var(--bl)','Wholesale & Retail','From a single 100ml bottle to 20L bulk containers. Competitive wholesale pricing for distributors and cooperatives.'),
+              ('headset','var(--rd)','Expert Agronomical Advice','Our trained team recommends the right product, dosage, and timing for your specific crop and pest problem.'),
+              ('map-marker-alt','var(--tan)','Nationwide Distribution','10+ outlets across Central, Eastern, Northern and Western Uganda. Find a distributor near you.'),
+            ] %}
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(200,100,20,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:{{ color }};font-size:.88rem;">
+                <i class="fas fa-{{ icon }}"></i>
+              </div>
+              <div>
+                <div style="font-size:.9rem;font-weight:800;color:var(--bl-dark);margin-bottom:3px;font-family:'DM Sans',sans-serif;">{{ title }}</div>
+                <div style="font-size:.8rem;color:var(--tx3);line-height:1.6;">{{ desc }}</div>
+              </div>
+            </div>
+            {% endfor %}
           </div>
-          <div class="product-card-footer">
-            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn-outline" onclick="event.stopPropagation();"><i class="fas fa-external-link-alt"></i> Details</a>
-            <a href="{{ url_for('contact') }}" class="btn-green" style="flex:1;justify-content:center;text-align:center;" onclick="event.stopPropagation();"><i class="fas fa-envelope"></i> Enquire</a>
+          <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="border:none;padding:10px 20px;font-size:.88rem;"><i class="fas fa-envelope"></i> Enquire Now</a>
+            <a href="{{ url_for('distributors') }}" style="padding:10px 20px;border-radius:9px;border:1.5px solid var(--bd);background:var(--bg-alt);color:var(--tx2);font-size:.88rem;font-weight:700;text-decoration:none;"><i class="fas fa-map-marker-alt" style="color:var(--or);margin-right:5px;"></i> Find Nearest Outlet</a>
           </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
-    <div style="text-align:center;margin-top:36px;" data-reveal="up">
-      <a href="{{ url_for('pesticides') }}" class="btn-green" style="margin-right:10px;"><i class="fas fa-flask"></i> All Pesticides</a>
-      <a href="{{ url_for('herbicides') }}" class="btn-green"><i class="fas fa-seedling"></i> All Herbicides</a>
     </div>
   </div>
 </section>
 
-<!-- ══ WHY CHOOSE US ══════════════════════════════════════════════════════ -->
-<section class="section">
+<!-- ══ WHY MACL ═══════════════════════════════════════════════════════════ -->
+<section class="section-alt" style="padding:48px 0;">
   <div class="container">
-    <div class="section-header" data-reveal="up">
-      <div class="section-tag"><i class="fas fa-star"></i> Why Choose Us</div>
-      <h2 class="section-title">Your Agribusiness Partner</h2>
-      <p class="section-desc">We go beyond supplying chemicals — we support farmers with expertise, quality products, and nationwide distribution.</p>
+    <div class="section-header" style="text-align:center;margin-bottom:32px;" data-reveal="up">
+      <div class="section-tag"><i class="fas fa-award"></i> Why Choose MACL</div>
+      <h2 class="section-title" style="margin-top:10px;">Uganda's Trusted Agrochemical Partner</h2>
     </div>
-    <div class="why-grid">
-      {% set whys = [
-        ('fa-certificate','MAAIF Registered','All products are registered with Uganda\'s Ministry of Agriculture, Animal Industry and Fisheries, ensuring safety, quality, and regulatory compliance.'),
-        ('fa-globe','International Sourcing','We partner with renowned manufacturers in India, China, and Europe to bring you proven, high-efficacy agrochemicals at competitive prices.'),
-        ('fa-map-marked-alt','Nationwide Distribution','With distributor outlets across all four regions of Uganda — Central, Eastern, Northern, and Western — our products are never far from your farm.'),
-        ('fa-flask','Diverse Product Range','Herbicides, insecticides, fungicides, fertilizers, and equipment. One supplier for your entire crop protection and nutrition programme.'),
-        ('fa-user-tie','Expert Advice','Our team has deep knowledge of Ugandan farming conditions, providing dosage guidance, application tips, and crop-specific recommendations.'),
-        ('fa-shield-alt','Guaranteed Authentic','Every item is sourced directly from the manufacturer or authorised distributor with full traceability and regulatory documentation.'),
+    <div class="why-grid-home">
+      {% for icon, bg, color, title, desc in [
+        ('shield-alt','var(--rd-pale)','var(--rd)','MAAIF-Registered','All products carry full Ministry of Agriculture registration. Certificates available on request — zero counterfeit risk.'),
+        ('flask','var(--bl-pale)','var(--bl)','Scientifically Formulated','We carry proven formulations used by professional farmers across East Africa, tested under Ugandan conditions.'),
+        ('dolly','var(--or-pale)','var(--or)','Wholesale & Retail','Whether you need 1 bottle or a full pallet, we have the right pack size and price. Bulk discounts for cooperatives.'),
+        ('phone','var(--tan-pale)','var(--tan)','Free Expert Advice','Call us before buying. Our agronomists will recommend the right product for your crop, pest, and budget.'),
+        ('truck','var(--rd-pale)','var(--rd)','Nationwide Coverage','10+ distributor outlets in all 4 regions. Order by phone and we can arrange delivery to your area.'),
+        ('users','var(--bl-pale)','var(--bl)','Trusted Since 2020','Thousands of farmers and distributors across Uganda trust MACL for consistent quality and fair pricing.'),
       ] %}
-      {% for icon, title, desc in whys %}
-      <div class="why-card hover-lift" data-reveal="scale" data-reveal-delay="{{ loop.index * 70 }}">
-        <div class="why-icon"><i class="fas {{ icon }}"></i></div>
+      <div class="why-card-home" data-reveal="up" data-reveal-delay="{{ loop.index * 60 }}">
+        <div class="why-icon-home" style="background:{{ bg }};color:{{ color }};"><i class="fas fa-{{ icon }}"></i></div>
         <h3>{{ title }}</h3>
         <p>{{ desc }}</p>
       </div>
@@ -198,144 +296,39 @@
   </div>
 </section>
 
-
-<!-- ══ TESTIMONIALS ══════════════════════════════════════════════════════ -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-header" data-reveal="up">
-      <div class="section-tag"><i class="fas fa-quote-left"></i> Farmer Testimonials</div>
-      <h2 class="section-title">What Our Customers Say</h2>
-      <p class="section-desc">Trusted by thousands of farmers, cooperatives, and agro-dealers across Uganda.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
-      {% for name, region, text, crop in [
-        ('John Ssekabira', 'Wakiso, Central', 'Muddo Agro helped us control the stubborn striga weed in our maize fields this season. The MD-Maize Plus worked exactly as described. Our yield improved by nearly 40%.', 'Maize Farmer'),
-        ('Grace Akullo', 'Lira, Northern', 'I have been buying BULLDOCK and RIDOMIL from their Lira outlet for two seasons now. Genuine products, fair prices, and the staff always advise me correctly.', 'Vegetable & Tomato Grower'),
-        ('Robert Wamukota', 'Mbale, Eastern', 'As an agro-dealer, I stock many brands. Muddo Agro products move fast because farmers trust them. Registration certificates are always available. Very professional.', 'Agro-Dealer, Eastern Uganda'),
-      ] %}
-      <div class="why-card hover-lift" data-reveal="up" data-reveal-delay="{{ loop.index * 80 }}" style="text-align:left;position:relative;">
-        <div style="font-size:2rem;color:var(--green-pale,#d4edda);position:absolute;top:16px;right:18px;line-height:1;font-family:'Playfair Display',serif;">"</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div style="width:44px;height:44px;border-radius:50%;background:var(--green-dark,#1a4a23);color:#f5c842;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ name[0] }}</div>
-          <div>
-            <div style="font-weight:800;font-size:.92rem;color:var(--text-primary);">{{ name }}</div>
-            <div style="font-size:.74rem;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.05em;">{{ crop }}</div>
-            <div style="font-size:.74rem;color:var(--text-muted);">{{ region }}</div>
-          </div>
-        </div>
-        <p style="font-style:italic;font-size:.92rem;color:var(--text-secondary);line-height:1.72;margin:0;">"{{ text }}"</p>
-        <div style="display:flex;gap:3px;margin-top:12px;">
-          {% for _ in range(5) %}<i class="fas fa-star" style="color:#f5c842;font-size:.75rem;"></i>{% endfor %}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
 <!-- ══ NEWSLETTER ═════════════════════════════════════════════════════════ -->
-<section style="background:linear-gradient(135deg,var(--green-dark,#1a4a23) 0%,var(--green-deep,#0d2b14) 100%);padding:64px 0;position:relative;overflow:hidden;">
-  <div style="position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(200,168,75,.07);pointer-events:none;"></div>
-  <div style="position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
-  <div class="container" style="position:relative;z-index:1;max-width:640px;text-align:center;" data-reveal="scale">
-    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);color:#f5c842;padding:5px 14px;border-radius:100px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;">
-      <i class="fas fa-envelope"></i> Farm Updates
-    </div>
-    <h2 style="font-family:'Playfair Display',serif;color:#fff;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:12px;">Stay Ahead This Season</h2>
-    <p style="color:rgba(255,255,255,.75);font-size:1rem;line-height:1.75;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;">Get new product alerts, seasonal farming tips, and exclusive bulk pricing — delivered to your inbox.</p>
-    <form id="newsletterForm" style="display:flex;gap:10px;max-width:440px;margin:0 auto 12px;" onsubmit="submitNewsletter(event)">
-      <input type="email" name="email" required placeholder="your@email.com"
-        style="flex:1;padding:13px 16px;border:none;border-radius:10px;font-size:.97rem;font-family:'DM Sans',sans-serif;background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.2);"
-        onfocus="this.style.borderColor='#f5c842'" onblur="this.style.borderColor='rgba(255,255,255,.2)'">
-      <button type="submit" class="btn-primary btn-ripple" style="white-space:nowrap;border-radius:10px;padding:13px 22px;"><i class="fas fa-paper-plane"></i> Subscribe</button>
-    </form>
-    <p id="newsletterMsg" style="font-size:.82rem;color:rgba(255,255,255,.55);margin:0;">Join 500+ farmers already subscribed. No spam, unsubscribe anytime.</p>
-  </div>
-</section>
-
-<!-- ══ CTA BANNER ════════════════════════════════════════════════════════ -->
-<section style="background:linear-gradient(135deg,var(--green-dark) 0%,var(--green-deep) 100%);padding:64px 0;position:relative;overflow:hidden;">
-  <div style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(200,168,75,.07);"></div>
-  <div style="position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
-  <div class="container" style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;">
-    <div data-reveal="right">
-      <h2 style="font-family:'Playfair Display',serif;color:white;font-size:1.9rem;font-weight:800;margin-bottom:8px;">Ready to Protect Your Crop?</h2>
-      <p style="color:rgba(255,255,255,.7);font-size:1rem;max-width:480px;">Contact us today for product availability, pricing, and expert agronomic advice. The season won't wait!</p>
-    </div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;" data-reveal="left">
-      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple"><i class="fas fa-paper-plane"></i> Get in Touch</a>
-      <a href="{{ url_for('distributors') }}" class="btn-secondary"><i class="fas fa-store"></i> Find a Store</a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══ NEWSLETTER ═══════════════════════════════════════════════════════════ -->
-<section class="newsletter-section">
+<section class="newsletter-section" style="padding:52px 0;">
   <div class="container" style="text-align:center;position:relative;z-index:1;">
-    <div class="section-tag" style="background:rgba(200,168,75,.15);color:#f5c842;margin-bottom:14px;" data-reveal="up">
-      <i class="fas fa-envelope"></i> Stay Updated
-    </div>
-    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:#fff;margin-bottom:10px;" data-reveal="up">
-      Get Farming Tips &amp; Offers
-    </h2>
-    <p style="color:rgba(255,255,255,.75);font-size:1rem;max-width:460px;margin:0 auto;" data-reveal="up">
-      Subscribe for seasonal product guides, early offers, and Uganda farming updates. No spam — ever.
-    </p>
-    <form id="newsletterForm" style="display:flex;gap:10px;max-width:480px;margin:20px auto 0;" data-reveal="up">
-      <input type="text" name="name" placeholder="Your name (optional)"
-        style="flex:.8;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:.92rem;font-family:'DM Sans',sans-serif;"
-        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'">
-      <input type="email" name="email" placeholder="Your email address" required
+    <div class="section-tag" style="background:rgba(232,101,26,.2);color:#ffb07a;display:inline-flex;margin-bottom:14px;" data-reveal="up"><i class="fas fa-envelope"></i> Stay Updated</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:#fff;margin-bottom:10px;" data-reveal="up">Farming Tips & Product Updates</h2>
+    <p style="color:rgba(255,255,255,.72);font-size:.96rem;max-width:45ch;margin:0 auto 22px;" data-reveal="up">Subscribe for seasonal guides, new product launches, and exclusive subscriber offers. No spam.</p>
+    <form id="newsletterForm" style="display:flex;gap:10px;max-width:460px;margin:0 auto;" data-reveal="up">
+      <input type="email" name="email" placeholder="your@email.com" required
         style="flex:1;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:.92rem;font-family:'DM Sans',sans-serif;"
-        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'">
-      <button type="submit" class="btn-primary btn-ripple" style="padding:12px 22px;white-space:nowrap;flex-shrink:0;">
-        <i class="fas fa-paper-plane"></i> Subscribe
-      </button>
+        onfocus="this.style.borderColor='var(--tan-light)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'">
+      <button type="submit" class="btn-primary btn-ripple" style="padding:12px 22px;border:none;white-space:nowrap;background:var(--or);"><i class="fas fa-paper-plane"></i> Subscribe</button>
     </form>
-    <p style="color:rgba(255,255,255,.35);font-size:.76rem;margin-top:10px;">
-      Unsubscribe anytime. We respect your privacy.
-    </p>
   </div>
 </section>
 
-<!-- ══ ABOUT SNIPPET ═════════════════════════════════════════════════════ -->
-<section class="section">
+<!-- ══ CTA BANNER ═════════════════════════════════════════════════════════ -->
+<section class="cta-section">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;" class="about-grid">
-      <div data-reveal="right">
-        <div class="section-tag" style="display:inline-block;"><i class="fas fa-leaf"></i> About Us</div>
-        <h2 class="section-title" style="text-align:left;margin-top:10px;">Muddo Agro Chemicals LTD</h2>
-        <p style="color:var(--text-mid);line-height:1.8;margin-bottom:16px;">Based in Kampala's Container Village Nakivubo, Muddo Agro Chemicals LTD is a registered distributor and retailer of high-quality agrochemicals serving farmers across Uganda.</p>
-        <p style="color:var(--text-mid);line-height:1.8;margin-bottom:24px;">We are distributors of both pesticides and insecticides — non-selective and selective — providing affordable, government-approved solutions that help farmers combat weeds, pests, and diseases effectively.</p>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
-          {% for point in ['Registered with MAAIF (Ministry of Agriculture, Animal Industry & Fisheries)', 'Authentic products with full documentation and traceability', 'Available for both wholesale and retail across Uganda'] %}
-          <div style="display:flex;align-items:center;gap:12px;font-size:.9rem;color:var(--text-mid);">
-            <i class="fas fa-check-circle" style="color:var(--green-mid);font-size:1rem;flex-shrink:0;"></i> {{ point }}
-          </div>
-          {% endfor %}
+    <div style="display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;flex-wrap:wrap;" data-reveal="up">
+      <div>
+        <h2>Need the right chemical for your crop?</h2>
+        <p style="margin-top:8px;max-width:55ch;">Our team is ready to help. Describe your crop problem and we'll recommend the right product, dosage, and application method — for free.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;">
+          <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="border:none;padding:12px 24px;font-size:.93rem;"><i class="fas fa-envelope"></i> Contact Us</a>
+          <a href="tel:+256772507582" style="display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:9px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.9rem;text-decoration:none;"><i class="fas fa-phone"></i> +256 772 507582</a>
+          <a href="https://wa.me/256772507582?text=Hello+MACL,+I+need+advice+on+an+agrochemical+product." target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:9px;background:#25d366;color:white;font-weight:700;font-size:.9rem;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
         </div>
-        <a href="{{ url_for('contact') }}" class="btn-green btn-ripple"><i class="fas fa-phone"></i> Call Us Now</a>
       </div>
-      <div data-reveal="left" style="border-radius:var(--radius-lg);overflow:hidden;height:380px;box-shadow:var(--shadow-lg);position:relative;">
-        <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=700" alt="Ugandan Agriculture" style="width:100%;height:100%;object-fit:cover;">
-        <!-- MACL badge overlay -->
-        <div style="position:absolute;bottom:20px;left:20px;background:rgba(13,43,20,.85);backdrop-filter:blur(8px);border:1px solid rgba(200,168,75,.3);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
-          <img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL"
-       style="height:32px;width:32px;border-radius:6px;object-fit:contain;background:#fff;padding:2px;">
-          <div>
-            <div style="color:var(--gold);font-size:.72rem;font-weight:700;letter-spacing:.06em;">MACL</div>
-            <div style="color:rgba(255,255,255,.7);font-size:.68rem;">Kampala, Uganda</div>
-          </div>
-        </div>
+      <div style="display:none;display:flex;flex-direction:column;gap:10px;text-align:center;">
+        <img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL" style="height:80px;width:80px;object-fit:contain;">
       </div>
     </div>
   </div>
 </section>
 
-<style>
-@media(max-width:768px){.about-grid{grid-template-columns:1fr!important}}
-@keyframes typewriter{from{width:0}to{width:100%}}
-@keyframes blinkCursor{0%,100%{border-right-color:var(--gold)}50%{border-right-color:transparent}}
-</style>
 {% endblock %}
