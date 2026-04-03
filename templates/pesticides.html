@@ -2,154 +2,158 @@
 {% block title %}Pesticides & Insecticides — Muddo Agro Chemicals LTD{% endblock %}
 {% block extra_head %}
 <style>
-.cat-hero{background:linear-gradient(135deg,#3a0a0a 0%,#7a1a1a 50%,#b83a1a 100%);padding:52px 0 36px;position:relative;overflow:hidden;}
-.cat-hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=800')center/cover;opacity:.07;pointer-events:none;}
-.cat-hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;background:rgba(232,101,26,.2);border:1px solid rgba(232,101,26,.4);color:#ffb07a;font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-family:'DM Sans',sans-serif;}
-.spotlight{background:linear-gradient(135deg,#fef0e4,#fff5ee);border:2px solid #f0c8a0;border-radius:20px;padding:28px;margin-bottom:36px;position:relative;overflow:hidden;}
-[data-theme="dark"] .spotlight{background:linear-gradient(135deg,#2a1408,#1a0c04);border-color:#5a2810;}
-.spotlight-badge{position:absolute;top:18px;right:18px;background:linear-gradient(135deg,#e8651a,#c04e0e);color:white;font-size:.7rem;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-radius:100px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
-.spotlight-inner{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;}
-.spotlight-img{width:100%;height:160px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(184,58,26,.3));transition:transform .4s ease;}
-.spotlight-img:hover{transform:scale(1.05) rotate(-2deg);}
-.spotlight h3{font-size:1.25rem;font-weight:900;color:#b83a1a;margin-bottom:6px;}
-[data-theme="dark"] .spotlight h3{color:#ff8a65;}
-.spotlight p{font-size:.88rem;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;}
-.sspec{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.72rem;font-weight:700;background:rgba(184,58,26,.1);border:1px solid rgba(184,58,26,.2);color:#b83a1a;margin:3px;font-family:'DM Sans',sans-serif;}
-[data-theme="dark"] .sspec{background:rgba(184,58,26,.15);color:#ff8a65;border-color:rgba(184,58,26,.3);}
-.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:26px;padding:14px 18px;background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:12px;}
-.fsearch{position:relative;flex:1;min-width:200px;}
-.fsearch i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.82rem;}
-.fsearch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--border-color);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);}
-.fsearch input:focus{outline:none;border-color:#e8651a;}
-.fpill{padding:6px 13px;border-radius:100px;font-size:.76rem;font-weight:700;border:1.5px solid var(--border-color);background:var(--bg-alt);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
-.fpill.active,.fpill:hover{background:#e8651a;border-color:#e8651a;color:white;}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;}
-.pcard{background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;}
-.pcard:hover{transform:translateY(-4px);border-color:#e8651a;box-shadow:0 10px 30px rgba(184,58,26,.14);}
-.pcard-img{height:170px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fff0ec,#ffe0d0);display:flex;align-items:center;justify-content:center;}
+.cath{background:linear-gradient(135deg,#1a0404 0%,#4a1010 50%,#b83a1a 100%);padding:50px 0 34px;position:relative;overflow:hidden;}
+.cath::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=900')center/cover;opacity:.07;}
+.cath-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;background:rgba(184,58,26,.2);border:1px solid rgba(184,58,26,.4);color:#ffb07a;font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;font-family:'DM Sans',sans-serif;}
+.cath h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;}
+.cath p{color:rgba(255,255,255,.82);max-width:58ch;line-height:1.75;font-size:.97rem;}
+/* Spotlight */
+.spl{background:linear-gradient(135deg,#fef2e8,#fff5ee);border:2px solid #f0c0a0;border-radius:18px;padding:26px;margin-bottom:30px;position:relative;overflow:hidden;}
+[data-theme="dark"] .spl{background:linear-gradient(135deg,#2a1408,#1a0c04);border-color:#5a2810;}
+.spl-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#e8651a,#c04e0e);color:white;font-size:.68rem;font-weight:800;padding:4px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Sans',sans-serif;}
+.spl-inner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;}
+.spl-img{width:100%;height:150px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(184,58,26,.3));transition:transform .4s;}
+.spl-img:hover{transform:scale(1.06) rotate(-2deg);}
+.spl h3{font-size:1.2rem;font-weight:900;color:var(--rd);margin-bottom:6px;}
+[data-theme="dark"] .spl h3{color:#ff8a65;}
+.spl p{font-size:.86rem;color:var(--tx3);line-height:1.7;margin-bottom:12px;}
+.stag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.7rem;font-weight:700;background:rgba(184,58,26,.1);border:1px solid rgba(184,58,26,.2);color:var(--rd);margin:2px;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .stag{background:rgba(184,58,26,.15);color:#ff9070;border-color:rgba(184,58,26,.3);}
+/* Filter */
+.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:24px;padding:13px 16px;background:var(--bg-card);border:1.5px solid var(--bd);border-radius:12px;box-shadow:var(--sh1);}
+.fsrch{position:relative;flex:1;min-width:200px;}
+.fsrch i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:.8rem;}
+.fsrch input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--bd);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--tx1);}
+.fsrch input:focus{outline:none;border-color:var(--or);}
+.fpill{padding:6px 13px;border-radius:100px;font-size:.75rem;font-weight:700;border:1.5px solid var(--bd);background:var(--bg-alt);color:var(--tx2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.fpill.active,.fpill:hover{background:var(--rd);border-color:var(--rd);color:white;}
+/* Grid */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px;}
+.pcard{background:var(--bg-card);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;text-decoration:none;display:block;}
+.pcard:hover{transform:translateY(-4px);border-color:var(--or);box-shadow:0 10px 28px rgba(200,80,20,.13);}
+.pcard-img{height:168px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fff0ec,#ffe0d0);display:flex;align-items:center;justify-content:center;}
 [data-theme="dark"] .pcard-img{background:linear-gradient(135deg,#2a1008,#1a0804);}
-.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
 .pcard:hover .pcard-img img{transform:scale(1.07);}
 .pcard-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:7px;}
-.pcard-ph i{font-size:2.2rem;color:rgba(184,58,26,.2);}
-.pcard-ph span{font-size:.7rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;}
-.pcard-body{padding:15px;}
-.ptag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Sans',sans-serif;}
-.ptag-pest{background:#fce8e2;color:#b83a1a;}
-[data-theme="dark"] .ptag-pest{background:#2a1008;color:#ff8a65;}
-.pcard-body h3{font-size:.95rem;font-weight:800;color:var(--text-primary);margin-bottom:5px;line-height:1.3;}
-.pcard-body p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.pspec{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.67rem;font-weight:700;background:var(--bg-alt);color:var(--text-muted);margin:2px;font-family:'DM Sans',sans-serif;}
-.pfoot{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--border-color);margin-top:8px;}
-.pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;border:none;display:flex;align-items:center;justify-content:center;gap:5px;}
-.pbtn-main{background:#e8651a;color:white;}
-.pbtn-main:hover{background:#c04e0e;}
-.pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--border-color);color:var(--text-secondary);}
-.pbtn-enq:hover{border-color:#e8651a;color:#e8651a;}
+.pcard-ph i{font-size:2.2rem;color:rgba(184,58,26,.18);}
+.pcard-ph span{font-size:.7rem;color:var(--tx3);font-family:'DM Sans',sans-serif;}
 .schip{position:absolute;top:9px;left:9px;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:800;font-family:'DM Sans',sans-serif;}
-.chip-in{background:rgba(45,110,53,.85);color:white;}.chip-low{background:rgba(232,101,26,.85);color:white;}.chip-out{background:rgba(184,58,26,.85);color:white;}
-.no-res{grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--text-muted);}
-.no-res i{font-size:2.5rem;display:block;margin-bottom:12px;color:var(--border-color);}
-.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
-.icard{padding:20px;border-radius:12px;border:1.5px solid var(--border-color);background:var(--bg-card);border-top:3px solid #b83a1a;}
-.icard h4{font-size:.88rem;font-weight:800;color:var(--text-primary);margin-bottom:7px;font-family:'DM Sans',sans-serif;}
-.icard p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;}
-.icard i{font-size:1.1rem;margin-bottom:10px;display:block;color:#e8651a;}
-@media(max-width:640px){.spotlight-inner{grid-template-columns:1fr;}.info-strip{grid-template-columns:1fr;}}
+.chip-in{background:rgba(45,138,58,.88);color:white;}.chip-low{background:rgba(232,101,26,.88);color:white;}.chip-out{background:rgba(184,58,26,.88);color:white;}
+.pcard-body{padding:14px;}
+.ptag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;font-family:'DM Sans',sans-serif;background:var(--rd-pale);color:var(--rd);}
+[data-theme="dark"] .ptag{background:#2a1008;color:#ff9070;}
+.pcard-body h3{font-size:.94rem;font-weight:800;color:var(--bl-dark);margin-bottom:5px;line-height:1.3;}
+[data-theme="dark"] .pcard-body h3{color:#f5d0a0;}
+.pcard-body p{font-size:.79rem;color:var(--tx3);line-height:1.6;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pspec{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:700;background:var(--bg-alt);color:var(--tx3);margin:2px;font-family:'DM Sans',sans-serif;}
+.pfoot{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--bd);margin-top:8px;}
+.pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.75rem;font-weight:700;text-align:center;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:4px;}
+.pbtn-main{background:var(--rd);color:white;}.pbtn-main:hover{background:var(--rd-dark);}
+.pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--bd);color:var(--tx2);}.pbtn-enq:hover{border-color:var(--or);color:var(--or);}
+.infos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+.icard{padding:20px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg-card);border-top:3px solid var(--rd);}
+.icard h4{font-size:.86rem;font-weight:800;color:var(--bl-dark);margin-bottom:6px;font-family:'DM Sans',sans-serif;}
+.icard p{font-size:.79rem;color:var(--tx3);line-height:1.62;}
+.icard i{font-size:1.05rem;margin-bottom:9px;display:block;color:var(--rd);}
+.no-res{grid-column:1/-1;text-align:center;padding:48px;color:var(--tx3);}
+@media(max-width:640px){.spl-inner{grid-template-columns:1fr;}.infos{grid-template-columns:1fr;}}
 </style>
 {% endblock %}
 {% block content %}
-<section class="cat-hero">
+<section class="cath">
   <div class="container" style="position:relative;z-index:1;">
     <div class="breadcrumb" style="margin-bottom:12px;"><a href="/">Home</a><span class="sep">/</span><span class="current" style="color:#ffb07a;">Pesticides</span></div>
-    <div class="cat-hero-tag anim-fade-down"><i class="fas fa-bug"></i> Crop Protection</div>
-    <h1 class="anim-fade-up" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;">Pesticides & Insecticides</h1>
-    <p class="anim-fade-up delay-1" style="color:rgba(255,255,255,.82);max-width:55ch;line-height:1.75;font-size:.97rem;">Fast-acting formulations to protect crops and public health — from Bed Bugs and Mosquitoes to Cotton Bollworm and Aphids. MAAIF-registered. Genuine products only.</p>
+    <div class="cath-tag anim-fade-down"><i class="fas fa-bug"></i> Crop & Public Health Protection</div>
+    <h1 class="anim-fade-up">Pesticides & Insecticides</h1>
+    <p class="anim-fade-up delay-1">MACL distributes fast-acting, MAAIF-registered insecticides and miticides to protect your crops from damaging pests — from aphids and whiteflies to cutworms, termites, and bed bugs. Genuine products, expert advice.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;" class="anim-fade-up delay-2">
-      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#e8651a;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i> Request Quote</a>
+      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:var(--rd);border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i> Request Quote</a>
       <a href="tel:+256772507582" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.88rem;text-decoration:none;"><i class="fas fa-phone"></i> +256 772 507582</a>
     </div>
   </div>
 </section>
 
-<section class="section" style="padding-top:36px;">
+<section class="section" style="padding-top:34px;">
   <div class="container">
-
-    <!-- SPOTLIGHT -->
-    <div class="spotlight" data-reveal="up">
-      <span class="spotlight-badge">⭐ MACL Flagship</span>
-      <div class="spotlight-inner">
-        <img class="spotlight-img" src="{{ url_for('static', filename='images/product_mdfos.png') }}" alt="MD FOS 48EC" onerror="this.style.display='none'">
+    <!-- SPOTLIGHTS -->
+    <div class="spl" data-reveal="up">
+      <span class="spl-badge">⭐ MACL Flagship</span>
+      <div class="spl-inner">
+        <img class="spl-img" src="{{ url_for('static', filename='images/product_acelemectin.png') }}" alt="M-D Acelemectin" onerror="this.style.display='none'">
         <div>
-          <h3>MD FOS 48% EC — MACL's #1 Insecticide</h3>
-          <p>Broad-spectrum insecticide (Chlorpyrifos 480g/l) used to control <strong>Bed Bugs, Mosquitoes, Cockroaches, Ants, Houseflies</strong> and agricultural crop pests. Rapid knockdown + long residual effect.</p>
-          <div>
-            <span class="sspec"><i class="fas fa-flask"></i>Chlorpyrifos 480g/l</span>
-            <span class="sspec"><i class="fas fa-vial"></i>EC Formulation</span>
-            <span class="sspec"><i class="fas fa-boxes"></i>100ml · 500ml · 1L · 5L</span>
-          </div>
-          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;">
-            <a href="{{ url_for('contact') }}" style="padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#e8651a;color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
-            <a href="tel:+256772507582" style="padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:var(--bg-card);border:1.5px solid var(--border-color);color:var(--text-primary);"><i class="fas fa-phone" style="color:#e8651a;"></i>Ask Price</a>
+          <h3>M-D ACELEMECTIN 48% EC</h3>
+          <p>A potent broad-spectrum insecticide and miticide protecting high-value crops. Targets the nervous systems of <strong>thrips, mites, and leaf miners</strong> — stopping them from feeding and damaging the plant. Concentrated liquid formula ensures long-lasting residual protection in both greenhouse and open-field environments.</p>
+          <div><span class="stag"><i class="fas fa-flask"></i>Abamectin 48g/l</span><span class="stag"><i class="fas fa-vial"></i>EC Formulation</span><span class="stag"><i class="fas fa-seedling"></i>Tomatoes · Watermelons · Passion Fruit</span></div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:13px;">
+            <a href="{{ url_for('contact') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--rd);color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
+            <a href="tel:+256772507582" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--bg-card);border:1.5px solid var(--bd);color:var(--tx1);"><i class="fas fa-phone" style="color:var(--or);"></i>Ask Price</a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FILTER BAR -->
-    <div class="fbar" data-reveal="up">
-      <div class="fsearch"><i class="fas fa-search"></i><input type="text" id="prodSearch" placeholder="Search by name, ingredient, crop…" oninput="filterProds()"></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="fpill active" onclick="setF(this,'all')">All</button>
-        <button class="fpill" onclick="setF(this,'pyrethroid')">Pyrethroid</button>
-        <button class="fpill" onclick="setF(this,'systemic')">Systemic</button>
-        <button class="fpill" onclick="setF(this,'chlorpyrifos')">Organophosphate</button>
+    <div class="spl" style="background:linear-gradient(135deg,#fef8e8,#fff8f0);border-color:#f0d080;" data-reveal="up">
+      <span class="spl-badge" style="background:linear-gradient(135deg,#c8922a,#9a6e1a);">🔥 Best Seller</span>
+      <div class="spl-inner">
+        <img class="spl-img" src="{{ url_for('static', filename='images/product_mdfos.png') }}" alt="MD FOS" onerror="this.style.display='none'" style="filter:drop-shadow(0 6px 18px rgba(150,100,20,.3));">
+        <div>
+          <h3 style="color:var(--tan-dark);">M-D FOS 48% EC — Organophosphate</h3>
+          <p>Robust organophosphate insecticide containing Chlorpyrifos. Works through <strong>contact, ingestion, and vapor action</strong> — particularly effective against cutworms, termites, and beetles that hide in soil or dense foliage. Farmers rely on this product for its strong knockdown effect and protection of young plants during vulnerable stages.</p>
+          <div><span class="stag" style="background:rgba(200,146,42,.1);border-color:rgba(200,146,42,.3);color:var(--tan-dark);"><i class="fas fa-flask"></i>Chlorpyrifos 480g/l</span><span class="stag" style="background:rgba(200,146,42,.1);border-color:rgba(200,146,42,.3);color:var(--tan-dark);"><i class="fas fa-boxes"></i>100ml · 500ml · 1L · 5L</span></div>
+          <a href="{{ url_for('contact') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:13px;padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;background:var(--tan);color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
+        </div>
       </div>
-      <span id="rcount" style="font-size:.82rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;white-space:nowrap;">{{ products|length }} products</span>
     </div>
 
-    <!-- GRID -->
-    <div class="pgrid" id="prodGrid">
+    <!-- FILTER -->
+    <div class="fbar" data-reveal="up">
+      <div class="fsrch"><i class="fas fa-search"></i><input type="text" id="ps" placeholder="Search pesticides by name, ingredient, crop…" oninput="fp()"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="fpill active" onclick="sf(this,'all')">All</button>
+        <button class="fpill" onclick="sf(this,'organophosphate')">Organophosphate</button>
+        <button class="fpill" onclick="sf(this,'pyrethroid')">Pyrethroid</button>
+        <button class="fpill" onclick="sf(this,'systemic')">Systemic</button>
+      </div>
+      <span id="rc" style="font-size:.8rem;color:var(--tx3);font-family:'DM Sans',sans-serif;white-space:nowrap;">{{ products|length }} products</span>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="pgrid" id="pg">
       {% for p in products %}
-      <div class="pcard" data-name="{{ p.name|lower }}" data-ai="{{ (p.active_ingredient or '')|lower }}" data-crops="{{ (p.crops or '')|lower }}" onclick="location.href='{{ url_for('product_detail', product_id=p.id) }}'">
+      <a class="pcard" href="{{ url_for('product_detail', product_id=p.id) }}" data-name="{{ p.name|lower }}" data-ai="{{ (p.active_ingredient or '')|lower }}" data-crops="{{ (p.crops or '')|lower }}">
         <div class="pcard-img">
-          {% if p.image_file %}<img src="{{ url_for('uploaded_product_image', filename=p.image_file) }}" alt="{{ p.name }}" loading="lazy">
-          {% elif p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=pcard-ph><i class=\'fas fa-bug\'></i><span>Pesticide</span></div>'">
-          {% else %}<div class="pcard-ph"><i class="fas fa-bug"></i><span>Pesticide</span></div>{% endif %}
+          {% if p.image_file %}<img src="{{ url_for('static', filename='images/'+p.image_file) }}" alt="{{ p.name }}" loading="lazy">
+          {% elif p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=pcard-ph><i class=\'fas fa-bug\'></i><span>Insecticide</span></div>'">
+          {% else %}<div class="pcard-ph"><i class="fas fa-bug"></i><span>Insecticide</span></div>{% endif %}
           {% if p.stock_qty is defined %}{% if p.stock_qty==0 %}<span class="schip chip-out">Out of Stock</span>{% elif p.stock_qty<=10 %}<span class="schip chip-low">Low Stock</span>{% else %}<span class="schip chip-in">✓ In Stock</span>{% endif %}{% endif %}
         </div>
         <div class="pcard-body">
-          <span class="ptag ptag-pest"><i class="fas fa-bug"></i> Pesticide</span>
+          <span class="ptag"><i class="fas fa-bug"></i> Pesticide / Insecticide</span>
           <h3>{{ p.name }}</h3>
-          <p>{{ p.description or 'Effective insecticide for agricultural and public health pest control.' }}</p>
+          <p>{{ p.description or 'Effective insecticide for crop and public health pest control.' }}</p>
           <div>{% if p.formulation %}<span class="pspec">{{ p.formulation }}</span>{% endif %}{% if p.dosage %}<span class="pspec">{{ p.dosage }}</span>{% endif %}{% if p.packing %}<span class="pspec">{{ p.packing }}</span>{% endif %}</div>
-          {% if p.crops %}<p style="font-size:.72rem;color:var(--text-muted);margin-top:6px;margin-bottom:0;"><i class="fas fa-seedling" style="color:#2d6e35;margin-right:3px;"></i>{{ p.crops[:55] }}{% if p.crops|length>55 %}…{% endif %}</p>{% endif %}
           <div class="pfoot" onclick="event.stopPropagation()">
-            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Details</a>
+            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Full Details</a>
             <a href="{{ url_for('contact') }}" class="pbtn-enq"><i class="fas fa-envelope"></i>Enquire</a>
           </div>
         </div>
-      </div>
+      </a>
       {% else %}
-      <div class="no-res"><i class="fas fa-bug"></i><strong>No pesticides found</strong><p style="margin-top:8px;font-size:.85rem;">Contact us directly — we may carry what you need.</p></div>
+      <div class="no-res"><i class="fas fa-bug" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--bd);"></i><strong>No pesticides in database yet</strong><p style="margin-top:6px;font-size:.85rem;">Contact us directly — we carry many more products.</p></div>
       {% endfor %}
     </div>
 
-    <!-- INFO STRIP -->
-    <div class="info-strip" data-reveal="up">
-      <div class="icard"><i class="fas fa-certificate"></i><h4>MAAIF-Registered</h4><p>Every product is registered with Uganda's Ministry of Agriculture. Full certification documents available on request.</p></div>
-      <div class="icard" style="border-top-color:#1a5fa8;"><i class="fas fa-flask" style="color:#1a5fa8;"></i><h4>Expert Application Advice</h4><p>Call <a href="tel:+256772507582" style="color:#e8651a;font-weight:700;">+256 772 507582</a> for dosage, timing, and crop-specific recommendations from our agronomists.</p></div>
-      <div class="icard" style="border-top-color:#2d6e35;"><i class="fas fa-dolly" style="color:#2d6e35;"></i><h4>Wholesale Available</h4><p>Bulk pricing for distributors and cooperatives. All four regions of Uganda served through our distributor network.</p></div>
-    </div>
-
-    <div style="margin-top:36px;padding:24px 28px;border-radius:14px;background:linear-gradient(135deg,#b83a1a,#e8651a);color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;" data-reveal="up">
-      <div><h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;margin-bottom:3px;">Need a specific insecticide not listed?</h3><p style="opacity:.85;font-size:.85rem;margin:0;">We carry more than what's shown. Contact us with your requirement.</p></div>
-      <a href="{{ url_for('contact') }}" style="padding:10px 22px;background:white;color:#b83a1a;border-radius:9px;font-weight:800;font-size:.88rem;text-decoration:none;white-space:nowrap;"><i class="fas fa-envelope" style="margin-right:6px;"></i>Contact Us</a>
+    <!-- INFO -->
+    <div class="infos" data-reveal="up">
+      <div class="icard"><i class="fas fa-certificate"></i><h4>MAAIF-Registered Products</h4><p>Every insecticide we supply carries full MAAIF registration. Certificates available on request. Zero counterfeit risk.</p></div>
+      <div class="icard" style="border-top-color:var(--bl);"><i class="fas fa-headset" style="color:var(--bl);"></i><h4>Free Application Advice</h4><p>Call <a href="tel:+256772507582" style="color:var(--or);font-weight:700;">+256 772 507582</a> before applying. Our team recommends the right dosage and timing for your specific pest and crop.</p></div>
+      <div class="icard" style="border-top-color:var(--tan);"><i class="fas fa-dolly" style="color:var(--tan);"></i><h4>Wholesale & Retail</h4><p>Available in 100ml bottles to 20L containers. Competitive wholesale pricing for farmer cooperatives and distributors across all Uganda regions.</p></div>
     </div>
   </div>
 </section>
 <script>
-function filterProds(){const q=document.getElementById('prodSearch').value.toLowerCase();let c=0;document.querySelectorAll('.pcard').forEach(card=>{const m=card.dataset.name.includes(q)||card.dataset.ai.includes(q)||card.dataset.crops.includes(q);card.style.display=m?'':'none';if(m)c++;});document.getElementById('rcount').textContent=c+' product'+(c!==1?'s':'');}
-function setF(btn,f){document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const show=f==='all'||card.dataset.ai.includes(f);card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rcount').textContent=v+' product'+(v!==1?'s':'');}
+function fp(){const q=document.getElementById('ps').value.toLowerCase();let c=0;document.querySelectorAll('.pcard').forEach(card=>{const m=card.dataset.name.includes(q)||card.dataset.ai.includes(q)||card.dataset.crops.includes(q);card.style.display=m?'':'none';if(m)c++;});document.getElementById('rc').textContent=c+' product'+(c!==1?'s':'');}
+function sf(btn,f){document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const ai=card.dataset.ai||'';const show=f==='all'||(f==='organophosphate'&&(ai.includes('chlorpyrifos')||ai.includes('organophosphate')))||(f==='pyrethroid'&&(ai.includes('pyrethroid')||ai.includes('cypermethrin')||ai.includes('cyhalothrin')))||(f==='systemic'&&(ai.includes('systemic')||ai.includes('dimethoate')||ai.includes('acelemectin')||ai.includes('abamectin')||ai.includes('acephate')));card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rc').textContent=v+' product'+(v!==1?'s':'');}
 </script>
 {% endblock %}

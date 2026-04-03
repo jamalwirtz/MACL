@@ -2,169 +2,171 @@
 {% block title %}Herbicides — Muddo Agro Chemicals LTD{% endblock %}
 {% block extra_head %}
 <style>
-.cat-hero{background:linear-gradient(135deg,#062010 0%,#0d3a18 50%,#1a5a24 100%);padding:52px 0 36px;position:relative;overflow:hidden;}
-.cat-hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800')center/cover;opacity:.1;pointer-events:none;}
-.cat-hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;background:rgba(45,110,53,.25);border:1px solid rgba(45,110,53,.5);color:#90d89a;font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-family:'DM Sans',sans-serif;}
-.spotlight{background:linear-gradient(135deg,#f0f8f0,#e8f5e9);border:2px solid #a5d6a7;border-radius:20px;padding:28px;margin-bottom:36px;position:relative;}
-[data-theme="dark"] .spotlight{background:linear-gradient(135deg,#0a1f0a,#081508);border-color:#2a4a2a;}
-.spotlight-badge{position:absolute;top:18px;right:18px;background:linear-gradient(135deg,#2d6e35,#1a4a23);color:white;font-size:.7rem;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-radius:100px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
-.spotlight-inner{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;}
-.spotlight-img{width:100%;height:160px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(26,74,35,.35));transition:transform .4s ease;}
-.spotlight-img:hover{transform:scale(1.05) rotate(2deg);}
-.spotlight h3{font-size:1.25rem;font-weight:900;color:#1a4a23;margin-bottom:6px;}
-[data-theme="dark"] .spotlight h3{color:#90d89a;}
-.spotlight p{font-size:.88rem;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;}
-.sspec{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.72rem;font-weight:700;background:rgba(45,110,53,.1);border:1px solid rgba(45,110,53,.25);color:#1a4a23;margin:3px;font-family:'DM Sans',sans-serif;}
-[data-theme="dark"] .sspec{background:rgba(45,110,53,.15);color:#90d89a;border-color:rgba(45,110,53,.3);}
-.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:26px;padding:14px 18px;background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:12px;}
-.fsearch{position:relative;flex:1;min-width:200px;}
-.fsearch i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.82rem;}
-.fsearch input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--border-color);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary);}
-.fsearch input:focus{outline:none;border-color:#2d6e35;}
-.fpill{padding:6px 13px;border-radius:100px;font-size:.76rem;font-weight:700;border:1.5px solid var(--border-color);background:var(--bg-alt);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
-.fpill.active,.fpill:hover{background:#2d6e35;border-color:#2d6e35;color:white;}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;}
-.pcard{background:var(--bg-card);border:1.5px solid var(--border-color);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;}
-.pcard:hover{transform:translateY(-4px);border-color:#2d6e35;box-shadow:0 10px 30px rgba(26,74,35,.14);}
-.pcard-img{height:170px;position:relative;overflow:hidden;background:linear-gradient(135deg,#e8f5e9,#f0f8f0);display:flex;align-items:center;justify-content:center;}
-[data-theme="dark"] .pcard-img{background:linear-gradient(135deg,#0a1f0a,#081508);}
-.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.cath{background:linear-gradient(135deg,#030f04 0%,#0d3010 50%,#1a5a24 100%);padding:50px 0 34px;position:relative;overflow:hidden;}
+.cath::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=900')center/cover;opacity:.08;}
+.cath-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;background:rgba(90,138,58,.25);border:1px solid rgba(90,138,58,.45);color:#b8e8a0;font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;font-family:'DM Sans',sans-serif;}
+.cath h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;}
+.cath p{color:rgba(255,255,255,.82);max-width:58ch;line-height:1.75;font-size:.97rem;}
+.spl{background:linear-gradient(135deg,#eef8ec,#e8f5e4);border:2px solid #a5d6a7;border-radius:18px;padding:26px;margin-bottom:22px;position:relative;}
+[data-theme="dark"] .spl{background:linear-gradient(135deg,#0a1f0a,#061508);border-color:#2a4a2a;}
+.spl-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#3a6020,#5a8a3a);color:white;font-size:.68rem;font-weight:800;padding:4px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Sans',sans-serif;}
+.spl-inner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;}
+.spl-img{width:100%;height:150px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(58,96,32,.3));transition:transform .4s;}
+.spl-img:hover{transform:scale(1.06) rotate(2deg);}
+.spl h3{font-size:1.2rem;font-weight:900;color:var(--gr-dark);margin-bottom:6px;}
+[data-theme="dark"] .spl h3{color:#90d080;}
+.spl p{font-size:.86rem;color:var(--tx3);line-height:1.7;margin-bottom:12px;}
+.stag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.7rem;font-weight:700;background:rgba(58,96,32,.1);border:1px solid rgba(58,96,32,.2);color:var(--gr-dark);margin:2px;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .stag{background:rgba(90,138,58,.15);color:#90d080;border-color:rgba(90,138,58,.3);}
+.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:24px;padding:13px 16px;background:var(--bg-card);border:1.5px solid var(--bd);border-radius:12px;box-shadow:var(--sh1);}
+.fsrch{position:relative;flex:1;min-width:200px;}
+.fsrch i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:.8rem;}
+.fsrch input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--bd);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--tx1);}
+.fsrch input:focus{outline:none;border-color:var(--gr);}
+.fpill{padding:6px 13px;border-radius:100px;font-size:.75rem;font-weight:700;border:1.5px solid var(--bd);background:var(--bg-alt);color:var(--tx2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.fpill.active,.fpill:hover{background:var(--gr);border-color:var(--gr);color:white;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px;}
+.pcard{background:var(--bg-card);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;text-decoration:none;display:block;}
+.pcard:hover{transform:translateY(-4px);border-color:var(--gr);box-shadow:0 10px 28px rgba(58,96,32,.14);}
+.pcard-img{height:168px;position:relative;overflow:hidden;background:linear-gradient(135deg,#e8f5e4,#f0f8ee);display:flex;align-items:center;justify-content:center;}
+[data-theme="dark"] .pcard-img{background:linear-gradient(135deg,#0a1f0a,#061508);}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
 .pcard:hover .pcard-img img{transform:scale(1.07);}
 .pcard-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:7px;}
-.pcard-ph i{font-size:2.2rem;color:rgba(45,110,53,.2);}
-.pcard-ph span{font-size:.7rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;}
-.pcard-body{padding:15px;}
-.ptag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Sans',sans-serif;}
-.ptag-herb{background:#e8f5e9;color:#1a4a23;}
-[data-theme="dark"] .ptag-herb{background:#0a1f0a;color:#90d89a;}
-.pcard-body h3{font-size:.95rem;font-weight:800;color:var(--text-primary);margin-bottom:5px;line-height:1.3;}
-.pcard-body p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.pspec{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.67rem;font-weight:700;background:var(--bg-alt);color:var(--text-muted);margin:2px;font-family:'DM Sans',sans-serif;}
-.pfoot{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--border-color);margin-top:8px;}
-.pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;border:none;display:flex;align-items:center;justify-content:center;gap:5px;}
-.pbtn-main{background:#2d6e35;color:white;}.pbtn-main:hover{background:#1a4a23;}
-.pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--border-color);color:var(--text-secondary);}.pbtn-enq:hover{border-color:#2d6e35;color:#2d6e35;}
+.pcard-ph i{font-size:2.2rem;color:rgba(58,96,32,.18);}
+.pcard-ph span{font-size:.7rem;color:var(--tx3);font-family:'DM Sans',sans-serif;}
 .schip{position:absolute;top:9px;left:9px;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:800;font-family:'DM Sans',sans-serif;}
-.chip-in{background:rgba(45,110,53,.85);color:white;}.chip-low{background:rgba(232,101,26,.85);color:white;}.chip-out{background:rgba(184,58,26,.85);color:white;}
-.no-res{grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--text-muted);}
-.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
-.icard{padding:20px;border-radius:12px;border:1.5px solid var(--border-color);background:var(--bg-card);border-top:3px solid #2d6e35;}
-.icard h4{font-size:.88rem;font-weight:800;color:var(--text-primary);margin-bottom:7px;font-family:'DM Sans',sans-serif;}
-.icard p{font-size:.8rem;color:var(--text-secondary);line-height:1.6;}
-.icard i{font-size:1.1rem;margin-bottom:10px;display:block;color:#2d6e35;}
-@media(max-width:640px){.spotlight-inner{grid-template-columns:1fr;}.info-strip{grid-template-columns:1fr;}}
+.chip-in{background:rgba(45,138,58,.88);color:white;}.chip-low{background:rgba(232,101,26,.88);color:white;}.chip-out{background:rgba(184,58,26,.88);color:white;}
+.pcard-body{padding:14px;}
+.ptag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;font-family:'DM Sans',sans-serif;background:var(--gr-pale);color:var(--gr-dark);}
+[data-theme="dark"] .ptag{background:#0a1f0a;color:#90d080;}
+.pcard-body h3{font-size:.94rem;font-weight:800;color:var(--bl-dark);margin-bottom:5px;line-height:1.3;}
+[data-theme="dark"] .pcard-body h3{color:#f5d0a0;}
+.pcard-body p{font-size:.79rem;color:var(--tx3);line-height:1.6;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pspec{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:700;background:var(--bg-alt);color:var(--tx3);margin:2px;font-family:'DM Sans',sans-serif;}
+.pfoot{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--bd);margin-top:8px;}
+.pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.75rem;font-weight:700;text-align:center;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:4px;}
+.pbtn-main{background:var(--gr);color:white;}.pbtn-main:hover{background:var(--gr-dark);}
+.pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--bd);color:var(--tx2);}.pbtn-enq:hover{border-color:var(--or);color:var(--or);}
+.infos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+.icard{padding:20px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg-card);border-top:3px solid var(--gr);}
+.icard h4{font-size:.86rem;font-weight:800;color:var(--bl-dark);margin-bottom:6px;font-family:'DM Sans',sans-serif;}
+.icard p{font-size:.79rem;color:var(--tx3);line-height:1.62;}
+.icard i{font-size:1.05rem;margin-bottom:9px;display:block;color:var(--gr);}
+.no-res{grid-column:1/-1;text-align:center;padding:48px;color:var(--tx3);}
+@media(max-width:640px){.spl-inner{grid-template-columns:1fr;}.infos{grid-template-columns:1fr;}}
 </style>
 {% endblock %}
 {% block content %}
-<section class="cat-hero">
+<section class="cath">
   <div class="container" style="position:relative;z-index:1;">
-    <div class="breadcrumb" style="margin-bottom:12px;"><a href="/">Home</a><span class="sep">/</span><span class="current" style="color:#90d89a;">Herbicides</span></div>
-    <div class="cat-hero-tag anim-fade-down"><i class="fas fa-leaf"></i> Weed Control</div>
-    <h1 class="anim-fade-up" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;">Herbicides</h1>
-    <p class="anim-fade-up delay-1" style="color:rgba(255,255,255,.82);max-width:55ch;line-height:1.75;font-size:.97rem;">Selective and non-selective weed control solutions for Maize, Rice, Coffee, Tea, Sugarcane and more. Protect your yields from grass and broad-leaved weeds.</p>
+    <div class="breadcrumb" style="margin-bottom:12px;"><a href="/">Home</a><span class="sep">/</span><span class="current" style="color:#b8e8a0;">Herbicides</span></div>
+    <div class="cath-tag anim-fade-down"><i class="fas fa-leaf"></i> Weed Control</div>
+    <h1 class="anim-fade-up">Herbicides</h1>
+    <p class="anim-fade-up delay-1">Selective and non-selective weed management for Maize, Rice, Sugarcane, pastures and all major Ugandan crops. MACL carries both broadleaf-specific and total vegetation control herbicides — wholesale and retail. Available now across all regions.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;" class="anim-fade-up delay-2">
-      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#2d6e35;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i>Request Quote</a>
+      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#3a6020;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i>Request Quote</a>
       <a href="tel:+256772507582" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.88rem;text-decoration:none;"><i class="fas fa-phone"></i>+256 772 507582</a>
     </div>
   </div>
 </section>
 
-<section class="section" style="padding-top:36px;">
+<section class="section" style="padding-top:34px;">
   <div class="container">
-    <!-- SPOTLIGHT: MAIZE PLUS -->
-    <div class="spotlight" data-reveal="up">
-      <span class="spotlight-badge">🌽 Best for Maize</span>
-      <div class="spotlight-inner">
-        <img class="spotlight-img" src="{{ url_for('static', filename='images/product_maizeplus.png') }}" alt="Maize Plus" onerror="this.style.display='none'">
+
+    <!-- MAIZE PLUS SPOTLIGHT -->
+    <div class="spl" data-reveal="up">
+      <span class="spl-badge">🌽 Best for Maize</span>
+      <div class="spl-inner">
+        <img class="spl-img" src="{{ url_for('static', filename='images/product_maizeplus.png') }}" alt="MD Maize Plus" onerror="this.style.display='none'">
         <div>
-          <h3>MD MAIZE PLUS — Selective Maize Herbicide</h3>
-          <p>A highly effective selective post-emergence herbicide for <strong>Maize</strong>. Controls a wide spectrum of grass and broad-leaved weeds in maize fields. Once used, you can never regret. Available in Uganda, all regions.</p>
-          <div>
-            <span class="sspec"><i class="fas fa-flask"></i>Nicosulfuron 400g/l</span>
-            <span class="sspec"><i class="fas fa-vial"></i>Oil Dispersion (OD)</span>
-            <span class="sspec"><i class="fas fa-boxes"></i>500ml · 1L · 5L</span>
-          </div>
-          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;">
-            <a href="{{ url_for('contact') }}" style="padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#2d6e35;color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
-            <a href="{{ url_for('compare') }}" style="padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:var(--bg-card);border:1.5px solid var(--border-color);color:var(--text-primary);"><i class="fas fa-balance-scale" style="color:#2d6e35;"></i>Compare Products</a>
+          <h3>MD-MAIZE PLUS 40OD — Selective Maize Herbicide</h3>
+          <p>Highly effective selective post-emergence herbicide for <strong>Maize</strong>. Controls a wide spectrum of grass and broad-leaved weeds in maize fields without harming the maize plant. Once used, you will never regret. Available in all regions of Uganda — wholesale and retail.</p>
+          <div><span class="stag"><i class="fas fa-flask"></i>Nicosulfuron 400g/l</span><span class="stag"><i class="fas fa-vial"></i>Oil Dispersion (OD)</span><span class="stag"><i class="fas fa-boxes"></i>500ml · 1L · 5L</span></div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:13px;">
+            <a href="{{ url_for('contact') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--gr-dark);color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
+            <a href="{{ url_for('compare') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--bg-card);border:1.5px solid var(--bd);color:var(--tx1);"><i class="fas fa-balance-scale" style="color:var(--gr);"></i>Compare</a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Also show Muddosate spotlight -->
-    <div class="spotlight" style="background:linear-gradient(135deg,#fff8e8,#fffaf0);border-color:#f5d070;margin-bottom:36px;" data-reveal="up">
-      <span class="spotlight-badge" style="background:linear-gradient(135deg,#c8a050,#a07030);">🌿 Non-Selective</span>
-      <div class="spotlight-inner">
-        <img class="spotlight-img" src="{{ url_for('static', filename='images/product_muddosate.png') }}" alt="Muddosate" onerror="this.style.display='none'" style="filter:drop-shadow(0 8px 20px rgba(139,90,40,.3));">
+    <!-- MAX 2,4-D SPOTLIGHT -->
+    <div class="spl" style="background:linear-gradient(135deg,#fef8e8,#fdf5e0);border-color:#e8c870;margin-bottom:22px;" data-reveal="up">
+      <span class="spl-badge" style="background:linear-gradient(135deg,#c8922a,#9a6e1a);">📦 In Stock Now</span>
+      <div class="spl-inner">
+        <img class="spl-img" src="{{ url_for('static', filename='images/product_max24d_stock.png') }}" alt="MAX 2,4-D" onerror="this.style.display='none'" style="filter:drop-shadow(0 6px 18px rgba(150,100,20,.3));">
         <div>
-          <h3 style="color:#8b5a28;">MUDDOSATE — Non-Selective Total Weed Control</h3>
-          <p>Available in 1L, 2L, 5L and 20L. Non-selective herbicide for the control of annual weeds — <strong>Couch grass, Cylindrical grass</strong>. Available in <strong>wholesale small quantities</strong>. Fast-acting systemic action.</p>
-          <div>
-            <span class="sspec" style="background:rgba(200,160,80,.1);border-color:rgba(200,160,80,.3);color:#8b5a28;"><i class="fas fa-flask"></i>Glyphosate-based</span>
-            <span class="sspec" style="background:rgba(200,160,80,.1);border-color:rgba(200,160,80,.3);color:#8b5a28;"><i class="fas fa-vial"></i>SL Formulation</span>
-            <span class="sspec" style="background:rgba(200,160,80,.1);border-color:rgba(200,160,80,.3);color:#8b5a28;"><i class="fas fa-boxes"></i>1L · 2L · 5L · 20L</span>
-          </div>
-          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;">
-            <a href="{{ url_for('contact') }}" style="padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#c8a050;color:white;"><i class="fas fa-shopping-cart"></i>Order Wholesale</a>
-          </div>
+          <h3 style="color:var(--tan-dark);">M-D MAX 2,4-D 72SL — Selective Broadleaf Killer</h3>
+          <p>A selective herbicide that eliminates broadleaf weeds without harming grass-based crops. Works by mimicking plant growth hormones, causing susceptible weeds to grow uncontrollably until they wither and die — <strong>leaving maize, wheat and pasture untouched</strong>. Available in all packages — 100ml to 20L. IN STOCK NOW. Available wholesale and in small quantities.</p>
+          <div><span class="stag" style="background:rgba(200,146,42,.1);border-color:rgba(200,146,42,.3);color:var(--tan-dark);"><i class="fas fa-flask"></i>2,4-D Amine 720g/l</span><span class="stag" style="background:rgba(200,146,42,.1);border-color:rgba(200,146,42,.3);color:var(--tan-dark);"><i class="fas fa-boxes"></i>100ml · 250ml · 500ml · 1L · 5L · 20L</span></div>
+          <a href="{{ url_for('contact') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:13px;padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;background:var(--tan);color:white;"><i class="fas fa-shopping-cart"></i>Order Wholesale</a>
         </div>
       </div>
     </div>
 
-    <!-- FILTER BAR -->
+    <!-- MUDDOSATE SPOTLIGHT -->
+    <div class="spl" style="background:linear-gradient(135deg,#f0f4ff,#e8f0ff);border-color:#90b4e8;margin-bottom:30px;" data-reveal="up">
+      <span class="spl-badge" style="background:linear-gradient(135deg,#1a5fa8,#0f3d72);">🌿 Non-Selective</span>
+      <div class="spl-inner">
+        <img class="spl-img" src="{{ url_for('static', filename='images/product_muddosate.png') }}" alt="Muddosate" onerror="this.style.display='none'" style="filter:drop-shadow(0 6px 18px rgba(26,95,168,.25));">
+        <div>
+          <h3 style="color:var(--bl-dark);">MUDDOSATE / WEED IT — Non-Selective Total Control</h3>
+          <p>High-strength glyphosate-based herbicide designed for <strong>total vegetation control and land preparation</strong>. As a systemic herbicide, it travels from leaves down to the roots — ensuring the entire weed including the underground system is destroyed. Water-soluble formulation makes it easy to handle and mix. Available 1L, 2L, 5L, 20L.</p>
+          <div><span class="stag" style="background:rgba(26,95,168,.1);border-color:rgba(26,95,168,.25);color:var(--bl-dark);"><i class="fas fa-flask"></i>Glyphosate 480g/l</span><span class="stag" style="background:rgba(26,95,168,.1);border-color:rgba(26,95,168,.25);color:var(--bl-dark);"><i class="fas fa-boxes"></i>1L · 2L · 5L · 20L</span></div>
+          <a href="{{ url_for('contact') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:13px;padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;background:var(--bl);color:white;"><i class="fas fa-phone"></i>Ask About Wholesale</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER -->
     <div class="fbar" data-reveal="up">
-      <div class="fsearch"><i class="fas fa-search"></i><input type="text" id="prodSearch" placeholder="Search herbicides…" oninput="filterProds()"></div>
+      <div class="fsrch"><i class="fas fa-search"></i><input type="text" id="ps" placeholder="Search herbicides by name, ingredient, crop…" oninput="fp()"></div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="fpill active" onclick="setF(this,'all')">All</button>
-        <button class="fpill" onclick="setF(this,'selective')">Selective</button>
-        <button class="fpill" onclick="setF(this,'non-selective')">Non-Selective</button>
-        <button class="fpill" onclick="setF(this,'glyphosate')">Glyphosate</button>
+        <button class="fpill active" onclick="sf(this,'all')">All</button>
+        <button class="fpill" onclick="sf(this,'selective')">Selective</button>
+        <button class="fpill" onclick="sf(this,'glyphosate')">Non-Selective</button>
+        <button class="fpill" onclick="sf(this,'maize')">For Maize</button>
       </div>
-      <span id="rcount" style="font-size:.82rem;color:var(--text-muted);font-family:'DM Sans',sans-serif;white-space:nowrap;">{{ products|length }} products</span>
+      <span id="rc" style="font-size:.8rem;color:var(--tx3);font-family:'DM Sans',sans-serif;white-space:nowrap;">{{ products|length }} products</span>
     </div>
 
     <!-- GRID -->
-    <div class="pgrid" id="prodGrid">
+    <div class="pgrid" id="pg">
       {% for p in products %}
-      <div class="pcard" data-name="{{ p.name|lower }}" data-ai="{{ (p.active_ingredient or '')|lower }}" data-crops="{{ (p.crops or '')|lower }}" onclick="location.href='{{ url_for('product_detail', product_id=p.id) }}'">
+      <a class="pcard" href="{{ url_for('product_detail', product_id=p.id) }}" data-name="{{ p.name|lower }}" data-ai="{{ (p.active_ingredient or '')|lower }}" data-crops="{{ (p.crops or '')|lower }}">
         <div class="pcard-img">
-          {% if p.image_file %}<img src="{{ url_for('uploaded_product_image', filename=p.image_file) }}" alt="{{ p.name }}" loading="lazy">
+          {% if p.image_file %}<img src="{{ url_for('static', filename='images/'+p.image_file) }}" alt="{{ p.name }}" loading="lazy">
           {% elif p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=pcard-ph><i class=\'fas fa-leaf\'></i><span>Herbicide</span></div>'">
           {% else %}<div class="pcard-ph"><i class="fas fa-leaf"></i><span>Herbicide</span></div>{% endif %}
           {% if p.stock_qty is defined %}{% if p.stock_qty==0 %}<span class="schip chip-out">Out of Stock</span>{% elif p.stock_qty<=10 %}<span class="schip chip-low">Low Stock</span>{% else %}<span class="schip chip-in">✓ In Stock</span>{% endif %}{% endif %}
         </div>
         <div class="pcard-body">
-          <span class="ptag ptag-herb"><i class="fas fa-leaf"></i> Herbicide</span>
+          <span class="ptag"><i class="fas fa-leaf"></i> Herbicide</span>
           <h3>{{ p.name }}</h3>
-          <p>{{ p.description or 'Effective herbicide for weed control in your crops.' }}</p>
+          <p>{{ p.description or 'Effective herbicide for weed management in your crops.' }}</p>
           <div>{% if p.formulation %}<span class="pspec">{{ p.formulation }}</span>{% endif %}{% if p.dosage %}<span class="pspec">{{ p.dosage }}</span>{% endif %}{% if p.packing %}<span class="pspec">{{ p.packing }}</span>{% endif %}</div>
-          {% if p.crops %}<p style="font-size:.72rem;color:var(--text-muted);margin-top:6px;margin-bottom:0;"><i class="fas fa-seedling" style="color:#2d6e35;margin-right:3px;"></i>{{ p.crops[:55] }}{% if p.crops|length>55 %}…{% endif %}</p>{% endif %}
+          {% if p.crops %}<p style="font-size:.7rem;color:var(--tx4);margin-top:5px;margin-bottom:0;"><i class="fas fa-seedling" style="color:var(--gr);margin-right:3px;"></i>{{ p.crops[:60] }}{% if p.crops|length>60 %}…{% endif %}</p>{% endif %}
           <div class="pfoot" onclick="event.stopPropagation()">
             <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Details</a>
             <a href="{{ url_for('contact') }}" class="pbtn-enq"><i class="fas fa-envelope"></i>Enquire</a>
           </div>
         </div>
-      </div>
+      </a>
       {% else %}
-      <div class="no-res"><i class="fas fa-leaf" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--border-color);"></i><strong>No herbicides found</strong></div>
+      <div class="no-res"><i class="fas fa-leaf" style="font-size:2.5rem;display:block;margin-bottom:12px;color:var(--bd);"></i><strong>No herbicides in database</strong></div>
       {% endfor %}
     </div>
 
-    <div class="info-strip" data-reveal="up">
-      <div class="icard"><i class="fas fa-tint"></i><h4>Selective vs Non-Selective</h4><p>Selective herbicides kill specific weeds without harming your crop. Non-selective (like Muddosate/Glyphosate) kill all vegetation — ideal for land clearing. Our team will help you choose.</p></div>
-      <div class="icard" style="border-top-color:#e8651a;"><i class="fas fa-clock" style="color:#e8651a;"></i><h4>Timing Matters</h4><p>Apply post-emergence herbicides when weeds are young (2–4 leaf stage) for best results. Pre-harvest intervals must be observed. Call us for crop-specific timing advice.</p></div>
-      <div class="icard" style="border-top-color:#1a5fa8;"><i class="fas fa-truck" style="color:#1a5fa8;"></i><h4>Wholesale Quantities</h4><p>MUDDOSATE and other herbicides available in wholesale quantities. Competitive pricing for farmer groups and distributors across all Uganda regions.</p></div>
-    </div>
-
-    <div style="margin-top:36px;padding:24px 28px;border-radius:14px;background:linear-gradient(135deg,#1a4a23,#2d6e35);color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;" data-reveal="up">
-      <div><h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;margin-bottom:3px;">Fighting a tough weed problem?</h3><p style="opacity:.85;font-size:.85rem;margin:0;">Tell us your crop and the weed — we'll recommend the right product and dosage.</p></div>
-      <a href="{{ url_for('contact') }}" style="padding:10px 22px;background:white;color:#1a4a23;border-radius:9px;font-weight:800;font-size:.88rem;text-decoration:none;white-space:nowrap;"><i class="fas fa-envelope" style="margin-right:6px;"></i>Ask Our Agronomists</a>
+    <div class="infos" data-reveal="up">
+      <div class="icard"><i class="fas fa-tint"></i><h4>Selective vs Non-Selective</h4><p>Selective herbicides kill specific weeds without harming your crop. Non-selective (Glyphosate/Muddosate) clears all vegetation — ideal for land preparation before planting.</p></div>
+      <div class="icard" style="border-top-color:var(--or);"><i class="fas fa-clock" style="color:var(--or);"></i><h4>When to Apply</h4><p>Apply post-emergence when weeds are young (2–4 leaf stage) for best results. Pre-harvest intervals must be observed. Call us for crop-specific timing advice.</p></div>
+      <div class="icard" style="border-top-color:var(--bl);"><i class="fas fa-dolly" style="color:var(--bl);"></i><h4>Wholesale Available</h4><p>All herbicides available in wholesale quantities — 100ml up to 20L containers. Competitive pricing for farmer groups, cooperatives, and distributors.</p></div>
     </div>
   </div>
 </section>
 <script>
-function filterProds(){const q=document.getElementById('prodSearch').value.toLowerCase();let c=0;document.querySelectorAll('.pcard').forEach(card=>{const m=card.dataset.name.includes(q)||card.dataset.ai.includes(q)||card.dataset.crops.includes(q);card.style.display=m?'':'none';if(m)c++;});document.getElementById('rcount').textContent=c+' product'+(c!==1?'s':'');}
-function setF(btn,f){document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const ai=card.dataset.ai||'';const show=f==='all'||(f==='selective'&&!ai.includes('non'))|| (f==='non-selective'&&(ai.includes('glyphosate')||ai.includes('paraquat')))||(f!=='selective'&&f!=='non-selective'&&ai.includes(f));card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rcount').textContent=v+' product'+(v!==1?'s':'');}
+function fp(){const q=document.getElementById('ps').value.toLowerCase();let c=0;document.querySelectorAll('.pcard').forEach(card=>{const m=card.dataset.name.includes(q)||card.dataset.ai.includes(q)||card.dataset.crops.includes(q);card.style.display=m?'':'none';if(m)c++;});document.getElementById('rc').textContent=c+' product'+(c!==1?'s':'');}
+function sf(btn,f){document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.pcard').forEach(card=>{const ai=card.dataset.ai||'',name=card.dataset.name||'',crops=card.dataset.crops||'';const show=f==='all'||(f==='selective'&&!ai.includes('glyphosate')&&!ai.includes('non-selective')&&!ai.includes('paraquat')&&!name.includes('weed it')&&!name.includes('muddosate'))||(f==='glyphosate'&&(ai.includes('glyphosate')||name.includes('muddosate')||name.includes('weed it')))||(f==='maize'&&(crops.includes('maize')||name.includes('maize')));card.style.display=show?'':'none';});const v=[...document.querySelectorAll('.pcard')].filter(c=>c.style.display!=='none').length;document.getElementById('rc').textContent=v+' product'+(v!==1?'s':'');}
 </script>
 {% endblock %}
