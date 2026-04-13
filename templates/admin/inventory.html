@@ -6,18 +6,18 @@
 .inv-card:hover { box-shadow:0 6px 20px rgba(0,0,0,.1); }
 .stock-bar { height:6px;background:var(--border-color);border-radius:100px;overflow:hidden;margin-top:8px; }
 .stock-fill { height:100%;border-radius:100px;transition:width 1.2s cubic-bezier(.22,1,.36,1); }
-.stock-ok   .stock-fill { background:#2d6e35; }
+.stock-ok   .stock-fill { background:#1a6abf; }
 .stock-low  .stock-fill { background:#f57c00; }
 .stock-out  .stock-fill { background:#e53935; }
 .qty-ctrl { display:flex;align-items:center;gap:6px; }
 .qty-btn { width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border-color);background:var(--bg-alt);color:var(--text-secondary);font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease; }
-.qty-btn:hover { background:var(--green-mid);color:white;border-color:var(--green-mid); }
+.qty-btn:hover { background:var(--orange,#e8651a);color:white;border-color:var(--orange,#e8651a); }
 .qty-input { width:56px;text-align:center;border:1.5px solid var(--border-color);border-radius:8px;padding:5px 4px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--text-primary); }
 .log-row { display:flex;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border-color);transition:background .2s; }
 .log-row:last-child { border:none; }
 .log-row:hover { background:var(--bg-alt); }
 .log-change { font-weight:800;font-size:.9rem; }
-.log-pos { color:#2d6e35; }
+.log-pos { color:#1a6abf; }
 .log-neg { color:#e53935; }
 </style>
 {% endblock %}
@@ -66,7 +66,7 @@
             <div style="font-weight:800;font-size:.88rem;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ item.name }}</div>
             <div style="font-size:.72rem;color:var(--text-muted);text-transform:capitalize;margin-top:1px;">{{ item.category }}</div>
           </div>
-          <span style="padding:3px 8px;border-radius:100px;font-size:.68rem;font-weight:800;background:{% if status=='ok' %}#e8f5e9{% elif status=='low' %}#fff8e1{% else %}#ffebee{% endif %};color:{% if status=='ok' %}#1b5e20{% elif status=='low' %}#c77700{% else %}#b71c1c{% endif %};">
+          <span style="padding:3px 8px;border-radius:100px;font-size:.68rem;font-weight:800;background:{% if status=='ok' %}#e8f5e9{% elif status=='low' %}#fff8e1{% else %}#ffebee{% endif %};color:{% if status=='ok' %}#0d3d7a{% elif status=='low' %}#c77700{% else %}#b71c1c{% endif %};">
             {% if status=='ok' %}In Stock{% elif status=='low' %}Low{% else %}Out{% endif %}
           </span>
         </div>
@@ -87,7 +87,7 @@
             </div>
             <button onclick="openModal({{ item.id }}, '{{ item.name }}', {{ item.stock_qty }}, '{{ item.unit }}', {{ item.reorder_level }})"
               style="flex:1;padding:6px;border-radius:7px;border:1.5px solid var(--border-color);background:var(--bg-alt);cursor:pointer;font-size:.76rem;font-weight:700;color:var(--text-secondary);font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap;"
-              onmouseover="this.style.background='var(--green-mid)';this.style.color='#fff';this.style.borderColor='var(--green-mid)'"
+              onmouseover="this.style.background='var(--orange,#e8651a)';this.style.color='#fff';this.style.borderColor='var(--orange,#e8651a)'"
               onmouseout="this.style.background='var(--bg-alt)';this.style.color='var(--text-secondary)';this.style.borderColor='var(--border-color)'">
               <i class="fas fa-edit"></i> Update
             </button>
@@ -108,7 +108,7 @@
       {% for entry in log %}
       <div class="log-row">
         <div style="flex-shrink:0;margin-top:2px;">
-          <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;background:{% if entry.change_qty > 0 %}#e8f5e9{% else %}#ffebee{% endif %};color:{% if entry.change_qty > 0 %}#1b5e20{% else %}#b71c1c{% endif %};">
+          <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;background:{% if entry.change_qty > 0 %}#e8f5e9{% else %}#ffebee{% endif %};color:{% if entry.change_qty > 0 %}#0d3d7a{% else %}#b71c1c{% endif %};">
             {{ '+' if entry.change_qty > 0 else '' }}{{ entry.change_qty }}
           </div>
         </div>
@@ -136,7 +136,7 @@
     <div style="margin-bottom:14px;">
       <label style="font-size:.8rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px;">Action</label>
       <div style="display:flex;gap:8px;">
-        {% for a,label,c in [('set','Set Exact','#1565c0'),('add','Add Stock','#1b5e20'),('remove','Remove Stock','#b71c1c')] %}
+        {% for a,label,c in [('set','Set Exact','#1565c0'),('add','Add Stock','#0d3d7a'),('remove','Remove Stock','#b71c1c')] %}
         <button class="action-btn" data-action="{{ a }}" onclick="selectAction('{{ a }}')"
           style="flex:1;padding:8px 6px;border-radius:8px;border:1.5px solid var(--border-color);background:var(--bg-alt);cursor:pointer;font-size:.78rem;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--text-secondary);transition:all .2s;">{{ label }}</button>
         {% endfor %}
@@ -159,7 +159,7 @@
 </div>
 
 <style>
-.inv-filter-btn.active,.inv-filter-btn:hover{background:var(--green-mid)!important;color:white!important;border-color:var(--green-mid)!important;}
+.inv-filter-btn.active,.inv-filter-btn:hover{background:var(--orange,#e8651a)!important;color:white!important;border-color:var(--orange,#e8651a)!important;}
 .action-btn.active{color:white!important;}
 </style>
 <script>
@@ -167,7 +167,7 @@ let selectedAction='set';
 
 function selectAction(a){
   selectedAction=a;
-  const colors={set:'#1565c0',add:'#1b5e20',remove:'#b71c1c'};
+  const colors={set:'#1565c0',add:'#0d3d7a',remove:'#b71c1c'};
   document.querySelectorAll('.action-btn').forEach(btn=>{
     const isActive=btn.dataset.action===a;
     btn.style.background=isActive?colors[a]:'var(--bg-alt)';
@@ -215,7 +215,7 @@ function adjustStock(pid,dir){
 
 function showToast(msg){
   const t=document.createElement('div');
-  t.style.cssText='position:fixed;bottom:80px;right:24px;z-index:99999;background:#1b5e20;color:white;padding:12px 20px;border-radius:10px;font-size:.88rem;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2);animation:slideInRight .3s ease;';
+  t.style.cssText='position:fixed;bottom:80px;right:24px;z-index:99999;background:#0d3d7a;color:white;padding:12px 20px;border-radius:10px;font-size:.88rem;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2);animation:slideInRight .3s ease;';
   t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500);
 }
 

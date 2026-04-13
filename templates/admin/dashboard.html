@@ -67,8 +67,8 @@
 .kpi-red    .kpi-icon { background: #ffebee; color: #b71c1c; }
 .kpi-indigo .kpi-bar { background: linear-gradient(90deg, #283593, #3f51b5); }
 .kpi-indigo .kpi-icon { background: #e8eaf6; color: #283593; }
-.kpi-green  .kpi-bar { background: linear-gradient(90deg, #1b5e20, #2d6e35); }
-.kpi-green  .kpi-icon { background: #e8f5e9; color: #1b5e20; }
+.kpi-green  .kpi-bar { background: linear-gradient(90deg, #0d3d7a, #1a6abf); }
+.kpi-green  .kpi-icon { background: #e8f5e9; color: #0d3d7a; }
 .kpi-rose   .kpi-bar { background: linear-gradient(90deg, #880e4f, #c2185b); }
 .kpi-rose   .kpi-icon { background: #fce4ec; color: #880e4f; }
 .kpi-slate  .kpi-bar { background: linear-gradient(90deg, #37474f, #607d8b); }
@@ -111,7 +111,7 @@
 }
 .dash-panel-head h3 i { font-size: .88rem; }
 .dash-panel-link {
-  font-size: .8rem; font-weight: 700; color: var(--green-mid); text-decoration: none;
+  font-size: .8rem; font-weight: 700; color: var(--orange,#e8651a); text-decoration: none;
   display: flex; align-items: center; gap: 4px; transition: gap .2s ease;
   white-space: nowrap;
 }
@@ -127,7 +127,7 @@
 .agent-row:hover { background: var(--bg-alt, #f0f8f1); }
 .agent-avi {
   width: 38px; height: 38px; border-radius: 50%;
-  background: var(--green-dark); color: white;
+  background: var(--blue,#1a6abf); color: white;
   display: flex; align-items: center; justify-content: center;
   font-weight: 800; font-size: .92rem; flex-shrink: 0; position: relative;
 }
@@ -145,7 +145,7 @@
   font-size: .7rem; font-weight: 800; letter-spacing: .06em; padding: 3px 9px;
   border-radius: 100px; text-transform: uppercase; flex-shrink: 0;
 }
-.asb-online  { background: #e8f5e9; color: #1b5e20; }
+.asb-online  { background: #e8f5e9; color: #0d3d7a; }
 .asb-away    { background: #fff8e1; color: #c77700; }
 .asb-offline { background: #eceff1; color: #546e7a; }
 [data-theme="dark"] .asb-online  { background: rgba(27,94,32,.25);  color: #a5d6a7; }
@@ -183,7 +183,7 @@
   width: 4px; min-height: 38px; border-radius: 3px; flex-shrink: 0;
 }
 .sr-pending  .sr-stripe { background: #ffa000; }
-.sr-approved .sr-stripe { background: #2d6e35; }
+.sr-approved .sr-stripe { background: #1a6abf; }
 .sr-denied   .sr-stripe { background: #e53935; }
 .sr-info     { flex: 1; min-width: 0; }
 .sr-product  { font-size: .9rem; font-weight: 700; color: var(--text-primary, #111); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -202,7 +202,7 @@
 .rr-row { padding: 12px 18px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 14px; transition: background .2s ease; }
 .rr-row:last-child { border-bottom: none; }
 .rr-row:hover { background: var(--bg-alt, #f0f8f1); }
-.rr-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--green-mid); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .88rem; flex-shrink: 0; }
+.rr-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--orange,#e8651a); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .88rem; flex-shrink: 0; }
 .rr-info   { flex: 1; min-width: 0; }
 .rr-name   { font-size: .9rem; font-weight: 700; color: var(--text-primary, #111); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rr-subject{ font-size: .78rem; color: var(--text-muted, #565656); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -379,10 +379,10 @@
       <div style="display:flex;align-items:center;gap:8px;">
         <span class="agent-status-badge asb-{{ status }}">{{ status }}</span>
         <a href="{{ url_for('admin_chat') }}#chat-{{ agent.id }}"
-           style="width:30px;height:30px;border-radius:8px;background:var(--bg-alt);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.8rem;text-decoration:none;transition:all .2s ease;"
+           style="width:30px;height:30px;border-radius:8px;background:var(--bg-alt);color:var(--orange,#e8651a);display:flex;align-items:center;justify-content:center;font-size:.8rem;text-decoration:none;transition:all .2s ease;"
            title="Chat with {{ agent.name }}"
-           onmouseover="this.style.background='var(--green-mid)';this.style.color='white'"
-           onmouseout="this.style.background='var(--bg-alt)';this.style.color='var(--green-mid)'">
+           onmouseover="this.style.background='var(--orange,#e8651a)';this.style.color='white'"
+           onmouseout="this.style.background='var(--bg-alt)';this.style.color='var(--orange,#e8651a)'">
           <i class="fas fa-comment"></i>
         </a>
       </div>
@@ -409,7 +409,7 @@
         <a href="{{ url_for('admin_products') }}" class="dash-panel-link" style="color:#1565c0;">Add <i class="fas fa-plus" style="font-size:.7rem;"></i></a>
       </div>
       <div class="mini-bar-wrap">
-        {% set bar_colors = {'pesticide':'#e53935','herbicide':'#2d6e35','fungicide':'#3f51b5','other':'#f57c00'} %}
+        {% set bar_colors = {'pesticide':'#e53935','herbicide':'#1a6abf','fungicide':'#3f51b5','other':'#f57c00'} %}
         {% for cat in products_by_cat %}
         {% set pct = (cat.cnt / stats.total_products * 100)|int if stats.total_products else 0 %}
         {% set color = bar_colors.get(cat.category, '#607d8b') %}
@@ -514,7 +514,7 @@
 <div class="dash-panel anim-fade-up" style="margin-top:18px;">
   <div class="dash-panel-head">
     <h3>
-      <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#e8f5e9;color:#1b5e20;font-size:.78rem;"><i class="fas fa-bolt"></i></span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:#e8f5e9;color:#0d3d7a;font-size:.78rem;"><i class="fas fa-bolt"></i></span>
       Quick Actions
     </h3>
   </div>
@@ -534,10 +534,10 @@
 <div class="dash-panel anim-fade-up" style="margin-top:18px;">
   <div class="dash-panel-head">
     <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
-      <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#1b5e20;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-chart-line"></i></span>
+      <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#0d3d7a;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-chart-line"></i></span>
       Enquiry Trend — Last 14 Days
     </h3>
-    <a href="{{ url_for('admin_requests') }}" class="dash-panel-link" style="color:#1b5e20;">All enquiries <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
+    <a href="{{ url_for('admin_requests') }}" class="dash-panel-link" style="color:#0d3d7a;">All enquiries <i class="fas fa-arrow-right" style="font-size:.7rem;"></i></a>
   </div>
   <div style="padding:18px 20px;">
     <canvas id="enquiryChart" height="90"></canvas>

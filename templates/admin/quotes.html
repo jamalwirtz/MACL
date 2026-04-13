@@ -5,11 +5,11 @@
 .quote-builder { display:grid; grid-template-columns:1fr 340px; gap:20px; align-items:start; }
 .q-item { display:grid; grid-template-columns:auto 1fr 90px 110px 28px; gap:10px; align-items:center;
   padding:12px 14px; background:var(--bg-alt); border-radius:10px; border:1px solid var(--border-color); margin-bottom:8px; }
-.q-num { width:24px; height:24px; border-radius:50%; background:var(--green-mid); color:white; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0; }
+.q-num { width:24px; height:24px; border-radius:50%; background:var(--orange,#e8651a); color:white; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0; }
 .q-product-name { font-weight:700; font-size:.9rem; color:var(--text-primary); }
 .q-product-cat  { font-size:.74rem; color:var(--text-muted); }
 .q-input { border:1.5px solid var(--border-color); border-radius:7px; padding:7px 9px; font-size:.88rem; font-family:'DM Sans',sans-serif; background:var(--bg-input); color:var(--text-primary); width:100%; text-align:right; }
-.q-input:focus { outline:none; border-color:var(--green-mid); }
+.q-input:focus { outline:none; border-color:var(--orange,#e8651a); }
 .q-remove { background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1rem; transition:color .2s; padding:0; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:6px; }
 .q-remove:hover { background:#ffebee; color:#e53935; }
 .total-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-color); font-size:.9rem; color:var(--text-secondary); }
@@ -57,7 +57,7 @@
     <div class="dash-panel anim-fade-up delay-2" style="margin-bottom:18px;">
       <div class="dash-panel-head" style="padding:14px 18px;">
         <h3 style="color:var(--text-primary);font-size:.94rem;font-weight:800;display:flex;align-items:center;gap:8px;margin:0;">
-          <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#1b5e20;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-flask"></i></span>
+          <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#0d3d7a;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-flask"></i></span>
           Add Products
         </h3>
       </div>
@@ -108,7 +108,7 @@
   <!-- RIGHT: Summary -->
   <div style="position:sticky;top:84px;">
     <div class="dash-panel anim-fade-up delay-2">
-      <div style="background:var(--green-dark,#1a4a23);padding:18px 20px;">
+      <div style="background:var(--green-dark,#0d3d7a);padding:18px 20px;">
         <div style="color:#fff;font-weight:800;font-size:1rem;display:flex;align-items:center;gap:8px;"><i class="fas fa-file-pdf" style="color:#f5c842;"></i> Quote Summary</div>
       </div>
       <div id="summary" style="padding:16px 18px;min-height:180px;">
@@ -138,7 +138,7 @@ function addItem(el){
   const id=el.dataset.id,name=el.dataset.name,cat=el.dataset.cat,pack=el.dataset.pack;
   if(quoteItems.find(i=>i.product_id===id)) return;
   quoteItems.push({product_id:id,name,cat,pack,qty:1,unit_price:0});
-  renderItems(); el.style.background='var(--green-tint,#f0f8f1)'; el.style.borderColor='var(--green-mid)';
+  renderItems(); el.style.background='var(--green-tint,#f0f8f1)'; el.style.borderColor='var(--orange,#e8651a)';
   setTimeout(()=>{el.style.background='';el.style.borderColor='var(--border-color)';},600);
 }
 
@@ -171,7 +171,7 @@ function updateSummary(){
   container.innerHTML=`
     <div style="font-size:.78rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">${quoteItems.length} item(s)</div>
     ${quoteItems.map(i=>`<div class="total-row"><span style="font-size:.84rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${i.name}</span><span>UGX ${(i.qty*i.unit_price).toLocaleString()}</span></div>`).join('')}
-    <div class="total-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--border-color);"><span>Grand Total</span><span style="color:var(--green-mid);">UGX ${grand.toLocaleString()}</span></div>
+    <div class="total-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--border-color);"><span>Grand Total</span><span style="color:var(--orange,#e8651a);">UGX ${grand.toLocaleString()}</span></div>
   `;
 }
 
@@ -194,7 +194,7 @@ async function generatePDF(){
 }
 
 document.querySelectorAll('.prod-option').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{el.style.background='var(--green-tint,#f0f8f1)';el.style.borderColor='var(--green-mid)';});
+  el.addEventListener('mouseenter',()=>{el.style.background='var(--green-tint,#f0f8f1)';el.style.borderColor='var(--orange,#e8651a)';});
   el.addEventListener('mouseleave',()=>{el.style.background='';el.style.borderColor='var(--border-color)';});
 });
 </script>

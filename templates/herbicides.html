@@ -9,25 +9,25 @@
 .cath p{color:rgba(255,255,255,.82);max-width:58ch;line-height:1.75;font-size:.97rem;}
 .spl{background:linear-gradient(135deg,#eef8ec,#e8f5e4);border:2px solid #a5d6a7;border-radius:18px;padding:26px;margin-bottom:22px;position:relative;}
 [data-theme="dark"] .spl{background:linear-gradient(135deg,#0a1f0a,#061508);border-color:#2a4a2a;}
-.spl-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#3a6020,#5a8a3a);color:white;font-size:.68rem;font-weight:800;padding:4px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Sans',sans-serif;}
+.spl-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#3a5a80,#5a8a3a);color:white;font-size:.68rem;font-weight:800;padding:4px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Sans',sans-serif;}
 .spl-inner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;}
 .spl-img{width:100%;height:150px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(58,96,32,.3));transition:transform .4s;}
 .spl-img:hover{transform:scale(1.06) rotate(2deg);}
-.spl h3{font-size:1.2rem;font-weight:900;color:var(--gr-dark);margin-bottom:6px;}
+.spl h3{font-size:1.2rem;font-weight:900;color:var(--blue-dark,#0d3d7a);margin-bottom:6px;}
 [data-theme="dark"] .spl h3{color:#90d080;}
 .spl p{font-size:.86rem;color:var(--tx3);line-height:1.7;margin-bottom:12px;}
-.stag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.7rem;font-weight:700;background:rgba(58,96,32,.1);border:1px solid rgba(58,96,32,.2);color:var(--gr-dark);margin:2px;font-family:'DM Sans',sans-serif;}
+.stag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:.7rem;font-weight:700;background:rgba(58,96,32,.1);border:1px solid rgba(58,96,32,.2);color:var(--blue-dark,#0d3d7a);margin:2px;font-family:'DM Sans',sans-serif;}
 [data-theme="dark"] .stag{background:rgba(90,138,58,.15);color:#90d080;border-color:rgba(90,138,58,.3);}
 .fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:24px;padding:13px 16px;background:var(--bg-card);border:1.5px solid var(--bd);border-radius:12px;box-shadow:var(--sh1);}
 .fsrch{position:relative;flex:1;min-width:200px;}
 .fsrch i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:.8rem;}
 .fsrch input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--bd);border-radius:9px;font-size:.88rem;font-family:'DM Sans',sans-serif;background:var(--bg-input);color:var(--tx1);}
-.fsrch input:focus{outline:none;border-color:var(--gr);}
+.fsrch input:focus{outline:none;border-color:var(--blue,#1a6abf);}
 .fpill{padding:6px 13px;border-radius:100px;font-size:.75rem;font-weight:700;border:1.5px solid var(--bd);background:var(--bg-alt);color:var(--tx2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
-.fpill.active,.fpill:hover{background:var(--gr);border-color:var(--gr);color:white;}
+.fpill.active,.fpill:hover{background:var(--blue,#1a6abf);border-color:var(--blue,#1a6abf);color:white;}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px;}
 .pcard{background:var(--bg-card);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;text-decoration:none;display:block;}
-.pcard:hover{transform:translateY(-4px);border-color:var(--gr);box-shadow:0 10px 28px rgba(58,96,32,.14);}
+.pcard:hover{transform:translateY(-4px);border-color:var(--blue,#1a6abf);box-shadow:0 10px 28px rgba(58,96,32,.14);}
 .pcard-img{height:168px;position:relative;overflow:hidden;background:linear-gradient(135deg,#e8f5e4,#f0f8ee);display:flex;align-items:center;justify-content:center;}
 [data-theme="dark"] .pcard-img{background:linear-gradient(135deg,#0a1f0a,#061508);}
 .pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
@@ -38,7 +38,7 @@
 .schip{position:absolute;top:9px;left:9px;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:800;font-family:'DM Sans',sans-serif;}
 .chip-in{background:rgba(45,138,58,.88);color:white;}.chip-low{background:rgba(232,101,26,.88);color:white;}.chip-out{background:rgba(184,58,26,.88);color:white;}
 .pcard-body{padding:14px;}
-.ptag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;font-family:'DM Sans',sans-serif;background:var(--gr-pale);color:var(--gr-dark);}
+.ptag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;font-family:'DM Sans',sans-serif;background:var(--gr-pale);color:var(--blue-dark,#0d3d7a);}
 [data-theme="dark"] .ptag{background:#0a1f0a;color:#90d080;}
 .pcard-body h3{font-size:.94rem;font-weight:800;color:var(--bl-dark);margin-bottom:5px;line-height:1.3;}
 [data-theme="dark"] .pcard-body h3{color:#f5d0a0;}
@@ -46,13 +46,13 @@
 .pspec{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:700;background:var(--bg-alt);color:var(--tx3);margin:2px;font-family:'DM Sans',sans-serif;}
 .pfoot{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--bd);margin-top:8px;}
 .pfoot a{flex:1;padding:7px;border-radius:8px;font-size:.75rem;font-weight:700;text-align:center;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:4px;}
-.pbtn-main{background:var(--gr);color:white;}.pbtn-main:hover{background:var(--gr-dark);}
+.pbtn-main{background:var(--blue,#1a6abf);color:white;}.pbtn-main:hover{background:var(--blue-dark,#0d3d7a);}
 .pbtn-enq{background:var(--bg-alt);border:1.5px solid var(--bd);color:var(--tx2);}.pbtn-enq:hover{border-color:var(--or);color:var(--or);}
 .infos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
 .icard{padding:20px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg-card);border-top:3px solid var(--gr);}
 .icard h4{font-size:.86rem;font-weight:800;color:var(--bl-dark);margin-bottom:6px;font-family:'DM Sans',sans-serif;}
 .icard p{font-size:.79rem;color:var(--tx3);line-height:1.62;}
-.icard i{font-size:1.05rem;margin-bottom:9px;display:block;color:var(--gr);}
+.icard i{font-size:1.05rem;margin-bottom:9px;display:block;color:var(--blue,#1a6abf);}
 .no-res{grid-column:1/-1;text-align:center;padding:48px;color:var(--tx3);}
 @media(max-width:640px){.spl-inner{grid-template-columns:1fr;}.infos{grid-template-columns:1fr;}}
 </style>
@@ -65,7 +65,7 @@
     <h1 class="anim-fade-up">Herbicides</h1>
     <p class="anim-fade-up delay-1">Selective and non-selective weed management for Maize, Rice, Sugarcane, pastures and all major Ugandan crops. MACL carries both broadleaf-specific and total vegetation control herbicides — wholesale and retail. Available now across all regions.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;" class="anim-fade-up delay-2">
-      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#3a6020;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i>Request Quote</a>
+      <a href="{{ url_for('contact') }}" class="btn-primary btn-ripple" style="background:#3a5a80;border:none;padding:10px 22px;border-radius:9px;font-size:.88rem;"><i class="fas fa-envelope"></i>Request Quote</a>
       <a href="tel:+256772507582" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(255,255,255,.3);color:white;font-weight:700;font-size:.88rem;text-decoration:none;"><i class="fas fa-phone"></i>+256 772 507582</a>
     </div>
   </div>
@@ -85,7 +85,7 @@
           <div><span class="stag"><i class="fas fa-flask"></i>Nicosulfuron 400g/l</span><span class="stag"><i class="fas fa-vial"></i>Oil Dispersion (OD)</span><span class="stag"><i class="fas fa-boxes"></i>500ml · 1L · 5L</span></div>
           <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:13px;">
             <a href="{{ url_for('contact') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--gr-dark);color:white;"><i class="fas fa-shopping-cart"></i>Order Now</a>
-            <a href="{{ url_for('compare') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--bg-card);border:1.5px solid var(--bd);color:var(--tx1);"><i class="fas fa-balance-scale" style="color:var(--gr);"></i>Compare</a>
+            <a href="{{ url_for('compare') }}" style="padding:9px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--bg-card);border:1.5px solid var(--bd);color:var(--tx1);"><i class="fas fa-balance-scale" style="color:var(--blue,#1a6abf);"></i>Compare</a>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@
           <h3>{{ p.name }}</h3>
           <p>{{ p.description or 'Effective herbicide for weed management in your crops.' }}</p>
           <div>{% if p.formulation %}<span class="pspec">{{ p.formulation }}</span>{% endif %}{% if p.dosage %}<span class="pspec">{{ p.dosage }}</span>{% endif %}{% if p.packing %}<span class="pspec">{{ p.packing }}</span>{% endif %}</div>
-          {% if p.crops %}<p style="font-size:.7rem;color:var(--tx4);margin-top:5px;margin-bottom:0;"><i class="fas fa-seedling" style="color:var(--gr);margin-right:3px;"></i>{{ p.crops[:60] }}{% if p.crops|length>60 %}…{% endif %}</p>{% endif %}
+          {% if p.crops %}<p style="font-size:.7rem;color:var(--tx4);margin-top:5px;margin-bottom:0;"><i class="fas fa-seedling" style="color:var(--blue,#1a6abf);margin-right:3px;"></i>{{ p.crops[:60] }}{% if p.crops|length>60 %}…{% endif %}</p>{% endif %}
           <div class="pfoot" onclick="event.stopPropagation()">
             <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Details</a>
             <a href="{{ url_for('contact') }}" class="pbtn-enq"><i class="fas fa-envelope"></i>Enquire</a>

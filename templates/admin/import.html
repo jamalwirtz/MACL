@@ -19,7 +19,7 @@
     <div class="admin-card-body" style="padding:22px;">
       {% if results %}
       <div style="padding:16px;border-radius:10px;margin-bottom:20px;background:{% if results.added > 0 %}#e8f5e9{% else %}#fff8e1{% endif %};border:1.5px solid {% if results.added > 0 %}#a5d6a7{% else %}#ffc107{% endif %};">
-        <div style="font-weight:800;font-size:.96rem;color:{% if results.added > 0 %}#1b5e20{% else %}#c77700{% endif %};margin-bottom:8px;">
+        <div style="font-weight:800;font-size:.96rem;color:{% if results.added > 0 %}#0d3d7a{% else %}#c77700{% endif %};margin-bottom:8px;">
           Import Complete
         </div>
         <div style="font-size:.88rem;color:var(--text-secondary);display:flex;flex-direction:column;gap:4px;">
@@ -37,13 +37,13 @@
 
       <form method="POST" action="{{ url_for('admin_import') }}" enctype="multipart/form-data">
         <div style="border:2px dashed var(--border-color);border-radius:12px;padding:32px;text-align:center;background:var(--bg-alt);margin-bottom:16px;transition:border-color .2s;"
-          id="dropzone" ondragover="this.style.borderColor='var(--green-mid)'" ondragleave="this.style.borderColor='var(--border-color)'">
+          id="dropzone" ondragover="this.style.borderColor='var(--orange,#e8651a)'" ondragleave="this.style.borderColor='var(--border-color)'">
           <i class="fas fa-cloud-upload-alt" style="font-size:2.2rem;color:var(--border-color);display:block;margin-bottom:10px;"></i>
           <div style="font-weight:700;color:var(--text-secondary);margin-bottom:6px;">Drag & drop your CSV here</div>
           <div style="font-size:.82rem;color:var(--text-muted);margin-bottom:14px;">or click below to browse</div>
           <input type="file" name="csv_file" accept=".csv" id="csvFile" style="display:none;" onchange="showFilename(this)">
-          <button type="button" onclick="document.getElementById('csvFile').click()" class="btn-sm" style="background:var(--green-mid);color:#fff;border-radius:8px;padding:9px 18px;"><i class="fas fa-folder-open"></i> Choose File</button>
-          <div id="filename" style="margin-top:10px;font-size:.82rem;color:var(--green-mid);font-weight:600;display:none;"></div>
+          <button type="button" onclick="document.getElementById('csvFile').click()" class="btn-sm" style="background:var(--orange,#e8651a);color:#fff;border-radius:8px;padding:9px 18px;"><i class="fas fa-folder-open"></i> Choose File</button>
+          <div id="filename" style="margin-top:10px;font-size:.82rem;color:var(--orange,#e8651a);font-weight:600;display:none;"></div>
         </div>
         <button type="submit" class="btn-sm" style="background:#1565c0;color:#fff;border-radius:8px;padding:10px 20px;width:100%;justify-content:center;font-size:.88rem;">
           <i class="fas fa-upload"></i> Import Products
@@ -57,7 +57,7 @@
     <div class="dash-panel anim-fade-up delay-2">
       <div class="dash-panel-head">
         <h3 style="color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px;font-size:.94rem;font-weight:800;">
-          <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#1b5e20;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-table"></i></span>
+          <span style="width:26px;height:26px;border-radius:7px;background:#e8f5e9;color:#0d3d7a;display:flex;align-items:center;justify-content:center;font-size:.75rem;"><i class="fas fa-table"></i></span>
           CSV Column Reference
         </h3>
       </div>
@@ -75,7 +75,7 @@
             ('image_url', False, 'Optional product photo URL'),
           ] %}
           <tr style="border-bottom:1px solid var(--border-color);">
-            <td style="padding:8px 6px;font-size:.82rem;font-family:'DM Mono',monospace;color:var(--green-mid);font-weight:600;">{{ col }}</td>
+            <td style="padding:8px 6px;font-size:.82rem;font-family:'DM Mono',monospace;color:var(--orange,#e8651a);font-weight:600;">{{ col }}</td>
             <td style="padding:8px 6px;">
               {% if req %}
               <span style="background:#ffebee;color:#b71c1c;font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:100px;">Required</span>
@@ -89,7 +89,7 @@
         </table>
         <!-- Download template -->
         <a href="{{ url_for('static', filename='import_template.csv') }}" download
-          style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:.82rem;font-weight:700;color:var(--green-mid);">
+          style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:.82rem;font-weight:700;color:var(--orange,#e8651a);">
           <i class="fas fa-download"></i> Download CSV Template
         </a>
       </div>
@@ -105,7 +105,7 @@
             'Category must be exactly: pesticide, herbicide, fungicide, or other.',
             'After import, visit the Products page to add images and stock levels.',
           ] %}
-          <li style="font-size:.82rem;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--green-mid);flex-shrink:0;">✓</span>{{ tip }}</li>
+          <li style="font-size:.82rem;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--orange,#e8651a);flex-shrink:0;">✓</span>{{ tip }}</li>
           {% endfor %}
         </ul>
       </div>
@@ -119,7 +119,7 @@ function showFilename(input) {
   if (input.files.length) {
     el.textContent = '📄 ' + input.files[0].name;
     el.style.display = 'block';
-    document.getElementById('dropzone').style.borderColor = 'var(--green-mid)';
+    document.getElementById('dropzone').style.borderColor = 'var(--orange,#e8651a)';
   }
 }
 </script>

@@ -8,7 +8,7 @@
 <!-- ADD DISTRIBUTOR FORM -->
 <div class="admin-card" style="margin-bottom:24px;">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:6px;"></i> Add New Distributor Outlet</span>
+    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--orange,#e8651a);margin-right:6px;"></i> Add New Distributor Outlet</span>
     <button onclick="toggleForm()" id="formToggleBtn" class="btn-sm green"><i class="fas fa-chevron-down"></i> Show Form</button>
   </div>
   <div id="addDistForm" style="display:none;">
@@ -60,9 +60,9 @@
             <input type="number" name="lng" step="0.0001" placeholder="e.g. 32.5811" min="29" max="36">
           </div>
         </div>
-        <div style="padding:10px 12px;background:var(--green-tint);border-radius:6px;font-size:.78rem;color:var(--text-mid);margin-top:-4px;">
-          <i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
-          To get GPS coordinates: open <a href="https://www.google.com/maps" target="_blank" style="color:var(--green-mid);">Google Maps</a>, right-click the location, and copy the coordinates shown.
+        <div style="padding:10px 12px;background:var(--orange-pale,#fef2e8);border-radius:6px;font-size:.78rem;color:var(--text-mid);margin-top:-4px;">
+          <i class="fas fa-info-circle" style="color:var(--orange,#e8651a);"></i>
+          To get GPS coordinates: open <a href="https://www.google.com/maps" target="_blank" style="color:var(--orange,#e8651a);">Google Maps</a>, right-click the location, and copy the coordinates shown.
         </div>
         <div>
           <button type="submit" class="btn-sm green" style="padding:10px 20px;font-size:.88rem;">
@@ -83,9 +83,9 @@
   <div class="admin-card" style="margin-bottom:20px;">
     <div class="admin-card-header">
       <span class="admin-card-title">
-        <i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-right:6px;"></i>
+        <i class="fas fa-map-marker-alt" style="color:var(--orange,#e8651a);margin-right:6px;"></i>
         {{ region }} Region
-        <span style="margin-left:8px;background:var(--green-pale);color:var(--green-dark);padding:2px 8px;border-radius:100px;font-size:.72rem;">{{ region_dists|length }} outlet(s)</span>
+        <span style="margin-left:8px;background:var(--orange-pale,#fef2e8);color:var(--blue,#1a6abf);padding:2px 8px;border-radius:100px;font-size:.72rem;">{{ region_dists|length }} outlet(s)</span>
       </span>
     </div>
     <div style="overflow-x:auto;">
@@ -100,14 +100,14 @@
             <td style="font-size:.84rem;">{{ d.district }}</td>
             <td style="font-size:.82rem;color:var(--text-mid);max-width:180px;">{{ d.address or '—' }}</td>
             <td>
-              <a href="tel:{{ d.phone }}" style="font-size:.82rem;color:var(--green-mid);display:block;">{{ d.phone }}</a>
+              <a href="tel:{{ d.phone }}" style="font-size:.82rem;color:var(--orange,#e8651a);display:block;">{{ d.phone }}</a>
               {% if d.email %}<a href="mailto:{{ d.email }}" style="font-size:.75rem;color:var(--text-light);">{{ d.email }}</a>{% endif %}
             </td>
             <td style="font-size:.75rem;color:var(--text-light);font-family:'DM Mono',monospace;">
               {% if d.lat and d.lng %}
               {{ "%.4f"|format(d.lat) }}, {{ "%.4f"|format(d.lng) }}
               <br>
-              <a href="https://www.google.com/maps?q={{ d.lat }},{{ d.lng }}" target="_blank" style="color:var(--green-mid);font-size:.72rem;"><i class="fas fa-external-link-alt"></i> View on Maps</a>
+              <a href="https://www.google.com/maps?q={{ d.lat }},{{ d.lng }}" target="_blank" style="color:var(--orange,#e8651a);font-size:.72rem;"><i class="fas fa-external-link-alt"></i> View on Maps</a>
               {% else %}—{% endif %}
             </td>
             <td>

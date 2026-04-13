@@ -38,15 +38,15 @@
           <td style="color:var(--text-light);font-size:.78rem;">{{ r.id }}</td>
           <td>
             <strong style="font-size:.88rem;">{{ r.name }}</strong><br>
-            <a href="mailto:{{ r.email }}" style="font-size:.75rem;color:var(--green-mid);">{{ r.email }}</a><br>
+            <a href="mailto:{{ r.email }}" style="font-size:.75rem;color:var(--orange,#e8651a);">{{ r.email }}</a><br>
             {% if r.phone %}<span style="font-size:.75rem;color:var(--text-light);">{{ r.phone }}</span>{% endif %}
           </td>
-          <td style="font-size:.86rem;font-weight:600;color:var(--green-deep);max-width:140px;">{{ r.subject }}</td>
+          <td style="font-size:.86rem;font-weight:600;color:var(--blue-dark,#0d3d7a);max-width:140px;">{{ r.subject }}</td>
           <td style="font-size:.82rem;color:var(--text-mid);max-width:220px;">
             {{ r.message[:100] }}{% if r.message|length > 100 %}…{% endif %}
             <br>
-            <button onclick="toggleMessage({{ r.id }})" style="background:none;border:none;color:var(--green-mid);font-size:.75rem;cursor:pointer;padding:2px 0;">Show full ↓</button>
-            <div id="msg-{{ r.id }}" style="display:none;font-size:.82rem;color:var(--text-dark);margin-top:6px;padding:8px;background:var(--cream);border-radius:6px;border-left:3px solid var(--green-light);">{{ r.message }}</div>
+            <button onclick="toggleMessage({{ r.id }})" style="background:none;border:none;color:var(--orange,#e8651a);font-size:.75rem;cursor:pointer;padding:2px 0;">Show full ↓</button>
+            <div id="msg-{{ r.id }}" style="display:none;font-size:.82rem;color:var(--text-dark);margin-top:6px;padding:8px;background:var(--cream);border-radius:6px;border-left:3px solid var(--tan-light,#f0b850);">{{ r.message }}</div>
           </td>
           <td>
             <span class="status-badge status-{{ r.status }}">{{ r.status }}</span>
@@ -83,7 +83,7 @@
   background: var(--white); font-size: .82rem; font-weight: 600; cursor: pointer;
   font-family: 'DM Sans', sans-serif; transition: all var(--transition); color: var(--text-mid);
 }
-.req-filter-btn.active, .req-filter-btn:hover { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+.req-filter-btn.active, .req-filter-btn:hover { background: var(--orange,#e8651a); color: white; border-color: var(--orange,#e8651a); }
 </style>
 {% endblock %}
 {% block extra_scripts %}

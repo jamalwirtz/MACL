@@ -8,7 +8,7 @@
 <!-- ADD PRODUCT FORM -->
 <div class="admin-card" style="margin-bottom:24px;">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--green-mid);margin-right:6px;"></i> Add New Product</span>
+    <span class="admin-card-title"><i class="fas fa-plus-circle" style="color:var(--orange,#e8651a);margin-right:6px;"></i> Add New Product</span>
   </div>
   <div class="admin-card-body">
     <form method="POST" action="{{ url_for('admin_add_product') }}" class="admin-form" enctype="multipart/form-data">
@@ -102,7 +102,7 @@
 <!-- PRODUCTS TABLE -->
 <div class="admin-card">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-flask" style="color:var(--green-mid);margin-right:6px;"></i> All Products ({{ products|length }})</span>
+    <span class="admin-card-title"><i class="fas fa-flask" style="color:var(--orange,#e8651a);margin-right:6px;"></i> All Products ({{ products|length }})</span>
     <input type="text" id="productTableSearch" placeholder="Search…" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:.82rem;font-family:'DM Sans',sans-serif;">
   </div>
   <div style="overflow-x:auto;">
@@ -133,7 +133,7 @@
           <td style="font-size:.82rem;">{{ p.packing or '—' }}</td>
           <td>
             {% if p.stock_qty is defined %}
-            <span style="font-weight:700;font-size:.88rem;color:{% if p.stock_qty == 0 %}#e53935{% elif p.stock_qty <= p.reorder_level %}#f57c00{% else %}#2d6e35{% endif %};">
+            <span style="font-weight:700;font-size:.88rem;color:{% if p.stock_qty == 0 %}#e53935{% elif p.stock_qty <= p.reorder_level %}#f57c00{% else %}#1a6abf{% endif %};">
               {{ p.stock_qty }} {{ p.unit or '' }}
             </span>
             {% endif %}

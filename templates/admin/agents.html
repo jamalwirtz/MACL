@@ -12,7 +12,7 @@
 <!-- ADD AGENT FORM -->
 <div class="admin-card anim-fade-up delay-1" style="margin-bottom:24px;">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-user-plus" style="color:var(--green-mid);margin-right:6px;"></i> Add New Agent</span>
+    <span class="admin-card-title"><i class="fas fa-user-plus" style="color:var(--orange,#e8651a);margin-right:6px;"></i> Add New Agent</span>
     <button onclick="this.closest('.admin-card').querySelector('.admin-card-body').classList.toggle('hidden-form')" class="btn-sm gold"><i class="fas fa-chevron-down"></i> Toggle Form</button>
   </div>
   <div class="admin-card-body">
@@ -38,8 +38,8 @@
         </div>
       </div>
       <div class="admin-input-group"><label>District / Area</label><input type="text" name="district" placeholder="e.g. Kampala, Jinja…"></div>
-      <div style="padding:10px 12px;background:var(--green-tint);border-radius:8px;font-size:.78rem;color:var(--text-mid);margin-top:4px;">
-        <i class="fas fa-info-circle" style="color:var(--green-mid);"></i>
+      <div style="padding:10px 12px;background:var(--orange-pale,#fef2e8);border-radius:8px;font-size:.78rem;color:var(--text-mid);margin-top:4px;">
+        <i class="fas fa-info-circle" style="color:var(--orange,#e8651a);"></i>
         The agent will sign in at <strong>/login</strong> using their username and password. They will see the Agent Portal.
       </div>
       <div><button type="submit" class="btn-sm green" style="padding:10px 20px;"><i class="fas fa-user-plus"></i> Create Agent Account</button></div>
@@ -50,7 +50,7 @@
 <!-- AGENTS GRID -->
 <div class="admin-card anim-fade-up delay-2">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-users" style="color:var(--green-mid);margin-right:6px;"></i> All Agents ({{ agents|length }})</span>
+    <span class="admin-card-title"><i class="fas fa-users" style="color:var(--orange,#e8651a);margin-right:6px;"></i> All Agents ({{ agents|length }})</span>
     <input type="text" id="agentSearch" placeholder="Search agents…" style="padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;font-family:'DM Sans',sans-serif;">
   </div>
   <div style="overflow-x:auto;">
@@ -68,7 +68,7 @@
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
-              <div style="width:36px;height:36px;border-radius:50%;background:var(--green-dark);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;position:relative;">
+              <div style="width:36px;height:36px;border-radius:50%;background:var(--blue,#1a6abf);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;position:relative;">
                 {{ agent.name[0]|upper }}
                 <span style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;border:2px solid white;background:{% if online %}#27ae60{% elif away %}#f39c12{% else %}#bdc3c7{% endif %};"></span>
               </div>
@@ -80,18 +80,18 @@
           </td>
           <td>
             {% if agent.region %}
-            <span style="background:var(--green-pale);color:var(--green-dark);padding:3px 10px;border-radius:100px;font-size:.74rem;font-weight:600;">{{ agent.region }}</span>
+            <span style="background:var(--orange-pale,#fef2e8);color:var(--blue,#1a6abf);padding:3px 10px;border-radius:100px;font-size:.74rem;font-weight:600;">{{ agent.region }}</span>
             {% if agent.district %}<div style="font-size:.72rem;color:var(--text-light);margin-top:3px;">{{ agent.district }}</div>{% endif %}
             {% else %}<span style="color:var(--text-light);font-size:.82rem;">—</span>{% endif %}
           </td>
           <td>
-            {% if agent.phone %}<a href="tel:{{ agent.phone }}" style="font-size:.82rem;color:var(--green-mid);display:block;">{{ agent.phone }}</a>{% endif %}
+            {% if agent.phone %}<a href="tel:{{ agent.phone }}" style="font-size:.82rem;color:var(--orange,#e8651a);display:block;">{{ agent.phone }}</a>{% endif %}
             {% if agent.email %}<a href="mailto:{{ agent.email }}" style="font-size:.76rem;color:var(--text-light);">{{ agent.email }}</a>{% endif %}
           </td>
           <td>
             <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:.74rem;font-weight:700;
-              background:{% if agent.status == 'active' %}var(--green-pale){% else %}var(--border){% endif %};
-              color:{% if agent.status == 'active' %}var(--green-dark){% else %}var(--text-light){% endif %};">
+              background:{% if agent.status == 'active' %}var(--orange-pale,#fef2e8){% else %}var(--border){% endif %};
+              color:{% if agent.status == 'active' %}var(--blue,#1a6abf){% else %}var(--text-light){% endif %};">
               <i class="fas fa-circle" style="font-size:.45rem;"></i>{{ agent.status|capitalize }}
             </span>
           </td>
@@ -104,7 +104,7 @@
           </td>
           <td>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <a href="{{ url_for('admin_chat') }}#chat-{{ agent.id }}" class="btn-sm" style="background:var(--green-tint);color:var(--green-dark);" title="Chat"><i class="fas fa-comment"></i> Chat</a>
+              <a href="{{ url_for('admin_chat') }}#chat-{{ agent.id }}" class="btn-sm" style="background:var(--orange-pale,#fef2e8);color:var(--blue,#1a6abf);" title="Chat"><i class="fas fa-comment"></i> Chat</a>
               <a href="{{ url_for('agent_report', aid=agent.id) }}" class="btn-sm" style="background:#e3f2fd;color:#1565c0;" title="Download Agent Report PDF"><i class="fas fa-file-pdf"></i> Report</a>
               <form method="POST" action="{{ url_for('admin_toggle_agent', aid=agent.id) }}" style="display:inline;">
                 <button class="btn-sm gold" title="Toggle status">

@@ -667,7 +667,7 @@ if __name__=='__main__':
 
 # ── HELPER: get display image URL for a product ──────────────────────────────
 def get_product_image(product):
-    """Return the best image URL: uploaded file > URL > placeholder"""
+    """Return the best image URL: static/images > uploaded > URL > placeholder"""
     if isinstance(product, dict):
         img_file = product.get('image_file')
         img_url  = product.get('image_url', '')
@@ -675,7 +675,14 @@ def get_product_image(product):
         img_file = getattr(product, 'image_file', None)
         img_url  = getattr(product, 'image_url', '')
     if img_file:
-        return url_for('uploaded_product_image', filename=img_file)
+        # Check static/images first (product photos saved there)
+        static_path = os.path.join(os.path.dirname(__file__), 'static', 'images', img_file)
+        if os.path.exists(static_path):
+            return url_for('static', filename=f'images/{img_file}')
+        # Fall back to uploaded products folder
+        upload_path = os.path.join(UPLOAD_DIR, img_file)
+        if os.path.exists(upload_path):
+            return url_for('uploaded_product_image', filename=img_file)
     if img_url:
         return img_url
     return 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600'

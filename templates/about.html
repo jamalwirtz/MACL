@@ -22,8 +22,8 @@
         <p>We partner directly with world-class manufacturers in India, China, and Europe to bring you authentic, proven agrochemical solutions at competitive prices — with no counterfeit products, ever.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;">
           {% for stat, label in [('2020','Year Founded'),('16+','Product Lines'),('10+','Distributor Outlets'),('4','Regions Covered')] %}
-          <div style="text-align:center;padding:16px;background:var(--green-tint);border-radius:12px;border:1.5px solid var(--green-pale);">
-            <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--green-deep);">{{ stat }}</div>
+          <div style="text-align:center;padding:16px;background:var(--orange-pale,#fef2e8);border-radius:12px;border:1.5px solid var(--orange-pale,#fef2e8);">
+            <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--blue-dark,#0d3d7a);">{{ stat }}</div>
             <div style="font-size:.78rem;font-weight:600;color:var(--text-muted);margin-top:4px;">{{ label }}</div>
           </div>
           {% endfor %}
@@ -46,24 +46,147 @@
   <div class="container">
     <div class="section-header" data-reveal="up">
       <div class="section-tag"><i class="fas fa-star"></i> Our Values</div>
-      <h2 class="section-title" style="color:var(--bl-dark);">What Drives Us</h2>
+      <h2 class="section-title" style="color:var(--bl-d,#0f3d72);">What Drives Us</h2>
+      <p class="section-desc">The principles that guide everything we do at Muddo Agro Chemicals.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-      {% for icon, color, bg, title, desc in [
-        ('shield-alt','#1b5e20','#e8f5e9','Authenticity','Every product we sell is sourced directly from the manufacturer with full traceability. No counterfeit products — zero tolerance.'),
-        ('users','#1565c0','#e3f2fd','Farmer First','Our pricing, our advice, and our distribution network are all designed around what\'s best for Ugandan farmers — not just profit.'),
-        ('flask','#7b52d4','#f0eaff','Quality Assured','All products meet MAAIF registration requirements and international quality standards before they reach our shelves.'),
-        ('map-marked-alt','#c77700','#fff8e1','Nationwide Reach','From Kampala to Gulu, Jinja to Mbarara — our 10+ distributor outlets ensure farmers everywhere can access our products.'),
-        ('headset','#b71c1c','#ffebee','Expert Support','Our team provides dosage guidance, application timing, and crop-specific recommendations based on deep local knowledge.'),
-        ('handshake','#00695c','#e0f2f1','Long-term Partnerships','We build relationships, not just transactions. Our agents and distributors are partners in helping Uganda\'s agriculture thrive.'),
-      ] %}
-      <div class="why-card" data-reveal="scale" data-reveal-delay="{{ loop.index * 70 }}" style="border-top:3px solid {{ color }};">
-        <div class="why-icon" style="background:{{ bg }};color:{{ color }};"><i class="fas fa-{{ icon }}"></i></div>
-        <h3 style="color:var(--text-primary);">{{ title }}</h3>
-        <p>{{ desc }}</p>
+
+    <!-- VALUE CARDS — responsive grid on desktop, slider on mobile -->
+    <style>
+    .vals-wrap { position: relative; }
+    .vals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .val-card {
+      padding: 22px; border-radius: 14px;
+      background: var(--bg-c, #fff); border: 1.5px solid var(--bd, #e8d8c0);
+      border-top-width: 3px;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .val-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(200,100,20,.12); }
+    .val-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 14px;
+    }
+    .val-card h3 {
+      font-size: .98rem; font-weight: 800; margin-bottom: 8px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--bl-d, #0f3d72);
+    }
+    .val-card p { font-size: .84rem; color: var(--tx3, #7a5c3a); line-height: 1.72; }
+    /* dark mode */
+    [data-theme="dark"] .val-card { background: #1a1008 !important; border-color: #3a2010 !important; }
+    [data-theme="dark"] .val-card h3 { color: #f5d0a0 !important; }
+    [data-theme="dark"] .val-card p  { color: #b09070 !important; }
+
+    /* Mobile: horizontal slider — ONE card visible at a time */
+    @media (max-width: 640px) {
+      .vals-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 14px;
+        padding: 4px 4px 16px;
+        scrollbar-width: none; /* Firefox */
+      }
+      .vals-grid::-webkit-scrollbar { display: none; }
+      .val-card {
+        min-width: calc(85vw);
+        max-width: 320px;
+        scroll-snap-align: center;
+        flex-shrink: 0;
+      }
+      /* Dot navigation */
+      .vals-dots {
+        display: flex; justify-content: center; gap: 7px; margin-top: 12px;
+      }
+      .vals-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--bd, #e8d8c0); cursor: pointer;
+        transition: background .2s, transform .2s;
+        border: none; padding: 0;
+      }
+      .vals-dot.active { background: var(--or, #e8651a); transform: scale(1.3); }
+      .vals-swipe-hint {
+        text-align: center; font-size: .74rem; color: var(--tx3);
+        margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;
+      }
+    }
+    @media (min-width: 641px) {
+      .vals-dots, .vals-swipe-hint { display: none; }
+    }
+    @media (max-width: 900px) and (min-width: 641px) {
+      .vals-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    </style>
+
+    {% set cards = [
+      ('shield-alt','var(--rd-p,#fce8e2)','var(--rd,#b83a1a)','Authenticity',
+       'Every product we sell is sourced directly from the manufacturer with full traceability. No counterfeit products — zero tolerance. MAAIF-registered. Certificates available on request.'),
+      ('users','var(--bl-p,#e8f2ff)','var(--bl,#1a5fa8)','Farmer First',
+       'Our pricing, our advice, and our distribution network are designed around what&#39;s best for Ugandan farmers — not just profit. We listen, then recommend.'),
+      ('flask','var(--or-p,#fef2e8)','var(--or,#e8651a)','Quality Assured',
+       'All products meet MAAIF registration requirements and international quality standards. We source from certified manufacturers only.'),
+      ('map-marked-alt','var(--tan-p,#fdf5e0)','var(--tan,#c8922a)','Nationwide Reach',
+       'From Kampala to Gulu, Jinja to Mbarara — our 10+ distributor outlets ensure farmers everywhere in Uganda can access our products.'),
+      ('headset','var(--rd-p,#fce8e2)','var(--rd,#b83a1a)','Expert Support',
+       'Our trained team provides dosage guidance, application timing, and crop-specific recommendations based on deep knowledge of Ugandan farming conditions.'),
+      ('handshake','var(--bl-p,#e8f2ff)','var(--bl,#1a5fa8)','Long-term Partnerships',
+       'We build relationships, not just transactions. Our agents and distributors are partners in helping Uganda&#39;s agriculture thrive — season after season.'),
+    ] %}
+
+    <div class="vals-wrap">
+      <div class="vals-grid" id="valsGrid">
+        {% for icon, bg, color, title, desc in cards %}
+        <div class="val-card" style="border-top-color:{{ color }};" data-idx="{{ loop.index0 }}">
+          <div class="val-icon" style="background:{{ bg }};color:{{ color }};"><i class="fas fa-{{ icon }}"></i></div>
+          <h3>{{ title }}</h3>
+          <p>{{ desc }}</p>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+
+      <!-- Mobile dot indicators -->
+      <div class="vals-dots" id="valsDots">
+        {% for _, _, _, _, _ in cards %}
+        <button class="vals-dot {{ 'active' if loop.first else '' }}" onclick="scrollToCard({{ loop.index0 }})"></button>
+        {% endfor %}
+      </div>
+      <div class="vals-swipe-hint">
+        <i class="fas fa-chevron-left" style="font-size:.7rem;"></i>
+        Swipe to explore
+        <i class="fas fa-chevron-right" style="font-size:.7rem;"></i>
+      </div>
     </div>
+
+    <script>
+    (function(){
+      const grid = document.getElementById('valsGrid');
+      const dots = document.querySelectorAll('.vals-dot');
+      if (!grid || !dots.length || window.innerWidth > 640) return;
+
+      function scrollToCard(idx) {
+        const card = grid.querySelectorAll('.val-card')[idx];
+        if (card) card.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+      }
+
+      // Update dots on scroll
+      grid.addEventListener('scroll', () => {
+        const cards = grid.querySelectorAll('.val-card');
+        let closest = 0, minDist = Infinity;
+        cards.forEach((c, i) => {
+          const dist = Math.abs(c.getBoundingClientRect().left - grid.getBoundingClientRect().left - grid.clientWidth / 2 + c.offsetWidth / 2);
+          if (dist < minDist) { minDist = dist; closest = i; }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+      }, { passive: true });
+
+      window.scrollToCard = scrollToCard;
+    })();
+    </script>
   </div>
 </section>
 
@@ -101,7 +224,7 @@
         <button class="faq-q" onclick="toggleFaq(this)"
           style="width:100%;padding:18px 20px;text-align:left;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;font-family:'DM Sans',sans-serif;font-size:.97rem;font-weight:700;color:var(--text-primary);">
           <span>{{ q }}</span>
-          <i class="fas fa-chevron-down" style="flex-shrink:0;color:var(--green-mid);transition:transform .3s ease;font-size:.82rem;"></i>
+          <i class="fas fa-chevron-down" style="flex-shrink:0;color:var(--orange,#e8651a);transition:transform .3s ease;font-size:.82rem;"></i>
         </button>
         <div class="faq-a" style="max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1);">
           <div style="padding:0 20px 18px;font-size:.95rem;color:var(--text-secondary);line-height:1.78;border-top:1px solid var(--border-color);">
@@ -134,7 +257,7 @@ function toggleFaq(btn) {
   if (!isOpen) {
     ans.style.maxHeight = ans.scrollHeight + 'px';
     icon.style.transform = 'rotate(180deg)';
-    item.style.borderColor = 'var(--green-mid)';
+    item.style.borderColor = 'var(--orange,#e8651a)';
   }
 }
 // Open first FAQ by default

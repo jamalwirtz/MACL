@@ -6,348 +6,453 @@
 <title>Staff Sign In — Muddo Agro Chemicals LTD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_theme.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Apply saved theme instantly before paint -->
 <script>(function(){try{var t=localStorage.getItem('muddo-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
 
-/* ── TWO-PANEL LAYOUT ─────────────────────────────────────── */
-.login-wrap {
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  height: 100vh;
-  overflow: hidden;
+<style>
+/* ─── CSS RESET & TOKENS ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --or: #e8651a; --or-d: #c04e0e; --or-l: #f5892a; --or-p: #fef2e8;
+  --tan: #c8922a; --tan-l: #e8b84a;
+  --bl: #1a5fa8; --bl-d: #0f3d72;
+  --rd: #b83a1a; --rd-d: #8a2408;
+  --gr: #5a8a3a; --gr-d: #3a5a80; --gr-p: #eef5e8;
+  --bg: #fdf8f2; --bg-c: #ffffff; --bg-a: #faf4ec; --bg-i: #ffffff;
+  --tx1: #1c1008; --tx2: #3d2a14; --tx3: #7a5c3a; --tx4: #a08060;
+  --bd: #e8d8c0; --bd2: #f0e4d0;
+  --sh: 0 8px 32px rgba(200,100,20,.18);
+}
+[data-theme="dark"] {
+  --bg: #0f0806; --bg-c: #1a1008; --bg-a: #140c06; --bg-i: #22120a;
+  --tx1: #f5ede4; --tx2: #ddc8b0; --tx3: #b09070; --tx4: #886858;
+  --bd: #3a2010; --bd2: #2e1808;
+  --or-p: #2a1408;
 }
 
-/* ── LEFT: BUSINESS CARD / COMPANY POSTER ─────────────────── */
+html, body {
+  height: 100%; min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--tx1);
+}
+
+/* ─── TWO-PANEL LAYOUT ─────────────────────────────────────── */
+.login-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ─── LEFT PANEL ─ BUSINESS CARD ──────────────────────────── */
 .biz-panel {
   position: relative;
-  background: #0d2b14;
+  background: #1c0e06;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-.biz-img {
+.biz-bg-img {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: cover; object-position: center;
+  opacity: .35;
   display: block;
-  opacity: .92;
 }
+/* Warm dark overlay */
 .biz-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(
-    180deg,
-    rgba(13,43,20,.72) 0%,
-    rgba(13,43,20,.28) 40%,
-    rgba(13,43,20,.82) 100%
+    160deg,
+    rgba(28,14,6,.85) 0%,
+    rgba(28,14,6,.55) 45%,
+    rgba(28,14,6,.92) 100%
   );
 }
-.biz-content {
-  position: absolute; inset: 0;
+.biz-inner {
+  position: relative; z-index: 2;
   display: flex; flex-direction: column;
-  padding: 32px 36px;
+  height: 100%; padding: 32px 36px;
   justify-content: space-between;
 }
 
-/* Top brand strip */
-.biz-brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+/* Top: logo + tagline */
+.biz-top {
+  display: flex; align-items: center; gap: 14px;
 }
 .biz-logo {
-  height: 52px; width: auto;
-  max-width: 240px;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,.5));
+  height: 52px; width: 52px;
+  border-radius: 12px; object-fit: contain;
+  background: #fff; padding: 5px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.4);
+  flex-shrink: 0;
 }
-.biz-tagline {
-  font-size: .72rem; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: #e8c070;
-  font-family: 'DM Sans', sans-serif;
-  border-left: 2px solid rgba(232,192,112,.4);
-  padding-left: 12px;
+.biz-top-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: .95rem; font-weight: 900;
+  color: #fff; line-height: 1.2;
+}
+.biz-top-text p {
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tan-l); margin-top: 2px;
 }
 
-/* Middle: floating company card */
+/* Centre: floating business card */
 .biz-card {
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.09);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.16);
   border-radius: 20px;
-  padding: 24px 28px;
-  max-width: 460px;
+  padding: 26px 30px;
+  max-width: 440px;
 }
 .biz-card-logo {
-  height: 56px; width: auto; max-width: 260px;
-  object-fit: contain; margin-bottom: 14px; display: block;
+  height: 40px; width: auto; max-width: 200px;
+  object-fit: contain; display: block; margin-bottom: 16px;
+  /* make logo readable on dark background */
+  background: rgba(255,255,255,.9); border-radius: 8px; padding: 5px 10px;
 }
 .biz-card h2 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.3rem; font-weight: 900;
-  color: white; line-height: 1.2; margin-bottom: 4px;
+  font-size: 1.25rem; font-weight: 900;
+  color: #fff; line-height: 1.2; margin-bottom: 3px;
 }
-.biz-card .sub {
-  font-size: .78rem; color: #e8c070;
-  font-weight: 700; letter-spacing: .06em;
-  text-transform: uppercase; margin-bottom: 14px;
+.biz-card .biz-sub {
+  font-size: .72rem; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--tan-l); margin-bottom: 14px;
 }
-.biz-card p {
-  font-size: .84rem; color: rgba(255,255,255,.78);
-  line-height: 1.68; margin-bottom: 16px;
+.biz-card .biz-desc {
+  font-size: .83rem; color: rgba(255,255,255,.8);
+  line-height: 1.72; margin-bottom: 18px;
 }
-.biz-details {
-  display: flex; flex-direction: column; gap: 8px;
-}
+.biz-details { display: flex; flex-direction: column; gap: 9px; }
 .biz-detail {
   display: flex; align-items: flex-start; gap: 10px;
-  font-size: .8rem; color: rgba(255,255,255,.82);
+  font-size: .79rem; color: rgba(255,255,255,.82);
+  line-height: 1.45;
 }
 .biz-detail i {
-  color: #e8651a; width: 14px; margin-top: 2px; flex-shrink: 0;
+  color: var(--or-l); width: 14px;
+  margin-top: 2px; flex-shrink: 0; font-size: .82rem;
 }
-.biz-products {
-  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
+/* Product chips */
+.biz-chips {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
 }
-.biz-product-tag {
-  padding: 3px 10px; border-radius: 100px; font-size: .68rem; font-weight: 700;
-  font-family: 'DM Sans', sans-serif; letter-spacing: .04em;
+.biz-chip {
+  padding: 3px 10px; border-radius: 100px;
+  font-size: .67rem; font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
 }
-.tag-green  { background: rgba(45,110,53,.35); color: #90d89a; }
-.tag-orange { background: rgba(232,101,26,.35); color: #ffb07a; }
-.tag-blue   { background: rgba(26,95,168,.35);  color: #90c4ff; }
-.tag-tan    { background: rgba(200,160,80,.35);  color: #f5d090; }
+.chip-o { background: rgba(232,101,26,.3); color: #ffb07a; }
+.chip-g { background: rgba(90,138,58,.3);  color: #a8e890; }
+.chip-b { background: rgba(26,95,168,.3);  color: #90c4ff; }
+.chip-t { background: rgba(200,146,42,.3); color: #f5d090; }
 
-/* Bottom: back link + MAAIF */
-.biz-footer {
+/* Bottom bar */
+.biz-bottom {
   display: flex; align-items: center; justify-content: space-between;
 }
 .biz-back {
   display: inline-flex; align-items: center; gap: 7px;
-  color: rgba(255,255,255,.65); font-size: .8rem; font-weight: 600;
-  text-decoration: none; font-family: 'DM Sans', sans-serif;
-  transition: color .2s;
+  color: rgba(255,255,255,.6); font-size: .8rem; font-weight: 600;
+  text-decoration: none; transition: color .2s;
 }
-.biz-back:hover { color: white; }
-.biz-maaif {
-  font-size: .7rem; font-weight: 700; letter-spacing: .08em;
-  color: #e8c070; text-transform: uppercase;
+.biz-back:hover { color: #fff; }
+.biz-badge {
+  font-size: .68rem; font-weight: 800; letter-spacing: .08em;
+  color: var(--tan-l); text-transform: uppercase;
   border: 1px solid rgba(232,192,112,.35);
-  padding: 4px 10px; border-radius: 100px;
+  padding: 4px 11px; border-radius: 100px;
 }
 
-/* ── RIGHT: SIGN-IN FORM ───────────────────────────────────── */
+/* ─── RIGHT PANEL ─ FORM ───────────────────────────────────── */
 .form-panel {
-  background: var(--cream, #fdf9f4);
+  background: var(--bg);
   overflow-y: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 44px;
+  padding: 40px 48px;
+  min-height: 100vh;
 }
-[data-theme="dark"] .form-panel { background: #0f0a05; }
+.form-box { width: 100%; max-width: 390px; }
 
-.form-box { width: 100%; max-width: 380px; }
-
-/* Logo row */
-.form-logo-row {
+/* Logo bar */
+.form-logo-bar {
   display: flex; align-items: center; gap: 12px;
-  margin-bottom: 28px;
+  margin-bottom: 30px;
 }
-.form-logo {
-  height: 38px; width: auto; max-width: 180px; object-fit: contain;
+.form-logo-img {
+  height: 40px; width: 40px;
+  border-radius: 10px; object-fit: contain;
+  background: #fff; padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  flex-shrink: 0;
 }
 .form-logo-divider {
-  height: 28px; width: 1px; background: var(--border-color); flex-shrink: 0;
+  width: 1px; height: 28px;
+  background: var(--bd); flex-shrink: 0;
 }
-.form-logo-staff {
-  font-size: .72rem; font-weight: 800; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--text-muted);
-  font-family: 'DM Sans', sans-serif;
+.form-logo-label {
+  font-size: .7rem; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tx3);
 }
+.theme-toggle-btn {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  border: 1.5px solid var(--bd);
+  background: var(--bg-c); color: var(--tx3);
+  font-size: .74rem; font-weight: 600;
+  cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif;
+}
+.theme-toggle-btn:hover { border-color: var(--or); color: var(--or); }
+.icon-moon { display: inline; }
+.icon-sun  { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun  { display: inline; }
+[data-theme="dark"] .theme-toggle-btn { background: #1a1008; border-color: #3a2010; color: #b09070; }
 
+/* Heading */
 .form-heading {
   font-family: 'Playfair Display', serif;
   font-size: 2rem; font-weight: 900;
-  color: var(--text-primary, #1a1008);
-  margin-bottom: 6px;
+  color: var(--tx1); margin-bottom: 6px;
 }
 .form-sub {
-  color: var(--text-muted, #7a5c40); font-size: .9rem; line-height: 1.6;
-  margin-bottom: 26px; font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; color: var(--tx3); line-height: 1.62;
+  margin-bottom: 24px;
 }
+
+/* Flash messages */
+.flash {
+  display: flex; align-items: center; gap: 9px;
+  padding: 12px 15px; border-radius: 10px;
+  font-size: .86rem; font-weight: 600;
+  margin-bottom: 18px; line-height: 1.45;
+}
+.flash-error {
+  background: #fce8e2; border: 1.5px solid #f0a898; color: var(--rd-d);
+}
+.flash-success {
+  background: var(--gr-p); border: 1.5px solid #a0d098; color: var(--sage-dark,#3a5a20);
+}
+[data-theme="dark"] .flash-error { background: #280e08; border-color: #5a1e10; color: #ff9070; }
+[data-theme="dark"] .flash-success { background: #0e1e0a; border-color: #2a5018; color: #90d880; }
 
 /* Role tabs */
 .role-tabs {
   display: grid; grid-template-columns: 1fr 1fr;
-  border: 1.5px solid var(--border-color, #e8d8c4); border-radius: 11px;
+  border: 1.5px solid var(--bd); border-radius: 12px;
   overflow: hidden; margin-bottom: 22px;
+  background: var(--bg-a);
 }
+[data-theme="dark"] .role-tabs { background: #1a1008; border-color: #3a2010; }
 .role-tab {
-  padding: 10px 12px; text-align: center; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; font-size: .84rem; font-weight: 700;
-  color: var(--text-muted, #7a5c40);
-  background: var(--bg-alt, #faf4ee);
-  border: none; transition: all .25s ease; border-radius: 0;
-}
-.role-tab.active {
-  background: var(--macl-orange, #e8651a); color: white;
-}
-.role-tab:first-child { border-right: 1px solid var(--border-color); }
-[data-theme="dark"] .role-tab { background: #1a1008; color: #a08060; }
-[data-theme="dark"] .role-tab.active { background: var(--macl-orange); color: white; }
-
-/* Inputs */
-.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.field label {
-  font-size: .8rem; font-weight: 700; color: var(--text-secondary, #3d2a1a);
+  padding: 11px; text-align: center; cursor: pointer;
   font-family: 'DM Sans', sans-serif;
+  font-size: .84rem; font-weight: 700;
+  color: var(--tx3); background: transparent;
+  border: none; transition: all .25s;
 }
-.field-input-wrap { position: relative; }
-.field-icon {
-  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
-  color: var(--text-muted); font-size: .82rem; pointer-events: none;
+.role-tab:first-child { border-right: 1px solid var(--bd); }
+[data-theme="dark"] .role-tab { color: #b09070; border-color: #3a2010; }
+.role-tab.active {
+  background: var(--or); color: #fff;
 }
-.field input {
-  width: 100%; padding: 11px 14px 11px 38px;
-  border: 1.5px solid var(--border-color, #e8d8c4); border-radius: 9px;
-  font-size: .92rem; font-family: 'DM Sans', sans-serif;
-  background: var(--bg-input, white); color: var(--text-primary, #1a1008);
-  transition: all .2s ease;
-}
-.field input:focus {
-  outline: none;
-  border-color: var(--macl-orange, #e8651a);
-  box-shadow: 0 0 0 3px rgba(232,101,26,.1);
-}
-[data-theme="dark"] .field input { background: #261a0c; border-color: #3a2810; color: #f5ede0; }
-.pw-eye {
-  position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer;
-  color: var(--text-muted); font-size: .85rem; transition: color .2s;
-}
-.pw-eye:hover { color: var(--macl-orange); }
+.role-tab i { margin-right: 6px; }
 
-/* Submit */
+/* Input fields */
+.field { margin-bottom: 15px; }
+.field label {
+  display: block; font-size: .8rem; font-weight: 700;
+  color: var(--tx2); margin-bottom: 5px;
+}
+[data-theme="dark"] .field label { color: #ddc8b0; }
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 13px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--tx4); font-size: .82rem; pointer-events: none;
+}
+[data-theme="dark"] .input-icon { color: #886858; }
+.field input {
+  width: 100%; padding: 12px 14px 12px 38px;
+  border: 1.5px solid var(--bd); border-radius: 10px;
+  font-size: .93rem; font-family: 'DM Sans', sans-serif;
+  background: var(--bg-i); color: var(--tx1);
+  transition: border-color .2s, box-shadow .2s;
+}
+[data-theme="dark"] .field input {
+  background: #22120a; border-color: #3a2010; color: #f5ede4;
+}
+.field input::placeholder { color: var(--tx4); }
+[data-theme="dark"] .field input::placeholder { color: #886858; }
+.field input:focus {
+  outline: none; border-color: var(--or);
+  box-shadow: 0 0 0 3px rgba(232,101,26,.12);
+}
+.pw-toggle {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--tx4); font-size: .85rem; transition: color .2s; padding: 4px;
+}
+.pw-toggle:hover { color: var(--or); }
+
+/* Submit button */
 .submit-btn {
-  width: 100%; padding: 13px; border: none; border-radius: 10px;
-  background: linear-gradient(135deg, #e8651a, #c04e0e);
-  color: white; font-size: .96rem; font-weight: 700;
-  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  width: 100%; padding: 13px; border: none; border-radius: 11px;
+  background: linear-gradient(135deg, var(--or) 0%, var(--or-d) 100%);
+  color: #fff; font-size: .96rem; font-weight: 800;
+  font-family: 'DM Sans', sans-serif; cursor: pointer; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 9px;
-  transition: all .3s ease; margin-top: 6px; position: relative; overflow: hidden;
+  transition: transform .25s, box-shadow .25s; margin-top: 8px;
+  position: relative; overflow: hidden;
+}
+.submit-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 60%);
+  pointer-events: none;
 }
 .submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(232,101,26,.4);
+  box-shadow: 0 10px 28px rgba(232,101,26,.45);
 }
+.submit-btn:active { transform: translateY(0); }
 
-/* Demo creds */
+/* Demo credentials box */
 .demo-box {
-  margin-top: 20px; padding: 14px 16px;
-  background: var(--bg-card, white); border: 1.5px solid var(--border-color);
-  border-radius: 12px;
+  margin-top: 22px; padding: 15px 17px;
+  background: var(--bg-c); border: 1.5px solid var(--bd); border-radius: 13px;
 }
-[data-theme="dark"] .demo-box { background: #1f1408; border-color: #3a2810; }
-.demo-title {
-  font-size: .68rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--text-muted); margin-bottom: 10px;
-  font-family: 'DM Sans', sans-serif;
+[data-theme="dark"] .demo-box { background: #1a1008; border-color: #3a2010; }
+.demo-label {
+  font-size: .67rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--tx3); margin-bottom: 11px;
+  display: flex; align-items: center; gap: 6px;
 }
+[data-theme="dark"] .demo-label { color: #b09070; }
+.demo-label i { color: var(--or); }
 .demo-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 12px; border-radius: 8px; cursor: pointer; margin-bottom: 6px;
-  border: 1.5px solid var(--border-color); background: var(--bg-alt);
-  transition: all .25s ease; font-family: 'DM Sans', sans-serif;
+  padding: 10px 13px; border-radius: 9px; cursor: pointer;
+  border: 1.5px solid var(--bd); background: var(--bg-a);
+  margin-bottom: 7px; transition: all .22s; font-family: 'DM Sans', sans-serif;
 }
 .demo-row:last-child { margin-bottom: 0; }
-.demo-row:hover { border-color: var(--macl-orange); background: var(--macl-orange-pale, #fef0e4); transform: translateX(4px); }
-[data-theme="dark"] .demo-row { background: #261a0c; border-color: #3a2810; }
-[data-theme="dark"] .demo-row:hover { background: #3a1e08; border-color: var(--macl-orange); }
-.demo-name { font-size: .82rem; font-weight: 700; color: var(--text-primary); }
-.demo-cred { font-size: .72rem; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
-.demo-arrow { color: var(--macl-orange); font-size: .8rem; transition: transform .2s; }
-.demo-row:hover .demo-arrow { transform: translateX(4px); }
-
-/* Flash */
-.flash-box {
-  padding: 11px 14px; border-radius: 10px;
-  font-size: .86rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
-  display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+.demo-row:hover {
+  border-color: var(--or);
+  background: var(--or-p);
+  transform: translateX(4px);
 }
-.flash-error   { background: #fce8e2; border: 1.5px solid #f0b0a0; color: #b83a1a; }
-.flash-success { background: var(--macl-green-pale); border: 1.5px solid #a5d6a7; color: #1a4a23; }
-[data-theme="dark"] .flash-error   { background: #2a0f08; border-color: #5a2010; color: #ff9070; }
-[data-theme="dark"] .flash-success { background: #1a2e1a; border-color: #2a4a2a; color: #90d89a; }
-
-/* Theme toggle */
-.theme-pill {
-  margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 11px; border-radius: 100px;
-  border: 1.5px solid var(--border-color);
-  background: var(--bg-card); color: var(--text-muted);
-  font-size: .76rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: all .2s;
+[data-theme="dark"] .demo-row { background: #220e06; border-color: #3a2010; }
+[data-theme="dark"] .demo-row:hover { background: #2e1408; border-color: var(--or); }
+.demo-row-name {
+  font-size: .83rem; font-weight: 700; color: var(--tx1);
+  display: flex; align-items: center; gap: 7px; margin-bottom: 2px;
 }
-.theme-pill:hover { border-color: var(--macl-orange); color: var(--macl-orange); }
-.theme-pill .sun  { display: none; }
-.theme-pill .moon { display: inline; }
-[data-theme="dark"] .theme-pill .sun  { display: inline; }
-[data-theme="dark"] .theme-pill .moon { display: none; }
-[data-theme="dark"] .theme-pill { background: #1f1408; border-color: #3a2810; color: #a08060; }
+[data-theme="dark"] .demo-row-name { color: #f5ede4; }
+.demo-row-cred {
+  font-size: .71rem; color: var(--tx3); font-family: 'DM Mono', monospace;
+}
+[data-theme="dark"] .demo-row-cred { color: #b09070; }
+.demo-row-arrow { color: var(--or); font-size: .82rem; transition: transform .22s; flex-shrink: 0; }
+.demo-row:hover .demo-row-arrow { transform: translateX(4px); }
 
-/* Theme FAB for mobile */
-.theme-fab { position: fixed; bottom: 24px; right: 24px; z-index: 9999; width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 16px rgba(0,0,0,.2); background: var(--macl-orange); color: white; transition: all .3s ease; }
-.theme-fab:hover { transform: scale(1.1); }
-.theme-fab .fab-moon { display: block; }
-.theme-fab .fab-sun  { display: none; }
-[data-theme="dark"] .theme-fab .fab-moon { display: none; }
-[data-theme="dark"] .theme-fab .fab-sun  { display: block; }
+/* Divider */
+.form-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 18px 0; color: var(--tx4); font-size: .75rem;
+}
+.form-divider::before, .form-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--bd);
+}
 
-/* Responsive */
-@media (max-width: 800px) {
-  html,body { overflow: auto; }
-  .login-wrap { grid-template-columns: 1fr; height: auto; }
-  .biz-panel { height: 260px; }
-  .biz-card { display: none; }
-  .form-panel { padding: 32px 24px; min-height: calc(100vh - 260px); }
+/* ─── MOBILE RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 820px) {
+  .login-wrap {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .biz-panel { height: 240px; min-height: 240px; }
+  .biz-card { display: none; } /* hide on mobile — too cramped */
+  .biz-inner { padding: 22px 24px; }
+  .form-panel { padding: 32px 24px; min-height: auto; }
+  .form-box { max-width: 100%; }
+}
+@media (max-width: 400px) {
+  .biz-panel { height: 190px; min-height: 190px; }
+  .form-panel { padding: 24px 18px; }
+  .form-heading { font-size: 1.65rem; }
+}
+
+/* ─── FLOATING THEME FAB (mobile) ──────────────────────────── */
+.theme-fab {
+  position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+  width: 46px; height: 46px; border-radius: 50%; border: none;
+  background: var(--or); color: #fff;
+  font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(232,101,26,.45);
+  transition: transform .25s, box-shadow .25s;
+}
+.theme-fab:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(232,101,26,.55); }
+.fab-moon { display: block; }
+.fab-sun  { display: none; }
+[data-theme="dark"] .fab-moon { display: none; }
+[data-theme="dark"] .fab-sun  { display: block; }
+
+/* ─── KEYFRAME: ripple ─────────────────────────────────────── */
+@keyframes rippleEffect {
+  to { transform: scale(28); opacity: 0; }
 }
 </style>
 </head>
 <body>
+
 <div class="login-wrap">
 
-  <!-- ══ LEFT PANEL: Company Business Card ══════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════════
+       LEFT PANEL — Company Business Card
+  ══════════════════════════════════════════════ -->
   <div class="biz-panel">
-    <img class="biz-img"
+    <!-- Background photo -->
+    <img class="biz-bg-img"
          src="{{ url_for('static', filename='images/company_banner.jpg') }}"
-         alt="Muddo Agro Chemicals LTD">
+         alt="Muddo Agro Chemicals LTD"
+         onerror="this.style.opacity='0'">
+    <!-- Overlay -->
     <div class="biz-overlay"></div>
 
-    <div class="biz-content">
-
-      <!-- Top brand strip -->
-      <div class="biz-brand">
+    <div class="biz-inner">
+      <!-- Top: compact logo + name -->
+      <div class="biz-top">
         <img class="biz-logo"
              src="{{ url_for('static', filename='images/logo_macl.png') }}"
-             alt="Muddo Agro Chemicals LTD">
-        <span class="biz-tagline">Staff Portal</span>
+             alt="MACL">
+        <div class="biz-top-text">
+          <h1>Muddo Agro<br>Chemicals LTD</h1>
+          <p>Staff Portal</p>
+        </div>
       </div>
 
-      <!-- Centre: floating company card (business card) -->
+      <!-- Centre: floating business card -->
       <div class="biz-card">
         <img class="biz-card-logo"
              src="{{ url_for('static', filename='images/logo_macl.png') }}"
-             alt="MACL">
+             alt="MACL"
+             onerror="this.style.display='none'">
         <h2>Muddo Agro Chemicals LTD</h2>
-        <div class="sub">MAAIF-Registered Distributor</div>
-        <p>
-          Uganda's trusted distributor of high-quality agricultural chemicals — pesticides, herbicides, fungicides, fertilizers and spraying equipment. Serving farmers across all four regions since 2020.
+        <div class="biz-sub">MAAIF-Registered Distributor · Est. 2020</div>
+        <p class="biz-desc">
+          Uganda's trusted distributor of high-quality agricultural chemicals — pesticides, herbicides, fungicides, fertilizers and spraying equipment. Serving farmers across all four regions since 2020. Genuine products. Expert advice. Nationwide reach.
         </p>
         <div class="biz-details">
           <div class="biz-detail">
@@ -356,7 +461,7 @@ html,body{height:100%;overflow:hidden;}
           </div>
           <div class="biz-detail">
             <i class="fas fa-phone"></i>
-            <span>+256 772 507582 &nbsp;/&nbsp; +256 702 507582 &nbsp;/&nbsp; +256 772 971620</span>
+            <span>+256 772 507582 &nbsp;·&nbsp; +256 702 507582 &nbsp;·&nbsp; +256 772 971620</span>
           </div>
           <div class="biz-detail">
             <i class="fas fa-envelope"></i>
@@ -364,181 +469,238 @@ html,body{height:100%;overflow:hidden;}
           </div>
           <div class="biz-detail">
             <i class="fab fa-facebook"></i>
-            <span>MUDDO AGRO Chemicals LTD</span>
+            <span>MUDDO AGRO Chemicals LTD on Facebook</span>
           </div>
         </div>
-        <div class="biz-products">
-          <span class="biz-product-tag tag-orange">Herbicides</span>
-          <span class="biz-product-tag tag-green">Pesticides</span>
-          <span class="biz-product-tag tag-blue">Fungicides</span>
-          <span class="biz-product-tag tag-tan">Fertilizers</span>
-          <span class="biz-product-tag tag-orange">MD Maize Plus</span>
-          <span class="biz-product-tag tag-green">Muddosate</span>
-          <span class="biz-product-tag tag-blue">MD FOS</span>
-          <span class="biz-product-tag tag-tan">Top Fenos</span>
+        <div class="biz-chips">
+          <span class="biz-chip chip-g">Pesticides</span>
+          <span class="biz-chip chip-o">Herbicides</span>
+          <span class="biz-chip chip-b">Fungicides</span>
+          <span class="biz-chip chip-t">Fertilizers</span>
+          <span class="biz-chip chip-g">MD FOS</span>
+          <span class="biz-chip chip-o">Muddosate</span>
+          <span class="biz-chip chip-b">Toplaxyl-M</span>
+          <span class="biz-chip chip-t">Maize Plus</span>
         </div>
       </div>
 
-      <!-- Bottom -->
-      <div class="biz-footer">
+      <!-- Bottom: back link + MAAIF badge -->
+      <div class="biz-bottom">
         <a href="{{ url_for('index') }}" class="biz-back">
           <i class="fas fa-arrow-left"></i> Back to Website
         </a>
-        <span class="biz-maaif"><i class="fas fa-certificate"></i> MAAIF Registered</span>
+        <span class="biz-badge"><i class="fas fa-certificate"></i> MAAIF Registered</span>
       </div>
-
     </div>
   </div>
 
-  <!-- ══ RIGHT PANEL: Sign-In Form ═════════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════════
+       RIGHT PANEL — Sign-In Form
+  ══════════════════════════════════════════════ -->
   <div class="form-panel">
     <div class="form-box">
 
-      <!-- Logo + Staff label -->
-      <div class="form-logo-row">
-        <img class="form-logo"
+      <!-- Logo + label row -->
+      <div class="form-logo-bar">
+        <img class="form-logo-img"
              src="{{ url_for('static', filename='images/logo_macl.png') }}"
-             alt="Muddo Agro">
+             alt="MACL"
+             onerror="this.style.display='none'">
         <div class="form-logo-divider"></div>
-        <span class="form-logo-staff">Staff Access</span>
-        <button class="theme-pill" onclick="toggleTheme()" title="Toggle dark/light">
-          <i class="fas fa-moon moon"></i>
-          <i class="fas fa-sun sun"></i>
+        <span class="form-logo-label">Staff Access</span>
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+          <i class="fas fa-moon icon-moon"></i>
+          <i class="fas fa-sun icon-sun"></i>
+          <span class="icon-moon">Dark</span>
+          <span class="icon-sun" style="display:none;">Light</span>
         </button>
       </div>
 
       <h2 class="form-heading">Welcome Back</h2>
-      <p class="form-sub">Sign in to your admin or field agent account.</p>
+      <p class="form-sub">Sign in to your admin dashboard or field agent portal.</p>
 
       <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}{% for cat, msg in messages %}
-          <div class="flash-box flash-{{ cat }}">
-            <i class="fas {{ 'fa-exclamation-circle' if cat=='error' else 'fa-check-circle' }}"></i>
-            {{ msg|safe }}
-          </div>
-        {% endfor %}{% endif %}
+        {% if messages %}
+          {% for cat, msg in messages %}
+            <div class="flash flash-{{ cat }}">
+              <i class="fas {{ 'fa-exclamation-circle' if cat == 'error' else 'fa-check-circle' }}"></i>
+              <span>{{ msg | safe }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
       {% endwith %}
 
-      <!-- Role toggle -->
+      <!-- Role selector -->
       <div class="role-tabs" role="tablist">
-        <button class="role-tab active" id="tab-admin" onclick="switchRole('admin')" role="tab">
-          <i class="fas fa-shield-alt" style="margin-right:6px;"></i>Administrator
+        <button class="role-tab active" id="tab-admin" onclick="switchRole('admin')" role="tab" aria-selected="true">
+          <i class="fas fa-shield-alt"></i>Administrator
         </button>
-        <button class="role-tab" id="tab-agent" onclick="switchRole('agent')" role="tab">
-          <i class="fas fa-user-tie" style="margin-right:6px;"></i>Field Agent
+        <button class="role-tab" id="tab-agent" onclick="switchRole('agent')" role="tab" aria-selected="false">
+          <i class="fas fa-user-tie"></i>Field Agent
         </button>
       </div>
 
-      <!-- Login form -->
-      <form method="POST" action="{{ url_for('login') }}" id="loginForm" novalidate>
+      <!-- THE LOGIN FORM -->
+      <form method="POST" action="{{ url_for('login') }}" id="loginForm">
         <input type="hidden" name="role" id="roleInput" value="admin">
 
         <div class="field">
           <label for="username">Username</label>
-          <div class="field-input-wrap">
-            <i class="fas fa-user field-icon"></i>
+          <div class="input-wrap">
+            <i class="fas fa-user input-icon"></i>
             <input type="text" id="username" name="username"
-                   placeholder="Enter your username" required autocomplete="username">
+                   placeholder="Enter your username"
+                   required autocomplete="username"
+                   value="{{ request.form.get('username', '') }}">
           </div>
         </div>
 
         <div class="field">
           <label for="password">Password</label>
-          <div class="field-input-wrap">
-            <i class="fas fa-lock field-icon"></i>
+          <div class="input-wrap">
+            <i class="fas fa-lock input-icon"></i>
             <input type="password" id="password" name="password"
-                   placeholder="••••••••" required autocomplete="current-password">
-            <button type="button" class="pw-eye" onclick="togglePwd()">
+                   placeholder="••••••••"
+                   required autocomplete="current-password">
+            <button type="button" class="pw-toggle" onclick="togglePwd()" aria-label="Show/hide password">
               <i class="fas fa-eye" id="eyeIcon"></i>
             </button>
           </div>
         </div>
 
-        <button type="submit" class="submit-btn">
-          <i class="fas fa-sign-in-alt"></i> Sign In
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In</span>
         </button>
       </form>
 
-      <!-- Demo credentials -->
+      <div class="form-divider">Demo Credentials</div>
+
+      <!-- Demo credentials — click to autofill -->
       <div class="demo-box">
-        <div class="demo-title"><i class="fas fa-key" style="margin-right:5px;color:var(--macl-orange);"></i>Demo Credentials — Click to Auto-fill</div>
-        <div class="demo-row" onclick="fillCreds('admin','muddo@admin2024','admin')">
+        <div class="demo-label"><i class="fas fa-key"></i>Click to autofill &amp; sign in</div>
+
+        <div class="demo-row" onclick="quickLogin('admin','muddo@admin2024','admin')">
           <div>
-            <div class="demo-name"><i class="fas fa-shield-alt" style="color:#1a5fa8;margin-right:6px;"></i>Administrator</div>
-            <div class="demo-cred">admin / muddo@admin2024</div>
+            <div class="demo-row-name">
+              <i class="fas fa-shield-alt" style="color:var(--bl);"></i>
+              Administrator
+            </div>
+            <div class="demo-row-cred">admin &nbsp;/&nbsp; muddo@admin2024</div>
           </div>
-          <i class="fas fa-arrow-right demo-arrow"></i>
+          <i class="fas fa-arrow-right demo-row-arrow"></i>
         </div>
-        <div class="demo-row" onclick="fillCreds('alice','agent@2024','agent')">
+
+        <div class="demo-row" onclick="quickLogin('alice','agent@2024','agent')">
           <div>
-            <div class="demo-name"><i class="fas fa-user-tie" style="color:#e8651a;margin-right:6px;"></i>Field Agent — Alice</div>
-            <div class="demo-cred">alice / agent@2024</div>
+            <div class="demo-row-name">
+              <i class="fas fa-user-tie" style="color:var(--or);"></i>
+              Field Agent — Alice
+            </div>
+            <div class="demo-row-cred">alice &nbsp;/&nbsp; agent@2024</div>
           </div>
-          <i class="fas fa-arrow-right demo-arrow"></i>
+          <i class="fas fa-arrow-right demo-row-arrow"></i>
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
+    </div><!-- /form-box -->
+  </div><!-- /form-panel -->
 
-<!-- Floating theme toggle FAB -->
-<button class="theme-fab" onclick="toggleTheme()" aria-label="Toggle theme">
+</div><!-- /login-wrap -->
+
+<!-- Floating theme toggle (visible on mobile when form panel scroll hides the top button) -->
+<button class="theme-fab" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
   <i class="fas fa-moon fab-moon"></i>
   <i class="fas fa-sun fab-sun"></i>
 </button>
 
-<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 <script>
+/* ── THEME TOGGLE ── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  try { localStorage.setItem('muddo-theme', next); } catch(e) {}
+  // Sync the "Light/Dark" button text
+  document.querySelectorAll('.icon-sun, .icon-moon').forEach(el => {
+    el.style.display = (el.classList.contains('icon-sun') ? next === 'dark' : next === 'light') ? 'inline' : 'none';
+  });
+}
+
+/* ── ROLE SWITCH ── */
 function switchRole(role) {
-  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + role).classList.add('active');
+  document.querySelectorAll('.role-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  const tab = document.getElementById('tab-' + role);
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected', 'true');
   document.getElementById('roleInput').value = role;
   document.getElementById('username').focus();
 }
 
-function fillCreds(user, pass, role) {
-  // Typewriter fill effect
+/* ── PASSWORD VISIBILITY ── */
+function togglePwd() {
+  const inp = document.getElementById('password');
+  const ico = document.getElementById('eyeIcon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  ico.className = inp.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+
+/* ── QUICK LOGIN (fill + submit) ── */
+function quickLogin(user, pass, role) {
+  switchRole(role);
   const uEl = document.getElementById('username');
   const pEl = document.getElementById('password');
   uEl.value = ''; pEl.value = '';
-  switchRole(role);
+
+  // Typewriter animation, then auto-submit
   let i = 0;
-  const typeUser = setInterval(() => {
+  const t1 = setInterval(() => {
     uEl.value += user[i++];
     if (i >= user.length) {
-      clearInterval(typeUser);
+      clearInterval(t1);
       let j = 0;
-      const typePass = setInterval(() => {
+      const t2 = setInterval(() => {
         pEl.value += pass[j++];
-        if (j >= pass.length) clearInterval(typePass);
-      }, 35);
+        if (j >= pass.length) {
+          clearInterval(t2);
+          // Short pause then submit
+          setTimeout(() => document.getElementById('loginForm').submit(), 280);
+        }
+      }, 28);
     }
-  }, 40);
-  [uEl,pEl].forEach(el => {
-    el.style.borderColor = 'var(--macl-orange)';
-    setTimeout(() => el.style.borderColor = '', 2500);
+  }, 36);
+
+  // Visual feedback
+  [uEl, pEl].forEach(el => {
+    el.style.borderColor = 'var(--or)';
+    el.style.boxShadow = '0 0 0 3px rgba(232,101,26,.15)';
   });
 }
 
-function togglePwd() {
-  const p = document.getElementById('password');
-  const e = document.getElementById('eyeIcon');
-  p.type = p.type === 'password' ? 'text' : 'password';
-  e.className = p.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
-}
-
-// Ripple on submit
-document.querySelector('.submit-btn').addEventListener('click', function(e) {
-  const r = document.createElement('span');
+/* ── SUBMIT BUTTON RIPPLE ── */
+document.getElementById('submitBtn').addEventListener('click', function(e) {
   const rect = this.getBoundingClientRect();
-  r.style.cssText = `position:absolute;border-radius:50%;width:6px;height:6px;margin:-3px;
-    background:rgba(255,255,255,.4);animation:rippleEffect .5s ease-out forwards;pointer-events:none;
-    left:${e.clientX-rect.left}px;top:${e.clientY-rect.top}px`;
-  this.appendChild(r);
-  setTimeout(() => r.remove(), 550);
+  const rip = document.createElement('span');
+  rip.style.cssText = [
+    'position:absolute', 'border-radius:50%', 'width:6px', 'height:6px',
+    'margin:-3px', 'background:rgba(255,255,255,.35)',
+    'animation:rippleEffect .55s ease-out forwards', 'pointer-events:none',
+    `left:${e.clientX - rect.left}px`, `top:${e.clientY - rect.top}px`
+  ].join(';');
+  this.appendChild(rip);
+  setTimeout(() => rip.remove(), 600);
 });
+
+/* ── INIT THEME button states ── */
+(function(){
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.querySelectorAll('.icon-sun').forEach(el => el.style.display = dark ? 'inline' : 'none');
+  document.querySelectorAll('.icon-moon').forEach(el => el.style.display = dark ? 'none' : 'inline');
+})();
 </script>
 </body>
 </html>

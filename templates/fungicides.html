@@ -142,7 +142,7 @@
           <h3>{{ p.name }}</h3>
           <p>{{ p.description or 'Effective fungicide for disease prevention and crop protection.' }}</p>
           <div>{% if p.formulation %}<span class="pspec">{{ p.formulation }}</span>{% endif %}{% if p.dosage %}<span class="pspec">{{ p.dosage }}</span>{% endif %}{% if p.packing %}<span class="pspec">{{ p.packing }}</span>{% endif %}</div>
-          {% if p.crops %}<p style="font-size:.7rem;color:var(--tx4);margin-top:5px;margin-bottom:0;"><i class="fas fa-seedling" style="color:var(--gr);margin-right:3px;"></i>{{ p.crops[:60] }}{% if p.crops|length>60 %}…{% endif %}</p>{% endif %}
+          {% if p.crops %}<p style="font-size:.7rem;color:var(--tx4);margin-top:5px;margin-bottom:0;"><i class="fas fa-seedling" style="color:var(--blue,#1a6abf);margin-right:3px;"></i>{{ p.crops[:60] }}{% if p.crops|length>60 %}…{% endif %}</p>{% endif %}
           <div class="pfoot" onclick="event.stopPropagation()">
             <a href="{{ url_for('product_detail', product_id=p.id) }}" class="pbtn-main"><i class="fas fa-eye"></i>Details</a>
             <a href="{{ url_for('contact') }}" class="pbtn-enq"><i class="fas fa-envelope"></i>Enquire</a>

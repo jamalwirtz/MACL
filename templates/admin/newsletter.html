@@ -26,9 +26,9 @@
         <tr>
           <td style="color:var(--text-muted);font-size:.78rem;">{{ loop.index }}</td>
           <td style="font-weight:600;font-size:.9rem;">{{ s.name or '—' }}</td>
-          <td><a href="mailto:{{ s.email }}" style="color:var(--green-mid);font-size:.88rem;">{{ s.email }}</a></td>
+          <td><a href="mailto:{{ s.email }}" style="color:var(--orange,#e8651a);font-size:.88rem;">{{ s.email }}</a></td>
           <td>
-            <span style="padding:3px 9px;border-radius:100px;font-size:.7rem;font-weight:800;background:{% if s.active %}#e8f5e9{% else %}var(--bg-alt){% endif %};color:{% if s.active %}#1b5e20{% else %}var(--text-muted){% endif %};">
+            <span style="padding:3px 9px;border-radius:100px;font-size:.7rem;font-weight:800;background:{% if s.active %}#e8f5e9{% else %}var(--bg-alt){% endif %};color:{% if s.active %}#0d3d7a{% else %}var(--text-muted){% endif %};">
               {{ 'Active' if s.active else 'Unsubscribed' }}
             </span>
           </td>

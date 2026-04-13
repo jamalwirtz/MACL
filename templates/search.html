@@ -17,7 +17,7 @@
           <i class="fas fa-search" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.95rem;"></i>
           <input type="text" name="q" value="{{ q }}" placeholder="Search products, ingredients, crops…"
             style="width:100%;padding:14px 16px 14px 44px;border:2px solid var(--border-color);border-radius:12px;font-size:1rem;font-family:'DM Sans',sans-serif;background:var(--bg-card);color:var(--text-primary);transition:border-color .2s;"
-            onfocus="this.style.borderColor='var(--green-mid)'" onblur="this.style.borderColor='var(--border-color)'" autofocus>
+            onfocus="this.style.borderColor='var(--orange,#e8651a)'" onblur="this.style.borderColor='var(--border-color)'" autofocus>
         </div>
         <button type="submit" class="btn-green btn-ripple" style="padding:14px 22px;border-radius:12px;font-size:.95rem;white-space:nowrap;"><i class="fas fa-search"></i> Search</button>
       </form>
@@ -29,14 +29,14 @@
       <p style="color:var(--text-muted);font-size:.95rem;">
         Found <strong style="color:var(--text-primary);">{{ results.products|length }}</strong> product(s)
         and <strong style="color:var(--text-primary);">{{ results.distributors|length }}</strong> distributor(s)
-        for <strong style="color:var(--green-mid);">"{{ q }}"</strong>
+        for <strong style="color:var(--orange,#e8651a);">"{{ q }}"</strong>
       </p>
     </div>
 
     <!-- PRODUCT RESULTS -->
     {% if results.products %}
     <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-      <span style="width:32px;height:32px;border-radius:9px;background:var(--green-tint,#f0f8f1);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-flask"></i></span>
+      <span style="width:32px;height:32px;border-radius:9px;background:var(--green-tint,#f0f8f1);color:var(--orange,#e8651a);display:flex;align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-flask"></i></span>
       Products ({{ results.products|length }})
     </h2>
     <div class="products-grid" style="margin-bottom:48px;">
@@ -71,7 +71,7 @@
     <!-- DISTRIBUTOR RESULTS -->
     {% if results.distributors %}
     <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-      <span style="width:32px;height:32px;border-radius:9px;background:var(--bg-alt,#f0f8f1);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-store"></i></span>
+      <span style="width:32px;height:32px;border-radius:9px;background:var(--bg-alt,#f0f8f1);color:var(--orange,#e8651a);display:flex;align-items:center;justify-content:center;font-size:.85rem;"><i class="fas fa-store"></i></span>
       Distributor Outlets ({{ results.distributors|length }})
     </h2>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;">
@@ -81,11 +81,11 @@
           <div class="why-icon" style="flex-shrink:0;"><i class="fas fa-store"></i></div>
           <div>
             <div style="font-weight:800;font-size:.95rem;color:var(--text-primary);">{{ d.name }}</div>
-            <div style="font-size:.76rem;color:var(--green-mid);font-weight:700;text-transform:uppercase;letter-spacing:.06em;">{{ d.region }} · {{ d.district }}</div>
+            <div style="font-size:.76rem;color:var(--orange,#e8651a);font-weight:700;text-transform:uppercase;letter-spacing:.06em;">{{ d.region }} · {{ d.district }}</div>
           </div>
         </div>
-        <p style="font-size:.86rem;color:var(--text-muted);"><i class="fas fa-map-marker-alt" style="color:var(--green-mid);margin-right:5px;"></i>{{ d.address or '—' }}</p>
-        <p style="font-size:.86rem;"><i class="fas fa-phone" style="color:var(--green-mid);margin-right:5px;"></i><a href="tel:{{ d.phone }}" style="color:var(--green-mid);">{{ d.phone }}</a></p>
+        <p style="font-size:.86rem;color:var(--text-muted);"><i class="fas fa-map-marker-alt" style="color:var(--orange,#e8651a);margin-right:5px;"></i>{{ d.address or '—' }}</p>
+        <p style="font-size:.86rem;"><i class="fas fa-phone" style="color:var(--orange,#e8651a);margin-right:5px;"></i><a href="tel:{{ d.phone }}" style="color:var(--orange,#e8651a);">{{ d.phone }}</a></p>
       </div>
       {% endfor %}
     </div>

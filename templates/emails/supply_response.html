@@ -1,15 +1,15 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"></head>
 <body style="font-family:'Segoe UI',sans-serif;background:#f0f8f1;padding:32px 0;">
 <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);">
-  <div style="background:{% if status=='approved' %}#1b5e20{% else %}#b71c1c{% endif %};padding:22px 28px;">
+  <div style="background:{% if status=='approved' %}#0d3d7a{% else %}#b71c1c{% endif %};padding:22px 28px;">
     <div style="color:#fff;font-size:1.1rem;font-weight:800;">Supply Request {{ status|title }}</div>
     <div style="color:rgba(255,255,255,.7);font-size:.8rem;margin-top:3px;">From Muddo Agro Headquarters</div>
   </div>
   <div style="padding:28px;">
     <p style="color:#111;margin:0 0 16px;">Hi <strong>{{ agent_name }}</strong>,</p>
-    <p style="color:#484848;line-height:1.75;margin:0 0 20px;">Your supply request for <strong>{{ product }}</strong> has been <strong style="color:{% if status=='approved' %}#1b5e20{% else %}#b71c1c{% endif %};">{{ status }}</strong>.</p>
-    {% if response %}<div style="background:#f5f5f5;border-radius:8px;padding:16px;margin-bottom:20px;border-left:3px solid {% if status=='approved' %}#2d6e35{% else %}#b71c1c{% endif %};"><strong style="font-size:.8rem;color:#565656;text-transform:uppercase;letter-spacing:.06em;">Admin Note</strong><p style="color:#111;margin:8px 0 0;line-height:1.6;">{{ response }}</p></div>{% endif %}
-    <a href="{{ url_for('agent_dashboard', _external=True) }}" style="background:#0d2b14;color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;display:inline-block;">Go to Dashboard →</a>
+    <p style="color:#484848;line-height:1.75;margin:0 0 20px;">Your supply request for <strong>{{ product }}</strong> has been <strong style="color:{% if status=='approved' %}#0d3d7a{% else %}#b71c1c{% endif %};">{{ status }}</strong>.</p>
+    {% if response %}<div style="background:#f5f5f5;border-radius:8px;padding:16px;margin-bottom:20px;border-left:3px solid {% if status=='approved' %}#1a6abf{% else %}#b71c1c{% endif %};"><strong style="font-size:.8rem;color:#565656;text-transform:uppercase;letter-spacing:.06em;">Admin Note</strong><p style="color:#111;margin:8px 0 0;line-height:1.6;">{{ response }}</p></div>{% endif %}
+    <a href="{{ url_for('agent_dashboard', _external=True) }}" style="background:#0d3d7a;color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;display:inline-block;">Go to Dashboard →</a>
   </div>
 </div>
 </body></html>

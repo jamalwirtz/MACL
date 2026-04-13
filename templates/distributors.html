@@ -44,7 +44,7 @@
   width:28px; height:28px; border-radius:50%; background:var(--macl-orange,#e8651a); color:white;
   display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0;
 }
-.dist-item.active .dist-item-num { background:var(--macl-green,#2d6e35); }
+.dist-item.active .dist-item-num { background:var(--macl-green,#1a6abf); }
 .dist-item-info { flex:1; min-width:0; }
 .dist-name { font-size:.9rem; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
 .dist-addr { font-size:.78rem; color:var(--text-muted); line-height:1.45; }
@@ -56,14 +56,14 @@
 .region-central { background:#e3f0ff; color:#1a5fa8; }
 .region-eastern  { background:#fef0e4; color:#c04e0e; }
 .region-northern { background:#f0eaff; color:#6a3fbf; }
-.region-western  { background:#e8f5e9; color:#1a4a23; }
+.region-western  { background:#e8f5e9; color:#0d3d7a; }
 
 /* MAP */
 #gmap { width:100%; height:calc(100vh - 180px); position:sticky; top:72px; }
 
 /* INFO WINDOW custom */
 .gmap-iw { font-family:'DM Sans',sans-serif; max-width:260px; }
-.gmap-iw h4 { font-size:.95rem; font-weight:800; color:#0d2b14; margin:0 0 6px; }
+.gmap-iw h4 { font-size:.95rem; font-weight:800; color:#0d3d7a; margin:0 0 6px; }
 .gmap-iw p  { font-size:.8rem; color:#444; margin:2px 0; }
 .gmap-iw .iw-phone { color:#e8651a; font-weight:700; font-size:.82rem; }
 .gmap-iw .iw-actions { display:flex; gap:8px; margin-top:10px; }
@@ -73,7 +73,7 @@
 }
 .iw-btn-dir  { background:#1a5fa8; color:white; }
 .iw-btn-gm   { background:#e8651a; color:white; }
-.iw-btn-call { background:#1a4a23; color:white; }
+.iw-btn-call { background:#0d3d7a; color:white; }
 
 /* Google Places panel */
 .gplaces-panel {
@@ -437,7 +437,7 @@ function goToPlace(placeId, name) {
         <h4><i class="fas fa-location-dot" style="color:#1a5fa8;margin-right:5px;"></i>${place.name}</h4>
         <p>${place.formatted_address || ''}</p>
         ${place.formatted_phone_number ? `<p class="iw-phone"><i class="fas fa-phone" style="margin-right:5px;"></i>${place.formatted_phone_number}</p>` : ''}
-        ${place.opening_hours ? `<p style="font-size:.75rem;color:${place.opening_hours.isOpen() ? '#1a4a23' : '#b83a1a'};font-weight:700;">
+        ${place.opening_hours ? `<p style="font-size:.75rem;color:${place.opening_hours.isOpen() ? '#0d3d7a' : '#b83a1a'};font-weight:700;">
           ${place.opening_hours.isOpen() ? '🟢 Open now' : '🔴 Closed now'}</p>` : ''}
         <div class="iw-actions">
           ${place.url ? `<a class="iw-btn iw-btn-dir" href="${place.url}" target="_blank"><i class="fas fa-map"></i> View on Maps</a>` : ''}

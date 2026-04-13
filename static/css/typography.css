@@ -44,19 +44,19 @@ p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); marg
 .stat-num              { font-size:2.2rem!important; color:#f5c842!important; }
 
 /* ─── SECTION HEADERS ───────────────────────────────────────────────────── */
-.section-title { font-size:clamp(1.7rem,3vw,2.5rem)!important; font-weight:800!important; color:#0d2b14!important; }
+.section-title { font-size:clamp(1.7rem,3vw,2.5rem)!important; font-weight:800!important; color:#0d3d7a!important; }
 [data-theme="dark"] .section-title { color:#d6edd8!important; }
 .section-tag   { font-size:.76rem!important; font-weight:800!important; letter-spacing:.12em!important; }
 .section-desc  { font-size:1.02rem!important; line-height:1.78!important; }
 
 /* ─── CATEGORY CARDS ────────────────────────────────────────────────────── */
-.cat-card h3 { font-size:1.18rem!important; font-weight:800!important; color:#0d2b14!important; }
+.cat-card h3 { font-size:1.18rem!important; font-weight:800!important; color:#0d3d7a!important; }
 [data-theme="dark"] .cat-card h3 { color:#d6edd8!important; }
 .cat-card p  { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
 [data-theme="dark"] .cat-card p  { color:#8aad8d!important; }
 
 /* ─── PRODUCT CARDS ─────────────────────────────────────────────────────── */
-.product-card h3 { font-size:1.08rem!important; font-weight:800!important; color:#0d2b14!important; }
+.product-card h3 { font-size:1.08rem!important; font-weight:800!important; color:#0d3d7a!important; }
 [data-theme="dark"] .product-card h3 { color:#d6edd8!important; }
 .product-card-body > p { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
 [data-theme="dark"] .product-card-body > p { color:#8aad8d!important; }
@@ -72,7 +72,7 @@ p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); marg
 .breadcrumb .current { color:#f5c842!important; font-weight:700!important; }
 
 /* ─── WHY CARDS ─────────────────────────────────────────────────────────── */
-.why-card h3 { font-size:1.05rem!important; font-weight:800!important; color:#0d2b14!important; }
+.why-card h3 { font-size:1.05rem!important; font-weight:800!important; color:#0d3d7a!important; }
 [data-theme="dark"] .why-card h3 { color:#d6edd8!important; }
 .why-card p  { font-size:.94rem!important; line-height:1.72!important; color:#484848!important; }
 [data-theme="dark"] .why-card p { color:#8aad8d!important; }
@@ -96,7 +96,7 @@ p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); marg
 [data-theme="dark"] .form-group textarea { color:#edf5ee!important; }
 
 /* ─── PRODUCT DETAIL ────────────────────────────────────────────────────── */
-.product-detail-info h1 { font-size:clamp(1.5rem,3vw,2.2rem)!important; font-weight:900!important; color:#0d2b14!important; }
+.product-detail-info h1 { font-size:clamp(1.5rem,3vw,2.2rem)!important; font-weight:900!important; color:#0d3d7a!important; }
 [data-theme="dark"] .product-detail-info h1 { color:#d6edd8!important; }
 .product-desc { font-size:1rem!important; line-height:1.84!important; color:#3d3d3d!important; }
 [data-theme="dark"] .product-desc { color:#b0c4b3!important; }
@@ -104,7 +104,7 @@ p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); marg
 .spec-table td:last-child { font-weight:700!important; }
 
 /* ─── DISTRIBUTOR SIDEBAR ───────────────────────────────────────────────── */
-.dist-item h4  { font-size:.96rem!important; font-weight:700!important; color:#0d2b14!important; }
+.dist-item h4  { font-size:.96rem!important; font-weight:700!important; color:#0d3d7a!important; }
 [data-theme="dark"] .dist-item h4 { color:#d6edd8!important; }
 .dist-item .dist-addr, .dist-item .dist-phone { font-size:.85rem!important; line-height:1.55!important; }
 
@@ -152,6 +152,6 @@ p  { font-size:1rem; line-height:1.78; color:var(--text-secondary,#383838); marg
 .agent-card .region { font-size:.77rem!important; font-weight:600!important; }
 
 /* ─── ACCESSIBILITY ─────────────────────────────────────────────────────── */
-:focus-visible { outline:3px solid #2d6e35; outline-offset:2px; border-radius:4px; }
+:focus-visible { outline:3px solid #1a6abf; outline-offset:2px; border-radius:4px; }
 strong, b { font-weight:700; }
 small { font-size:.82rem; }

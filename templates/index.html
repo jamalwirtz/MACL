@@ -5,7 +5,7 @@
 <style>
 /* ── HERO ── */
 .hero-wrap{min-height:88vh;display:flex;align-items:center;position:relative;overflow:hidden;background:#1a0808;}
-.hero-bg-img{position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 70% at 65% 45%,rgba(232,101,26,.28) 0%,transparent 65%),linear-gradient(135deg,#1a0808 0%,#2a1208 55%,#1a0f08 100%);z-index:0;}
+.hero-bg-img{position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 70% at 65% 45%,rgba(232,101,26,.28) 0%,transparent 65%),linear-gradient(135deg,#08060f 0%,#2a1208 55%,#1a0f08 100%);z-index:0;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;z-index:1;padding:80px 0 60px;}
 .hero-left h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
 .hero-left h1 span{color:#e8b84a;}
@@ -158,7 +158,7 @@
     <div class="cat-grid-home">
       {% set cats = [
         ('pesticides', 'Pesticides', 'fa-bug', 'rd', '#b83a1a', 'rgba(184,58,26,.1)', stats.pesticides, 'Fast-acting insecticides for crop and public health pest control.', 'product_mdfos.png'),
-        ('herbicides', 'Herbicides', 'fa-leaf', 'gr', '#3a6020', 'rgba(90,138,58,.1)', stats.herbicides, 'Selective and non-selective weed control for all major crops.', 'product_maizeplus.png'),
+        ('herbicides', 'Herbicides', 'fa-leaf', 'gr', '#3a5a80', 'rgba(90,138,58,.1)', stats.herbicides, 'Selective and non-selective weed control for all major crops.', 'product_maizeplus.png'),
         ('fungicides', 'Fungicides', 'fa-shield-virus', 'bl', '#0f3d72', 'rgba(26,95,168,.1)', stats.fungicides, 'Systemic and contact fungicides to protect crops from disease.', 'product_toplaxym.png'),
         ('other_products', 'Fertilizers & Equipment', 'fa-seedling', 'tan', '#9a6e1a', 'rgba(200,146,42,.1)', stats.other, 'NPK fertilizers, foliar feeds and knapsack sprayers.', 'product_muddosate_stock.png'),
       ] %}

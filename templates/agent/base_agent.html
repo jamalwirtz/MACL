@@ -20,7 +20,7 @@
 <body class="admin-body" data-user-role="agent" data-user-id="{{ session.get('user_id','') }}" data-user-initial="{{ (session.get('user_name','A') or 'A')[0]|upper }}">
 
 <!-- AGENT TOPNAV -->
-<nav class="admin-navbar" style="background:linear-gradient(135deg,#0d2b14,#1a4a23);">
+<nav class="admin-navbar" style="background:linear-gradient(135deg,#0d3d7a,#0d3d7a);">
   <div class="logo" style="gap:10px;">
     <img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL"
        style="height:34px;width:auto;max-width:160px;object-fit:contain;">
@@ -55,7 +55,7 @@
   <aside class="admin-sidebar">
     <div style="padding:16px 20px;border-bottom:1px solid var(--border);margin-bottom:4px;">
       <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);">Agent</div>
-      <div style="font-size:.9rem;font-weight:700;color:var(--green-deep);margin-top:2px;">{{ session.get('user_name','') }}</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--blue-dark,#0d3d7a);margin-top:2px;">{{ session.get('user_name','') }}</div>
       <div style="font-size:.76rem;color:var(--text-light);">{{ session.get('agent_region','') }}</div>
     </div>
     <div class="sidebar-section">

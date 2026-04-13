@@ -8,7 +8,7 @@
     <div class="admin-page-sub">Hello, <strong>{{ agent.name }}</strong> — {{ now.strftime('%A, %d %B %Y') }}</div>
   </div>
   <div style="display:flex;gap:10px;">
-    <a href="{{ url_for('agent_chat') }}" class="btn-sm" style="background:var(--green-mid);color:white;">
+    <a href="{{ url_for('agent_chat') }}" class="btn-sm" style="background:var(--orange,#e8651a);color:white;">
       <i class="fas fa-comments"></i> Chat Admin
       {% if unread > 0 %}<span style="background:#c0392b;border-radius:100px;padding:1px 6px;margin-left:4px;font-size:.65rem;">{{ unread }}</span>{% endif %}
     </a>
@@ -29,7 +29,7 @@
     <div class="stat-card-icon red"><i class="fas fa-comment-dots"></i></div>
     <div><div class="stat-card-value" data-target="{{ unread }}">0</div><div class="stat-card-label">Unread Messages</div></div>
   </div>
-  <div class="stat-card hover-lift anim-fade-up delay-4" style="background:linear-gradient(135deg,var(--green-deep),var(--green-dark));color:white;">
+  <div class="stat-card hover-lift anim-fade-up delay-4" style="background:linear-gradient(135deg,var(--blue-dark,#0d3d7a),var(--blue,#1a6abf));color:white;">
     <div class="stat-card-icon" style="background:rgba(200,168,75,.2);color:var(--gold);"><i class="fas fa-map-marker-alt"></i></div>
     <div>
       <div class="stat-card-value" style="color:white;">{{ agent.region or '—' }}</div>
@@ -69,12 +69,12 @@
     <!-- LAST ADMIN MESSAGE -->
     <div class="admin-card anim-fade-up delay-3">
       <div class="admin-card-header">
-        <span class="admin-card-title"><i class="fas fa-comment-dots" style="color:var(--green-mid);margin-right:6px;"></i> Latest from Admin</span>
-        <a href="{{ url_for('agent_chat') }}" style="font-size:.8rem;color:var(--green-mid);">Open Chat →</a>
+        <span class="admin-card-title"><i class="fas fa-comment-dots" style="color:var(--orange,#e8651a);margin-right:6px;"></i> Latest from Admin</span>
+        <a href="{{ url_for('agent_chat') }}" style="font-size:.8rem;color:var(--orange,#e8651a);">Open Chat →</a>
       </div>
       <div class="admin-card-body">
         {% if last_msg %}
-        <div style="padding:14px;background:var(--green-tint);border-radius:10px;border-left:4px solid var(--green-mid);">
+        <div style="padding:14px;background:var(--orange-pale,#fef2e8);border-radius:10px;border-left:4px solid var(--orange,#e8651a);">
           <div style="font-size:.78rem;color:var(--text-light);margin-bottom:6px;">{{ last_msg.created_at[:16] }}</div>
           <div style="font-size:.9rem;color:var(--text-dark);line-height:1.6;">{{ last_msg.content }}</div>
         </div>
@@ -83,7 +83,7 @@
         <div style="text-align:center;padding:24px;color:var(--text-light);">
           <i class="fas fa-comment" style="font-size:1.8rem;display:block;margin-bottom:8px;color:var(--border);"></i>
           No messages yet.
-          <a href="{{ url_for('agent_chat') }}" style="color:var(--green-mid);display:block;margin-top:8px;font-size:.85rem;">Start a conversation →</a>
+          <a href="{{ url_for('agent_chat') }}" style="color:var(--orange,#e8651a);display:block;margin-top:8px;font-size:.85rem;">Start a conversation →</a>
         </div>
         {% endif %}
       </div>
@@ -91,19 +91,19 @@
 
     <!-- MY PROFILE CARD -->
     <div class="admin-card anim-fade-up delay-4">
-      <div class="admin-card-header"><span class="admin-card-title"><i class="fas fa-id-card" style="color:var(--green-mid);margin-right:6px;"></i> My Profile</span></div>
+      <div class="admin-card-header"><span class="admin-card-title"><i class="fas fa-id-card" style="color:var(--orange,#e8651a);margin-right:6px;"></i> My Profile</span></div>
       <div class="admin-card-body" style="padding:16px;">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-          <div style="width:52px;height:52px;border-radius:50%;background:var(--green-dark);color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;">{{ agent.name[0]|upper }}</div>
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--blue,#1a6abf);color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;">{{ agent.name[0]|upper }}</div>
           <div>
-            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--green-deep);">{{ agent.name }}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--blue-dark,#0d3d7a);">{{ agent.name }}</div>
             <div style="font-size:.78rem;color:var(--text-light);">@{{ agent.username }}</div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px;">
-          {% if agent.phone %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-phone" style="color:var(--green-mid);width:14px;"></i> {{ agent.phone }}</div>{% endif %}
-          {% if agent.email %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-envelope" style="color:var(--green-mid);width:14px;"></i> {{ agent.email }}</div>{% endif %}
-          {% if agent.region %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-map-marker-alt" style="color:var(--green-mid);width:14px;"></i> {{ agent.region }}{% if agent.district %} · {{ agent.district }}{% endif %}</div>{% endif %}
+          {% if agent.phone %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-phone" style="color:var(--orange,#e8651a);width:14px;"></i> {{ agent.phone }}</div>{% endif %}
+          {% if agent.email %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-envelope" style="color:var(--orange,#e8651a);width:14px;"></i> {{ agent.email }}</div>{% endif %}
+          {% if agent.region %}<div style="font-size:.84rem;display:flex;gap:8px;align-items:center;"><i class="fas fa-map-marker-alt" style="color:var(--orange,#e8651a);width:14px;"></i> {{ agent.region }}{% if agent.district %} · {{ agent.district }}{% endif %}</div>{% endif %}
         </div>
       </div>
     </div>
@@ -114,7 +114,7 @@
 {% if my_requests %}
 <div class="admin-card anim-fade-up" style="margin-top:20px;">
   <div class="admin-card-header">
-    <span class="admin-card-title"><i class="fas fa-history" style="color:var(--green-mid);margin-right:6px;"></i> My Supply Request History</span>
+    <span class="admin-card-title"><i class="fas fa-history" style="color:var(--orange,#e8651a);margin-right:6px;"></i> My Supply Request History</span>
   </div>
   <div style="overflow-x:auto;">
     <table class="data-table">

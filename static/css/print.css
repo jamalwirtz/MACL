@@ -42,7 +42,7 @@
     display: block;
     font-size: 8pt;
     color: #555;
-    border-bottom: 1.5pt solid #0d2b14;
+    border-bottom: 1.5pt solid #0d3d7a;
     padding-bottom: 6pt;
     margin-bottom: 16pt;
     letter-spacing: 0.03em;
@@ -70,12 +70,12 @@
 
   /* ─── COLOURS & BACKGROUNDS ──────────────────────────────────── */
   .page-hero, .page-hero * { background: #fff !important; }
-  .page-hero h1 { color: #0d2b14 !important; font-size: 18pt !important; text-shadow: none !important; }
+  .page-hero h1 { color: #0d3d7a !important; font-size: 18pt !important; text-shadow: none !important; }
   .page-hero p  { color: #333 !important; }
-  .page-hero-tag { color: #2d6e35 !important; }
+  .page-hero-tag { color: #1a6abf !important; }
 
-  .section-title { color: #0d2b14 !important; font-size: 16pt !important; }
-  .section-tag   { background: #e8f5e9 !important; color: #1b5e20 !important; border: 0.5pt solid #a5d6a7 !important; }
+  .section-title { color: #0d3d7a !important; font-size: 16pt !important; }
+  .section-tag   { background: #e8f5e9 !important; color: #0d3d7a !important; border: 0.5pt solid #a5d6a7 !important; }
 
   /* ─── PRODUCT CARDS (print-friendly) ─────────────────────────── */
   .product-card {
@@ -85,26 +85,26 @@
     box-shadow: none !important;
     break-inside: avoid;
   }
-  .product-card h3 { color: #0d2b14 !important; font-size: 12pt !important; }
+  .product-card h3 { color: #0d3d7a !important; font-size: 12pt !important; }
   .product-card p  { font-size: 9pt !important; color: #444 !important; }
   .product-card-img { height: 120pt !important; }
   .product-card-img img { height: 100% !important; object-fit: cover !important; }
   .product-card-footer .btn-outline,
   .product-card-footer .btn-green { display: none !important; }
   .spec-row { background: #f5f5f5 !important; font-size: 8.5pt !important; padding: 4pt 6pt !important; }
-  .spec-row strong { color: #1b5e20 !important; }
+  .spec-row strong { color: #0d3d7a !important; }
 
   /* ─── PRODUCT DETAIL (full spec sheet) ───────────────────────── */
-  .product-detail-info h1 { color: #0d2b14 !important; font-size: 16pt !important; }
+  .product-detail-info h1 { color: #0d3d7a !important; font-size: 16pt !important; }
   .product-desc { font-size: 10pt !important; color: #333 !important; }
   .detail-specs { border: 0.75pt solid #ccc !important; padding: 10pt !important; border-radius: 4pt !important; }
-  .detail-specs h3 { color: #1b5e20 !important; font-size: 8pt !important; border-bottom: 0.5pt solid #ccc !important; padding-bottom: 4pt !important; margin-bottom: 8pt !important; }
+  .detail-specs h3 { color: #0d3d7a !important; font-size: 8pt !important; border-bottom: 0.5pt solid #ccc !important; padding-bottom: 4pt !important; margin-bottom: 8pt !important; }
   .spec-table td { font-size: 9pt !important; padding: 5pt 4pt !important; border-color: #ddd !important; }
   .spec-table td:last-child { font-weight: bold !important; }
 
   /* ─── SAFETY NOTE ─────────────────────────────────────────────── */
   div[style*="border-left:4px solid var(--green-mid)"] {
-    border-left: 2pt solid #2d6e35 !important;
+    border-left: 2pt solid #1a6abf !important;
     background: #f5faf5 !important;
     padding: 8pt !important;
   }
@@ -122,9 +122,9 @@
 
   /* ─── WHY CARDS ──────────────────────────────────────────────────── */
   .why-card { border: 0.5pt solid #ccc !important; background: #fff !important; box-shadow: none !important; }
-  .why-card h3 { color: #0d2b14 !important; }
+  .why-card h3 { color: #0d3d7a !important; }
   .why-card p  { color: #444 !important; }
-  .why-icon { background: #e8f5e9 !important; color: #1b5e20 !important; }
+  .why-icon { background: #e8f5e9 !important; color: #0d3d7a !important; }
 
   /* ─── PRINT FOOTER ──────────────────────────────────────────────── */
   body::after {

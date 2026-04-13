@@ -63,8 +63,8 @@
         </div>
 
         <!-- Safety notice -->
-        <div style="margin-top:18px;padding:14px 16px;background:var(--bg-alt);border-radius:12px;border-left:4px solid var(--green-mid);">
-          <div style="font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--green-mid);margin-bottom:6px;"><i class="fas fa-shield-alt" style="margin-right:5px;"></i>Safe Use</div>
+        <div style="margin-top:18px;padding:14px 16px;background:var(--bg-alt);border-radius:12px;border-left:4px solid var(--orange,#e8651a);">
+          <div style="font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--orange,#e8651a);margin-bottom:6px;"><i class="fas fa-shield-alt" style="margin-right:5px;"></i>Safe Use</div>
           <p style="font-size:.84rem;line-height:1.65;color:var(--text-secondary);margin:0;">Read label fully before use. Wear PPE. Keep away from children and water sources. Observe pre-harvest intervals.</p>
         </div>
       </div>
@@ -88,7 +88,7 @@
             {% for tab_id, tab_label in [('specs','Specifications'),('usage','Application'),('safety','Safety')] %}
             <button class="spec-tab {% if loop.first %}active{% endif %}" data-tab="{{ tab_id }}"
               onclick="switchTab('{{ tab_id }}', this)"
-              style="padding:8px 16px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:{% if loop.first %}700{% else %}500{% endif %};cursor:pointer;color:{% if loop.first %}var(--green-mid){% else %}var(--text-muted){% endif %};border-bottom:2.5px solid {% if loop.first %}var(--green-mid){% else %}transparent{% endif %};margin-bottom:-2px;transition:all .2s ease;">
+              style="padding:8px 16px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:{% if loop.first %}700{% else %}500{% endif %};cursor:pointer;color:{% if loop.first %}var(--orange,#e8651a){% else %}var(--text-muted){% endif %};border-bottom:2.5px solid {% if loop.first %}var(--orange,#e8651a){% else %}transparent{% endif %};margin-bottom:-2px;transition:all .2s ease;">
               {{ tab_label }}
             </button>
             {% endfor %}
@@ -115,7 +115,7 @@
                 {% if product.stock_qty is defined %}
                 <tr>
                   <td style="color:var(--text-muted);font-weight:600;padding:10px 8px;font-size:.88rem;">Stock Status</td>
-                  <td style="font-weight:700;font-size:.9rem;padding:10px 8px;color:{% if product.stock_qty == 0 %}#e53935{% elif product.stock_qty <= 10 %}#f57c00{% else %}#1b5e20{% endif %};">
+                  <td style="font-weight:700;font-size:.9rem;padding:10px 8px;color:{% if product.stock_qty == 0 %}#e53935{% elif product.stock_qty <= 10 %}#f57c00{% else %}#0d3d7a{% endif %};">
                     {% if product.stock_qty == 0 %}Out of Stock{% elif product.stock_qty <= 10 %}Low Stock ({{ product.stock_qty }} {{ product.unit or 'units' }}){% else %}In Stock ({{ product.stock_qty }} {{ product.unit or 'units' }}){% endif %}
                   </td>
                 </tr>
@@ -135,7 +135,7 @@
                 ('fa-calendar','Re-entry Interval','Observe the Pre-Harvest Interval (PHI) stated on the product label.'),
               ] %}
               <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;{% if loop.last %}margin-bottom:0;{% endif %}padding-bottom:14px;border-bottom:{% if loop.last %}none{% else %}1px solid var(--border-color){% endif %};">
-                <div style="width:34px;height:34px;border-radius:9px;background:var(--green-tint);color:var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;"><i class="fas {{ tip[0] }}"></i></div>
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--orange-pale,#fef2e8);color:var(--orange,#e8651a);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;"><i class="fas {{ tip[0] }}"></i></div>
                 <div>
                   <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px;">{{ tip[1] }}</div>
                   <div style="font-size:.9rem;color:var(--text-secondary);line-height:1.6;">{{ tip[2] }}</div>
@@ -151,7 +151,7 @@
               {% for item in [
                 ('#e3f2fd','#1565c0','fa-hard-hat','Personal Protective Equipment','Wear chemical-resistant gloves, goggles, face mask, long-sleeved shirt and rubber boots when handling.'),
                 ('#fff8e1','#c77700','fa-exclamation-triangle','First Aid','If swallowed: seek medical help immediately. If in eyes: rinse with water 15 mins. If on skin: wash with soap.'),
-                ('#e8f5e9','#1b5e20','fa-recycle','Disposal','Triple-rinse empty containers. Puncture and bury at NEMA-approved site. Never reuse for food or water storage.'),
+                ('#e8f5e9','#0d3d7a','fa-recycle','Disposal','Triple-rinse empty containers. Puncture and bury at NEMA-approved site. Never reuse for food or water storage.'),
                 ('#fce4ec','#880e4f','fa-warehouse','Storage','Store in original sealed containers in a cool, dry, ventilated place away from sunlight, food, feed, and ignition.'),
               ] %}
               <div style="padding:14px 16px;background:{{ item[0] }};border-radius:10px;display:flex;gap:12px;align-items:flex-start;">
@@ -175,7 +175,7 @@
 
         <!-- SHARE BAR -->
         <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border-color);">
-          <div style="font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-share-alt" style="color:var(--green-mid);"></i> Share This Product</div>
+          <div style="font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-share-alt" style="color:var(--orange,#e8651a);"></i> Share This Product</div>
           <div class="share-bar">
             <button class="share-btn wa" onclick="shareProduct('wa','{{ product.name }}','{{ request.url }}')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
             <button class="share-btn fb" onclick="shareProduct('fb','{{ product.name }}','{{ request.url }}')"><i class="fab fa-facebook-f"></i> Facebook</button>
@@ -236,7 +236,7 @@ function switchTab(id, btn) {
     b.style.fontWeight = '500'; b.style.color = 'var(--text-muted)'; b.style.borderBottomColor = 'transparent';
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-  btn.style.fontWeight = '700'; btn.style.color = 'var(--green-mid)'; btn.style.borderBottomColor = 'var(--green-mid)';
+  btn.style.fontWeight = '700'; btn.style.color = 'var(--orange,#e8651a)'; btn.style.borderBottomColor = 'var(--orange,#e8651a)';
   document.getElementById('tab-' + id).style.display = 'block';
 }
 

@@ -15,7 +15,7 @@
 <meta name="twitter:description" content="Uganda's trusted MAAIF-registered agrochemical distributor.">
 <link rel="canonical" href="{{ request.url }}">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#0d2b14">
+<meta name="theme-color" content="#08060f">
 <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo_macl.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -24,8 +24,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}" media="print">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme_vars.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/brand_theme.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 {% block extra_head %}{% endblock %}
 <script>
@@ -76,7 +77,7 @@
 
 <!-- PWA Manifest + Service Worker -->
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#0d2b14">
+<meta name="theme-color" content="#08060f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Muddo Agro">
@@ -102,7 +103,7 @@
         <a href="{{ url_for('fungicides') }}" class="dropdown-item"><span class="di-icon fung"><i class="fas fa-microscope"></i></span><div><strong>Fungicides</strong><small>Disease prevention</small></div></a>
         <a href="{{ url_for('other_products') }}" class="dropdown-item"><span class="di-icon other"><i class="fas fa-boxes"></i></span><div><strong>Other Products</strong><small>Fertilizers &amp; equipment</small></div></a>
         <div style="border-top:1px solid var(--border-color);margin:6px 0;"></div>
-        <a href="{{ url_for('compare') }}" class="dropdown-item"><span class="di-icon" style="background:#e8f5e9;color:#1b5e20;"><i class="fas fa-balance-scale"></i></span><div><strong>Compare Products</strong><small>Side-by-side comparison</small></div></a>
+        <a href="{{ url_for('compare') }}" class="dropdown-item"><span class="di-icon" style="background:#e8f5e9;color:#0d3d7a;"><i class="fas fa-balance-scale"></i></span><div><strong>Compare Products</strong><small>Side-by-side comparison</small></div></a>
       </div>
     </div>
     <a href="{{ url_for('distributors') }}" class="nav-link {% if request.endpoint == 'distributors' %}active{% endif %}"><i class="fas fa-store"></i> Find a Distributor</a>
@@ -197,7 +198,7 @@
 </div>
 
 <footer class="footer">
-  <div class="footer-wave"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C300,80 900,0 1200,40 L1200,80 L0,80 Z" fill="var(--green-deep)"/></svg></div>
+  
   <div class="footer-body"><div class="footer-grid">
     <div class="footer-brand">
       <div class="footer-logo"><img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL"
@@ -268,7 +269,7 @@ if ('serviceWorker' in navigator) {
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
   aria-label="Back to top"
   style="position:fixed;bottom:148px;right:24px;z-index:8886;width:42px;height:42px;border-radius:50%;
-         border:none;background:var(--green-dark,#1a4a23);color:var(--gold,#c8a84b);
+         border:none;background:var(--orange,#e8651a);color:#fff;
          cursor:pointer;display:none;align-items:center;justify-content:center;
          box-shadow:0 4px 14px rgba(0,0,0,.25);font-size:.95rem;
          transition:all .3s cubic-bezier(.34,1.56,.64,1);"
