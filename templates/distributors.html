@@ -1,596 +1,343 @@
 {% extends "base.html" %}
 {% block title %}Find a Distributor — Muddo Agro Chemicals LTD{% endblock %}
-
 {% block extra_head %}
 <style>
-.dist-page { display:grid; grid-template-columns:360px 1fr; min-height:calc(100vh - 200px); gap:0; }
-.dist-sidebar {
-  background:var(--bg-card); border-right:1.5px solid var(--border-color);
-  display:flex; flex-direction:column; overflow:hidden; max-height:calc(100vh - 180px);
-  position:sticky; top:72px;
-}
-.dist-sidebar-top { padding:18px; border-bottom:1.5px solid var(--border-color); }
-.dist-sidebar-top h2 { font-size:1.1rem; font-weight:800; font-family:'DM Sans',sans-serif; color:var(--text-primary); margin:0 0 12px; }
-.search-bar {
-  display:flex; gap:8px; margin-bottom:10px;
-}
-.search-bar input {
-  flex:1; padding:10px 12px; border:1.5px solid var(--border-color); border-radius:9px;
-  font-size:.88rem; font-family:'DM Sans',sans-serif; background:var(--bg-input); color:var(--text-primary);
-  transition:border-color .2s;
-}
-.search-bar input:focus { outline:none; border-color:var(--macl-orange,#e8651a); }
-.search-bar button {
-  padding:10px 14px; border-radius:9px; border:none; background:var(--macl-orange,#e8651a);
-  color:white; cursor:pointer; font-size:.85rem; transition:background .2s; white-space:nowrap;
-}
-.search-bar button:hover { background:#c04e0e; }
-.filter-pills { display:flex; gap:6px; flex-wrap:wrap; }
-.filter-pill {
-  padding:4px 12px; border-radius:100px; font-size:.74rem; font-weight:700;
-  border:1.5px solid var(--border-color); background:var(--bg-alt); color:var(--text-secondary);
-  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif;
-}
-.filter-pill.active, .filter-pill:hover {
-  background:var(--macl-orange,#e8651a); border-color:var(--macl-orange,#e8651a); color:white;
-}
-.dist-list { flex:1; overflow-y:auto; }
-.dist-item {
-  display:flex; gap:12px; padding:14px 18px; border-bottom:1px solid var(--border-color);
-  cursor:pointer; transition:all .2s ease; align-items:flex-start;
-}
-.dist-item:hover, .dist-item.active { background:var(--macl-orange-pale,#fef0e4); border-left:3px solid var(--macl-orange,#e8651a); }
-.dist-item-num {
-  width:28px; height:28px; border-radius:50%; background:var(--macl-orange,#e8651a); color:white;
-  display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:800; flex-shrink:0;
-}
-.dist-item.active .dist-item-num { background:var(--macl-green,#1a6abf); }
-.dist-item-info { flex:1; min-width:0; }
-.dist-name { font-size:.9rem; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
-.dist-addr { font-size:.78rem; color:var(--text-muted); line-height:1.45; }
-.dist-phone { font-size:.78rem; color:var(--macl-orange,#e8651a); font-weight:600; margin-top:3px; }
-.dist-region-badge {
-  font-size:.64rem; font-weight:800; letter-spacing:.06em; padding:2px 8px; border-radius:100px;
-  text-transform:uppercase; flex-shrink:0; margin-top:2px; align-self:flex-start;
-}
-.region-central { background:#e3f0ff; color:#1a5fa8; }
-.region-eastern  { background:#fef0e4; color:#c04e0e; }
-.region-northern { background:#f0eaff; color:#6a3fbf; }
-.region-western  { background:#e8f5e9; color:#0d3d7a; }
-
-/* MAP */
-#gmap { width:100%; height:calc(100vh - 180px); position:sticky; top:72px; }
-
-/* INFO WINDOW custom */
-.gmap-iw { font-family:'DM Sans',sans-serif; max-width:260px; }
-.gmap-iw h4 { font-size:.95rem; font-weight:800; color:#0d3d7a; margin:0 0 6px; }
-.gmap-iw p  { font-size:.8rem; color:#444; margin:2px 0; }
-.gmap-iw .iw-phone { color:#e8651a; font-weight:700; font-size:.82rem; }
-.gmap-iw .iw-actions { display:flex; gap:8px; margin-top:10px; }
-.iw-btn {
-  padding:6px 12px; border-radius:7px; font-size:.76rem; font-weight:700;
-  cursor:pointer; text-decoration:none; transition:all .2s;
-}
-.iw-btn-dir  { background:#1a5fa8; color:white; }
-.iw-btn-gm   { background:#e8651a; color:white; }
-.iw-btn-call { background:#0d3d7a; color:white; }
-
-/* Google Places panel */
-.gplaces-panel {
-  position:absolute; top:16px; right:16px; z-index:10; width:280px;
-  background:white; border-radius:12px; box-shadow:0 6px 24px rgba(0,0,0,.18);
-  overflow:hidden;
-}
-.gplaces-panel input {
-  width:100%; padding:12px 14px; border:none; font-size:.88rem;
-  font-family:'DM Sans',sans-serif; outline:none; color:#111;
-  border-bottom:1.5px solid #f0f0f0;
-}
-.gplaces-result {
-  padding:10px 14px; font-size:.82rem; border-bottom:1px solid #f5f5f5;
-  cursor:pointer; transition:background .15s;
-}
-.gplaces-result:hover { background:#fef0e4; }
-.gplaces-result strong { display:block; font-weight:700; color:#1a1008; }
-.gplaces-result span   { color:#7a5c40; font-size:.74rem; }
-
-/* No results */
-.no-results { padding:32px; text-align:center; color:var(--text-muted); font-size:.88rem; }
-
-/* Near me button */
-.near-me-btn {
-  width:100%; padding:9px; font-size:.82rem; font-weight:700; border:none; cursor:pointer;
-  background:var(--bg-alt,#f8f8f0); color:var(--macl-orange,#e8651a); font-family:'DM Sans',sans-serif;
-  border-top:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; gap:6px;
-  transition:background .2s;
-}
-.near-me-btn:hover { background:var(--macl-orange-pale,#fef0e4); }
-
-/* Map overlay loading */
-.map-loading {
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  background:rgba(255,255,255,.85); z-index:5; font-family:'DM Sans',sans-serif;
-  font-size:.95rem; font-weight:600; color:#7a5c40;
-  flex-direction:column; gap:12px;
-}
-.spinner { width:36px; height:36px; border:3px solid #f0e0d0; border-top-color:#e8651a; border-radius:50%; animation:spin .8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-@media (max-width:860px) {
-  .dist-page { grid-template-columns:1fr; }
-  .dist-sidebar { max-height:380px; position:static; }
-  #gmap { height:400px; position:static; }
-  .gplaces-panel { width:calc(100% - 32px); right:16px; }
-}
+.dist-wrap{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 200px);gap:0;}
+.dist-side{background:var(--bg-c);border-right:1.5px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;max-height:calc(100vh - 180px);position:sticky;top:72px;}
+[data-theme="dark"] .dist-side{background:var(--void-3,#12101f);border-color:#2a2545;}
+.dist-side-top{padding:16px 18px;border-bottom:1.5px solid var(--bd);}
+[data-theme="dark"] .dist-side-top{border-color:#2a2545;}
+.dist-side-top h2{font-size:1rem;font-weight:800;color:var(--bl-d,#0d3d7a);margin-bottom:12px;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .dist-side-top h2{color:var(--tan-g,#ffd080);}
+.dist-search{display:flex;gap:8px;margin-bottom:10px;}
+.dist-search input{flex:1;padding:9px 12px;border:1.5px solid var(--bd);border-radius:9px;font-size:.86rem;font-family:'DM Sans',sans-serif;background:var(--bg-i);color:var(--tx1);}
+[data-theme="dark"] .dist-search input{background:#1a1730;border-color:#2a2545;color:#f0edff;}
+.dist-search input:focus{outline:none;border-color:var(--or,#e8651a);}
+.dist-search button{padding:9px 13px;border-radius:9px;border:none;background:var(--or,#e8651a);color:#fff;cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;transition:background .2s;}
+.dist-search button:hover{background:var(--or-d,#c04e0e);}
+.filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.f-pill{padding:4px 11px;border-radius:100px;font-size:.72rem;font-weight:700;border:1.5px solid var(--bd);background:var(--bg-a);color:var(--tx2);cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.f-pill.active,.f-pill:hover{background:var(--or,#e8651a);border-color:var(--or,#e8651a);color:#fff;}
+.dist-list{flex:1;overflow-y:auto;}
+.dist-item{display:flex;gap:11px;padding:13px 17px;border-bottom:1px solid var(--bd);cursor:pointer;transition:all .18s;align-items:flex-start;}
+[data-theme="dark"] .dist-item{border-color:#1a1730;}
+.dist-item:hover,.dist-item.active{background:var(--or-p,#fef2e8);border-left:3px solid var(--or,#e8651a);}
+[data-theme="dark"] .dist-item:hover,[data-theme="dark"] .dist-item.active{background:rgba(232,101,26,.1);}
+.dist-num{width:26px;height:26px;border-radius:50%;background:var(--or,#e8651a);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;}
+.dist-item.active .dist-num{background:var(--bl,#1a6abf);}
+.dist-item-name{font-size:.88rem;font-weight:700;color:var(--tx1);margin-bottom:2px;}
+[data-theme="dark"] .dist-item-name{color:#f0edff;}
+.dist-item-addr{font-size:.76rem;color:var(--tx3);line-height:1.45;}
+.dist-item-phone{font-size:.74rem;color:var(--or,#e8651a);font-weight:700;margin-top:2px;}
+.dist-region{font-size:.62rem;font-weight:800;letter-spacing:.06em;padding:2px 8px;border-radius:100px;text-transform:uppercase;flex-shrink:0;margin-top:1px;}
+.r-central{background:#e0eeff;color:#0d3d7a;}.r-eastern{background:#fef2e8;color:#c04e0e;}
+.r-northern{background:#f0eaff;color:#3d1a8a;}.r-western{background:#eef5e8;color:#3a5a20;}
+[data-theme="dark"] .r-central{background:rgba(26,106,191,.2);color:#80b8ff;}
+[data-theme="dark"] .r-eastern{background:rgba(232,101,26,.15);color:#ffa060;}
+[data-theme="dark"] .r-northern{background:rgba(90,26,138,.2);color:#c090ff;}
+[data-theme="dark"] .r-western{background:rgba(90,138,58,.15);color:#90d080;}
+.near-me-btn{width:100%;padding:9px;font-size:.8rem;font-weight:700;border:none;cursor:pointer;background:var(--bg-a);color:var(--or,#e8651a);font-family:'DM Sans',sans-serif;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:center;gap:6px;transition:background .2s;}
+.near-me-btn:hover{background:var(--or-p,#fef2e8);}
+#gmap{width:100%;height:calc(100vh - 180px);position:sticky;top:72px;}
+.map-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);z-index:5;flex-direction:column;gap:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--tx3);}
+[data-theme="dark"] .map-loading{background:rgba(8,6,15,.9);color:#8a80b0;}
+.spin{width:36px;height:36px;border:3px solid var(--bd);border-top-color:var(--or,#e8651a);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gmap-iw{font-family:'DM Sans',sans-serif;max-width:260px;padding:2px;}
+.gmap-iw h4{font-size:.94rem;font-weight:800;color:#0d3d7a;margin-bottom:6px;}
+.gmap-iw p{font-size:.78rem;color:#3a3060;margin:3px 0;line-height:1.4;}
+.gmap-iw .iw-phone{color:#e8651a;font-weight:700;}
+.iw-btns{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+.iw-btn{padding:5px 12px;border-radius:7px;font-size:.74rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .2s;}
+.iw-btn:hover{opacity:.85;}
+.iw-dir{background:#0d3d7a;color:#fff;}.iw-gm{background:#e8651a;color:#fff;}
+/* Google Places search on map */
+.gplaces{position:absolute;top:14px;right:14px;z-index:10;width:272px;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);overflow:hidden;}
+[data-theme="dark"] .gplaces{background:#12101f;}
+.gplaces input{width:100%;padding:11px 14px;border:none;font-size:.86rem;font-family:'DM Sans',sans-serif;outline:none;color:#14102a;border-bottom:1.5px solid #e2ddf2;}
+[data-theme="dark"] .gplaces input{background:#12101f;color:#f0edff;border-color:#2a2545;}
+.gplace-r{padding:9px 14px;font-size:.8rem;cursor:pointer;border-bottom:1px solid #f0f0f0;transition:background .15s;}
+.gplace-r:hover{background:#fef2e8;}
+.gplace-r strong{display:block;font-weight:700;color:#14102a;font-size:.82rem;}
+.gplace-r span{color:#6a6090;font-size:.72rem;}
+[data-theme="dark"] .gplace-r{border-color:#1a1730;}
+[data-theme="dark"] .gplace-r:hover{background:rgba(232,101,26,.1);}
+[data-theme="dark"] .gplace-r strong{color:#f0edff;}
+[data-theme="dark"] .gplace-r span{color:#8a80b0;}
+@media(max-width:860px){.dist-wrap{grid-template-columns:1fr;}.dist-side{max-height:350px;position:static;}#gmap{height:380px;position:static;}.gplaces{width:calc(100% - 28px);right:14px;}}
 </style>
 {% endblock %}
-
 {% block content %}
 <section class="page-hero" style="padding:28px 0 22px;">
   <div class="container">
     <div class="breadcrumb" style="margin-bottom:8px;"><a href="/">Home</a><span class="sep">/</span><span class="current">Find a Distributor</span></div>
     <div class="page-hero-tag anim-fade-down"><i class="fas fa-store"></i> Nationwide Network</div>
-    <h1 class="anim-fade-up" style="margin-bottom:8px;">Find a Distributor Near You</h1>
-    <p class="anim-fade-up delay-1" style="max-width:55ch;">Search our nationwide network of {{ distributors|length }}+ authorised Muddo Agro outlets, or use Google Maps to find live, updated location information.</p>
+    <h1 class="anim-fade-up" style="margin-bottom:8px;">Find an Outlet Near You</h1>
+    <p class="anim-fade-up delay-1">{{ distributors|length }} authorised MACL outlets across Uganda. Search by name, region, or use your location.</p>
   </div>
 </section>
 
-<div class="dist-page">
-
-  <!-- ══ SIDEBAR ════════════════════════════════════════════════════════════ -->
-  <aside class="dist-sidebar">
-    <div class="dist-sidebar-top">
-      <h2><i class="fas fa-map-marker-alt" style="color:var(--macl-orange,#e8651a);margin-right:7px;"></i>{{ distributors|length }} Outlets Found</h2>
-
-      <!-- Text search -->
-      <div class="search-bar">
+<div class="dist-wrap">
+  <!-- SIDEBAR -->
+  <aside class="dist-side">
+    <div class="dist-side-top">
+      <h2><i class="fas fa-map-marker-alt" style="color:var(--or,#e8651a);margin-right:7px;"></i>{{ distributors|length }} Outlets</h2>
+      <div class="dist-search">
         <input type="text" id="distSearch" placeholder="Search by name, district…" oninput="filterDist()">
         <button onclick="nearMe()"><i class="fas fa-location-arrow"></i> Near Me</button>
       </div>
-
-      <!-- Region filters -->
       <div class="filter-pills">
-        <button class="filter-pill active" data-region="" onclick="setRegion(this,'')">All</button>
+        <button class="f-pill active" data-region="" onclick="setRegion(this,'')">All</button>
         {% for region in regions %}
-        <button class="filter-pill" data-region="{{ region[0] }}" onclick="setRegion(this,'{{ region[0] }}')">{{ region[0] }}</button>
+        <button class="f-pill" data-region="{{ region[0]|lower }}" onclick="setRegion(this,'{{ region[0]|lower }}')">{{ region[0] }}</button>
         {% endfor %}
       </div>
     </div>
-
-    <!-- Distributor list -->
     <div class="dist-list" id="distList">
       {% for d in distributors %}
-      <div class="dist-item" id="ditem-{{ loop.index }}"
+      <div class="dist-item" id="di-{{ loop.index }}"
            data-lat="{{ d.lat }}" data-lng="{{ d.lng }}"
-           data-region="{{ d.region|lower }}"
-           data-name="{{ d.name|lower }}" data-district="{{ (d.district or '')|lower }}"
-           onclick="selectDist({{ loop.index }},{{ d.lat }},{{ d.lng }},'{{ d.name }}','{{ d.address }}','{{ d.phone }}','{{ d.email or '' }}','{{ d.region }}')">
-        <div class="dist-item-num">{{ loop.index }}</div>
-        <div class="dist-item-info">
-          <div class="dist-name">{{ d.name }}</div>
-          <div class="dist-addr"><i class="fas fa-map-pin" style="font-size:.65rem;margin-right:4px;color:var(--macl-orange,#e8651a);"></i>{{ d.address }}{% if d.district %}, {{ d.district }}{% endif %}</div>
-          {% if d.phone %}<div class="dist-phone"><i class="fas fa-phone" style="font-size:.65rem;margin-right:4px;"></i>{{ d.phone }}</div>{% endif %}
+           data-region="{{ d.region|lower }}" data-name="{{ d.name|lower }}" data-district="{{ (d.district or '')|lower }}"
+           onclick="selectDist({{ loop.index }},{{ d.lat }},{{ d.lng }},'{{ d.name }}','{{ d.address }}','{{ d.phone }}','{{ d.region }}','{{ d.email or '' }}')">
+        <div class="dist-num">{{ loop.index }}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="dist-item-name">{{ d.name }}</div>
+          <div class="dist-item-addr">{{ d.address }}{% if d.district %}, {{ d.district }}{% endif %}</div>
+          {% if d.phone %}<div class="dist-item-phone"><i class="fas fa-phone" style="font-size:.62rem;margin-right:3px;"></i>{{ d.phone }}</div>{% endif %}
         </div>
-        <span class="dist-region-badge region-{{ d.region|lower }}">{{ d.region }}</span>
+        <span class="dist-region r-{{ d.region|lower }}">{{ d.region }}</span>
       </div>
       {% else %}
-      <div class="no-results"><i class="fas fa-store" style="font-size:2rem;display:block;margin-bottom:10px;color:#ddd;"></i>No distributors found.</div>
+      <div style="padding:32px;text-align:center;color:var(--tx3);font-size:.88rem;">No distributors found.</div>
       {% endfor %}
     </div>
-
-    <!-- Near me button at bottom -->
-    <button class="near-me-btn" onclick="nearMe()">
-      <i class="fas fa-location-arrow"></i> Find outlets closest to me
-    </button>
+    <button class="near-me-btn" onclick="nearMe()"><i class="fas fa-location-arrow"></i> Find closest outlet to me</button>
   </aside>
 
-  <!-- ══ MAP ══════════════════════════════════════════════════════════════════ -->
+  <!-- MAP -->
   <div style="position:relative;">
-    <!-- Google Maps -->
     <div id="gmap"></div>
-
-    <!-- Map loading overlay -->
     <div class="map-loading" id="mapLoading">
-      <div class="spinner"></div>
-      <span>Loading map…</span>
+      <div class="spin"></div><span>Loading map…</span>
     </div>
-
-    <!-- Google Places search panel on the map -->
-    <div class="gplaces-panel" id="placesPanel">
-      <input id="placesSearch" type="text" placeholder="🔍  Search Google Maps for any location…">
+    {% if google_maps_key %}
+    <!-- Google Places search panel -->
+    <div class="gplaces" id="placesPanel">
+      <input id="placesInput" type="text" placeholder="🔍  Search any location in Uganda…">
       <div id="placesResults"></div>
     </div>
+    {% endif %}
   </div>
 </div>
 
 <script>
-// ── DATA FROM SERVER ─────────────────────────────────────────────────────────
-const DISTRIBUTORS = [
+const DISTS = [
   {% for d in distributors %}
-  {
-    id: {{ loop.index }},
-    name: "{{ d.name|replace('"','&quot;') }}",
-    address: "{{ (d.address or '')|replace('"','&quot;') }}",
-    district: "{{ d.district or '' }}",
-    region: "{{ d.region or '' }}",
-    phone: "{{ d.phone or '' }}",
-    email: "{{ d.email or '' }}",
-    lat: {{ d.lat or 0.3136 }},
-    lng: {{ d.lng or 32.5811 }},
-  },
+  {id:{{ loop.index }},name:"{{ d.name|replace('"','&quot;') }}",address:"{{ (d.address or '')|replace('"','&quot;') }}",district:"{{ d.district or '' }}",region:"{{ d.region or '' }}",phone:"{{ d.phone or '' }}",email:"{{ d.email or '' }}",lat:{{ d.lat or 0.3136 }},lng:{{ d.lng or 32.5811 }}},
   {% endfor %}
 ];
+const GMAPS_KEY = "{{ google_maps_key or '' }}";
 
-// ── MAP STATE ─────────────────────────────────────────────────────────────────
-let map, markers = [], infoWindows = [], placesService, autocompleteService;
-let selectedRegion = '', selectedIdx = null;
+let map, markers=[], iwins=[], autoSvc, placesSvc, activeRegion='';
 
-// ── INIT GOOGLE MAP ───────────────────────────────────────────────────────────
-function initMap() {
-  document.getElementById('mapLoading').style.display = 'none';
-
-  map = new google.maps.Map(document.getElementById('gmap'), {
-    center: { lat: 1.3733, lng: 32.2903 },  // Uganda center
-    zoom: 7,
-    mapId: 'muddo_agro_map',
-    styles: [
-      { featureType:'administrative.country', stylers:[{visibility:'on'}] },
-      { featureType:'road.highway', elementType:'geometry', stylers:[{color:'#e8d0b0'}] },
-      { featureType:'water', elementType:'geometry', stylers:[{color:'#b8d8f0'}] },
-      { featureType:'landscape', elementType:'geometry', stylers:[{color:'#f5f0e8'}] },
-    ],
-    mapTypeControl: true,
-    streetViewControl: true,
-    fullscreenControl: true,
+function initMap(){
+  document.getElementById('mapLoading').style.display='none';
+  map = new google.maps.Map(document.getElementById('gmap'),{
+    center:{lat:1.37,lng:32.29},zoom:7,
+    mapId:'muddo_agro',
+    mapTypeControl:true,streetViewControl:true,fullscreenControl:true,
+    styles:[
+      {featureType:'water',elementType:'geometry',stylers:[{color:'#b8d0f0'}]},
+      {featureType:'landscape',elementType:'geometry',stylers:[{color:'#f5f2ee'}]},
+      {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#e8d8c0'}]},
+    ]
   });
-
-  // Plot MACL distributor pins
-  DISTRIBUTORS.forEach(d => addMarker(d));
-
-  // Fit map to show all markers
-  fitMapToMarkers();
-
-  // Google Places autocomplete on search panel
-  if (window.google && google.maps.places) {
-    autocompleteService = new google.maps.places.AutocompleteService();
-    placesService = new google.maps.places.PlacesService(map);
-
-    const placesInput = document.getElementById('placesSearch');
-    placesInput.addEventListener('input', debounce(searchPlaces, 350));
+  DISTS.forEach(d=>addPin(d));
+  fitAll();
+  if(GMAPS_KEY && google.maps.places){
+    autoSvc = new google.maps.places.AutocompleteService();
+    placesSvc = new google.maps.places.PlacesService(map);
+    const inp = document.getElementById('placesInput');
+    if(inp) inp.addEventListener('input', debounce(()=>searchPlaces(inp.value), 350));
   }
 }
 
-function addMarker(d) {
-  // Custom MACL orange SVG pin
-  const pin = {
-    path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
-    fillColor: '#e8651a',
-    fillOpacity: 1,
-    strokeColor: '#c04e0e',
-    strokeWeight: 1.5,
-    scale: 1.6,
-    anchor: new google.maps.Point(12, 22),
-  };
-
+function addPin(d){
   const marker = new google.maps.Marker({
-    position: { lat: d.lat, lng: d.lng },
-    map,
-    title: d.name,
-    label: { text: String(d.id), color: 'white', fontSize: '10px', fontWeight: '800' },
-    icon: pin,
-    animation: google.maps.Animation.DROP,
+    position:{lat:d.lat,lng:d.lng},map,title:d.name,
+    label:{text:String(d.id),color:'white',fontSize:'10px',fontWeight:'800'},
+    icon:{
+      path:'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+      fillColor:'#e8651a',fillOpacity:1,strokeColor:'#c04e0e',strokeWeight:1.5,scale:1.6,
+      anchor:new google.maps.Point(12,22)
+    },
+    animation:google.maps.Animation.DROP
   });
-
-  // Info window content
-  const iw = new google.maps.InfoWindow({
-    content: `<div class="gmap-iw">
+  const iw = new google.maps.InfoWindow({content:`
+    <div class="gmap-iw">
       <h4><i class="fas fa-store" style="color:#e8651a;margin-right:5px;"></i>${d.name}</h4>
-      <p><i class="fas fa-map-marker-alt" style="color:#7a5c40;margin-right:5px;"></i>${d.address}${d.district ? ', '+d.district : ''}, ${d.region}</p>
-      ${d.phone ? `<p class="iw-phone"><i class="fas fa-phone" style="margin-right:5px;"></i><a href="tel:${d.phone}" style="color:#e8651a;">${d.phone}</a></p>` : ''}
-      ${d.email ? `<p><i class="fas fa-envelope" style="color:#7a5c40;margin-right:5px;font-size:.75rem;"></i><a href="mailto:${d.email}" style="color:#1a5fa8;font-size:.78rem;">${d.email}</a></p>` : ''}
-      <div class="iw-actions">
-        <a class="iw-btn iw-btn-dir" href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank">
-          <i class="fas fa-directions"></i> Directions
-        </a>
-        <a class="iw-btn iw-btn-gm" href="https://www.google.com/maps/search/${encodeURIComponent(d.name+' '+d.address+' Uganda')}" target="_blank">
-          <i class="fas fa-map"></i> Google Maps
-        </a>
+      <p><i class="fas fa-map-marker-alt" style="color:#6a6090;margin-right:5px;"></i>${d.address}${d.district?', '+d.district:''}, ${d.region}</p>
+      ${d.phone?`<p class="iw-phone"><i class="fas fa-phone" style="margin-right:4px;"></i><a href="tel:${d.phone}" style="color:#e8651a;">${d.phone}</a></p>`:''}
+      ${d.email?`<p><i class="fas fa-envelope" style="color:#6a6090;margin-right:4px;font-size:.72rem;"></i>${d.email}</p>`:''}
+      <div class="iw-btns">
+        <a class="iw-btn iw-dir" href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank"><i class="fas fa-directions"></i>Directions</a>
+        <a class="iw-btn iw-gm" href="https://www.google.com/maps/search/${encodeURIComponent(d.name+' '+d.address+' Uganda')}" target="_blank"><i class="fas fa-map"></i>Maps</a>
       </div>
-    </div>`,
+    </div>`
   });
-
-  marker.addListener('click', () => {
-    closeAllIW();
-    iw.open(map, marker);
-    selectDist(d.id, d.lat, d.lng, d.name, d.address, d.phone, d.email, d.region);
+  marker.addListener('click',()=>{
+    closeAll();iw.open(map,marker);
+    selectDist(d.id,d.lat,d.lng,d.name,d.address,d.phone,d.region,d.email);
   });
-
-  markers.push(marker);
-  infoWindows.push(iw);
+  markers.push(marker);iwins.push(iw);
 }
 
-function closeAllIW() {
-  infoWindows.forEach(iw => iw.close());
+function closeAll(){iwins.forEach(i=>i.close());}
+function fitAll(){
+  const b=new google.maps.LatLngBounds();
+  markers.forEach(m=>b.extend(m.getPosition()));
+  map.fitBounds(b);
+  const l=google.maps.event.addListener(map,'idle',()=>{if(map.getZoom()>12)map.setZoom(12);google.maps.event.removeListener(l);});
 }
 
-function fitMapToMarkers() {
-  const bounds = new google.maps.LatLngBounds();
-  markers.forEach(m => bounds.extend(m.getPosition()));
-  map.fitBounds(bounds);
-  // Don't zoom in too far
-  const listener = google.maps.event.addListener(map, 'idle', () => {
-    if (map.getZoom() > 12) map.setZoom(12);
-    google.maps.event.removeListener(listener);
-  });
-}
-
-function selectDist(idx, lat, lng, name, address, phone, email, region) {
-  selectedIdx = idx;
-
-  // Highlight sidebar item
-  document.querySelectorAll('.dist-item').forEach(el => el.classList.remove('active'));
-  const item = document.getElementById(`ditem-${idx}`);
-  if (item) {
-    item.classList.add('active');
-    item.scrollIntoView({ behavior:'smooth', block:'nearest' });
-  }
-
-  // Pan and zoom map
-  map.panTo({ lat, lng });
-  map.setZoom(15);
-
-  // Open info window
-  closeAllIW();
-  const markerIdx = markers.findIndex(m => Math.abs(m.getPosition().lat()-lat) < 0.001);
-  if (markerIdx >= 0) {
-    infoWindows[markerIdx].open(map, markers[markerIdx]);
-    markers[markerIdx].setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(() => markers[markerIdx].setAnimation(null), 1200);
+function selectDist(idx,lat,lng,name,address,phone,region,email){
+  document.querySelectorAll('.dist-item').forEach(e=>e.classList.remove('active'));
+  const el=document.getElementById('di-'+idx);
+  if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  map.panTo({lat,lng});map.setZoom(15);
+  closeAll();
+  const mi=markers.findIndex(m=>Math.abs(m.getPosition().lat()-lat)<.001);
+  if(mi>=0){
+    iwins[mi].open(map,markers[mi]);
+    markers[mi].setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(()=>markers[mi].setAnimation(null),1200);
   }
 }
 
-// ── NEARBY USING GEOLOCATION ─────────────────────────────────────────────────
-function nearMe() {
-  if (!navigator.geolocation) { alert('Geolocation not supported by your browser.'); return; }
-  navigator.geolocation.getCurrentPosition(pos => {
-    const userLat = pos.coords.latitude;
-    const userLng = pos.coords.longitude;
-
-    // Sort distributors by distance
-    const withDist = DISTRIBUTORS.map(d => ({
-      ...d,
-      dist: haversine(userLat, userLng, d.lat, d.lng),
-    })).sort((a,b) => a.dist - b.dist);
-
-    // Pan map to user location
-    map.panTo({ lat: userLat, lng: userLng });
-    map.setZoom(11);
-
-    // Add user location marker
-    new google.maps.Marker({
-      position: { lat: userLat, lng: userLng },
-      map,
-      title: 'Your Location',
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#1a5fa8', fillOpacity: 1,
-        strokeColor: 'white', strokeWeight: 2,
-        scale: 9,
-      },
-    });
-
-    // Show nearest 5 in sidebar
-    window.toast?.info(`Showing ${Math.min(5,withDist.length)} nearest outlets to you`);
-    if (withDist.length) selectDist(withDist[0].id, withDist[0].lat, withDist[0].lng,
-      withDist[0].name, withDist[0].address, withDist[0].phone, withDist[0].email, withDist[0].region);
-  }, () => {
-    alert('Could not get your location. Please check browser permissions.');
-  });
+function nearMe(){
+  if(!navigator.geolocation){alert('Geolocation not supported by your browser.');return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const ul=pos.coords.latitude,ug=pos.coords.longitude;
+    map.panTo({lat:ul,lng:ug});map.setZoom(11);
+    new google.maps.Marker({position:{lat:ul,lng:ug},map,title:'Your Location',
+      icon:{path:google.maps.SymbolPath.CIRCLE,fillColor:'#1a6abf',fillOpacity:1,strokeColor:'white',strokeWeight:2,scale:9}});
+    const sorted=[...DISTS].sort((a,b)=>haversine(ul,ug,a.lat,a.lng)-haversine(ul,ug,b.lat,b.lng));
+    if(sorted.length) selectDist(sorted[0].id,sorted[0].lat,sorted[0].lng,sorted[0].name,sorted[0].address,sorted[0].phone,sorted[0].region,sorted[0].email);
+  },()=>alert('Could not get your location. Check browser permissions.'));
 }
 
-function haversine(lat1, lng1, lat2, lng2) {
-  const R = 6371;
-  const dLat = (lat2-lat1) * Math.PI/180;
-  const dLng = (lng2-lng1) * Math.PI/180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+function haversine(la1,lo1,la2,lo2){
+  const R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dLa/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
-// ── GOOGLE PLACES SEARCH ──────────────────────────────────────────────────────
-function searchPlaces(query) {
-  if (!query || query.length < 3 || !autocompleteService) return;
-  const resultsDiv = document.getElementById('placesResults');
-  resultsDiv.innerHTML = '<div style="padding:8px 14px;font-size:.78rem;color:#999;">Searching…</div>';
-
-  autocompleteService.getPlacePredictions({
-    input: query,
-    componentRestrictions: { country: 'ug' },
-    types: ['establishment','geocode'],
-  }, (predictions, status) => {
-    if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
-      resultsDiv.innerHTML = '<div style="padding:8px 14px;font-size:.78rem;color:#999;">No results</div>';
-      return;
-    }
-    resultsDiv.innerHTML = predictions.slice(0,5).map(p => `
-      <div class="gplaces-result" onclick="goToPlace('${p.place_id}','${p.structured_formatting.main_text.replace(/'/g,"\\'")}')">
-        <strong>${p.structured_formatting.main_text}</strong>
-        <span>${p.structured_formatting.secondary_text || ''}</span>
-      </div>
-    `).join('');
+function filterDist(){
+  const q=document.getElementById('distSearch').value.toLowerCase();
+  let c=0;
+  document.querySelectorAll('.dist-item').forEach(el=>{
+    const matchN=el.dataset.name.includes(q)||el.dataset.district.includes(q);
+    const matchR=!activeRegion||el.dataset.region===activeRegion;
+    el.style.display=(matchN&&matchR)?'':'none';
+    if(matchN&&matchR)c++;
   });
+  document.querySelector('.dist-side-top h2').innerHTML=`<i class="fas fa-map-marker-alt" style="color:var(--or,#e8651a);margin-right:7px;"></i>${c} Outlet${c!==1?'s':''}`;
 }
 
-function goToPlace(placeId, name) {
-  document.getElementById('placesResults').innerHTML = '';
-  document.getElementById('placesSearch').value = name;
-
-  placesService.getDetails({ placeId, fields:['geometry','name','formatted_address','formatted_phone_number','opening_hours','website','url'] }, (place, status) => {
-    if (status !== google.maps.places.PlacesServiceStatus.OK) return;
-
-    map.panTo(place.geometry.location);
-    map.setZoom(16);
-
-    // Custom info window for Google Places result
-    const iw = new google.maps.InfoWindow({
-      position: place.geometry.location,
-      content: `<div class="gmap-iw">
-        <h4><i class="fas fa-location-dot" style="color:#1a5fa8;margin-right:5px;"></i>${place.name}</h4>
-        <p>${place.formatted_address || ''}</p>
-        ${place.formatted_phone_number ? `<p class="iw-phone"><i class="fas fa-phone" style="margin-right:5px;"></i>${place.formatted_phone_number}</p>` : ''}
-        ${place.opening_hours ? `<p style="font-size:.75rem;color:${place.opening_hours.isOpen() ? '#0d3d7a' : '#b83a1a'};font-weight:700;">
-          ${place.opening_hours.isOpen() ? '🟢 Open now' : '🔴 Closed now'}</p>` : ''}
-        <div class="iw-actions">
-          ${place.url ? `<a class="iw-btn iw-btn-dir" href="${place.url}" target="_blank"><i class="fas fa-map"></i> View on Maps</a>` : ''}
-          ${place.website ? `<a class="iw-btn iw-btn-gm" href="${place.website}" target="_blank"><i class="fas fa-globe"></i> Website</a>` : ''}
-        </div>
-      </div>`,
-    });
-    iw.open(map);
-  });
-}
-
-// ── SIDEBAR FILTER ────────────────────────────────────────────────────────────
-function filterDist() {
-  const q = document.getElementById('distSearch').value.toLowerCase();
-  let visible = 0;
-  document.querySelectorAll('.dist-item').forEach(item => {
-    const matchName = item.dataset.name.includes(q);
-    const matchDist = item.dataset.district.includes(q);
-    const matchRegion = !selectedRegion || item.dataset.region.toLowerCase() === selectedRegion.toLowerCase();
-    const show = (matchName || matchDist) && matchRegion;
-    item.style.display = show ? '' : 'none';
-    if (show) visible++;
-  });
-  // Update count
-  document.querySelector('.dist-sidebar-top h2').innerHTML =
-    `<i class="fas fa-map-marker-alt" style="color:var(--macl-orange,#e8651a);margin-right:7px;"></i>${visible} Outlet${visible!==1?'s':''} Found`;
-}
-
-function setRegion(btn, region) {
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  selectedRegion = region;
-  filterDist();
-
-  // Filter markers on map too
-  markers.forEach((m, i) => {
-    const d = DISTRIBUTORS[i];
-    const show = !region || d.region.toLowerCase() === region.toLowerCase();
-    m.setVisible(show);
-  });
-
-  if (region) {
-    // Fit map to visible markers
-    const bounds = new google.maps.LatLngBounds();
-    markers.forEach((m, i) => {
-      if (!region || DISTRIBUTORS[i].region.toLowerCase() === region.toLowerCase()) {
-        bounds.extend(m.getPosition());
-      }
-    });
-    map.fitBounds(bounds);
-  } else {
-    fitMapToMarkers();
+function setRegion(btn,region){
+  document.querySelectorAll('.f-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');activeRegion=region;filterDist();
+  markers.forEach((m,i)=>m.setVisible(!region||DISTS[i].region.toLowerCase()===region));
+  if(!region)fitAll();else{
+    const b=new google.maps.LatLngBounds();
+    markers.forEach((m,i)=>{if(!region||DISTS[i].region.toLowerCase()===region)b.extend(m.getPosition());});
+    map.fitBounds(b);
   }
 }
 
-// ── UTILITIES ─────────────────────────────────────────────────────────────────
-function debounce(fn, delay) {
-  let t;
-  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), delay); };
+// Google Places search
+function searchPlaces(q){
+  if(!q||q.length<3||!autoSvc)return;
+  const div=document.getElementById('placesResults');
+  div.innerHTML='<div style="padding:8px 14px;font-size:.76rem;color:#9a90b8;">Searching…</div>';
+  autoSvc.getPlacePredictions({input:q,componentRestrictions:{country:'ug'},types:['establishment','geocode']},
+    (preds,status)=>{
+      if(status!==google.maps.places.PlacesServiceStatus.OK||!preds){div.innerHTML='';return;}
+      div.innerHTML=preds.slice(0,5).map(p=>`
+        <div class="gplace-r" onclick="goPlace('${p.place_id}','${p.structured_formatting.main_text.replace(/'/g,"\\'")}')">
+          <strong>${p.structured_formatting.main_text}</strong>
+          <span>${p.structured_formatting.secondary_text||''}</span>
+        </div>`).join('');
+    });
 }
 
-document.getElementById('placesSearch').addEventListener('input', function() {
-  if (!this.value) document.getElementById('placesResults').innerHTML = '';
-  else searchPlaces(this.value);
+function goPlace(placeId,name){
+  document.getElementById('placesInput').value=name;
+  document.getElementById('placesResults').innerHTML='';
+  placesSvc.getDetails({placeId,fields:['geometry','name','formatted_address','formatted_phone_number','opening_hours','url']},
+    (place,status)=>{
+      if(status!==google.maps.places.PlacesServiceStatus.OK)return;
+      map.panTo(place.geometry.location);map.setZoom(16);
+      const iw=new google.maps.InfoWindow({position:place.geometry.location,content:`
+        <div class="gmap-iw">
+          <h4>${place.name}</h4>
+          <p>${place.formatted_address||''}</p>
+          ${place.formatted_phone_number?`<p class="iw-phone">${place.formatted_phone_number}</p>`:''}
+          ${place.opening_hours?`<p style="color:${place.opening_hours.isOpen()?'#3a5a20':'#8a1a06'};font-weight:700;">${place.opening_hours.isOpen()?'🟢 Open now':'🔴 Closed now'}</p>`:''}
+          ${place.url?`<div class="iw-btns"><a class="iw-btn iw-dir" href="${place.url}" target="_blank"><i class="fas fa-map"></i>View on Maps</a></div>`:''}
+        </div>`});
+      iw.open(map);
+    });
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#placesPanel'))
+    {const d=document.getElementById('placesResults');if(d)d.innerHTML='';}
 });
 
-// Hide places results when clicking outside
-document.addEventListener('click', e => {
-  if (!e.target.closest('#placesPanel')) document.getElementById('placesResults').innerHTML = '';
-});
-</script>
+function debounce(fn,delay){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),delay);};}
 
-<!-- Google Maps API with Places library -->
-<!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your actual key from console.cloud.google.com -->
-<!-- Enable: Maps JavaScript API + Places API -->
-<script>
-// Fallback: if no API key, show OpenStreetMap instead
-(function() {
-  const API_KEY = '{{ google_maps_key }}';
-  if (!API_KEY || API_KEY === 'None' || API_KEY === '') {
-    // Use OpenStreetMap via Leaflet as fallback
-    document.getElementById('mapLoading').innerHTML = '<div class="spinner"></div><span>Loading map (OSM fallback)…</span>';
-    loadLeafletFallback();
-    document.getElementById('placesPanel').style.display = 'none';
-  } else {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap&loading=async`;
-    script.async = true;
-    script.defer = true;
-    script.onerror = () => loadLeafletFallback();
-    document.head.appendChild(script);
-  }
+// Load Google Maps or fall back to Leaflet
+(function(){
+  if(GMAPS_KEY){
+    const s=document.createElement('script');
+    s.src=`https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&libraries=places&callback=initMap&loading=async`;
+    s.async=true;s.onerror=loadLeaflet;document.head.appendChild(s);
+  } else {loadLeaflet();}
 })();
 
-function loadLeafletFallback() {
-  // Load Leaflet CSS + JS
-  const css = document.createElement('link');
-  css.rel = 'stylesheet';
-  css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+function loadLeaflet(){
+  const css=document.createElement('link');css.rel='stylesheet';
+  css.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
   document.head.appendChild(css);
-
-  const js = document.createElement('script');
-  js.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
-  js.onload = initLeaflet;
-  document.head.appendChild(js);
+  const js=document.createElement('script');
+  js.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  js.onload=initLeaflet;document.head.appendChild(js);
+  const pp=document.getElementById('placesPanel');if(pp)pp.style.display='none';
 }
 
-function initLeaflet() {
-  document.getElementById('mapLoading').style.display = 'none';
-
-  const leafMap = L.map('gmap').setView([1.3733, 32.2903], 7);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(leafMap);
-
-  const macIcon = L.divIcon({
-    html: '<div style="width:28px;height:28px;background:#e8651a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #c04e0e;"></div>',
-    iconSize: [28,28], iconAnchor: [14,28], className:''
+function initLeaflet(){
+  document.getElementById('mapLoading').style.display='none';
+  const lmap=L.map('gmap').setView([1.37,32.29],7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(lmap);
+  const icon=L.divIcon({html:'<div style="width:26px;height:26px;background:#e8651a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #c04e0e;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>',iconSize:[26,26],iconAnchor:[13,26],className:''});
+  const lmarks=[];
+  DISTS.forEach(d=>{
+    const m=L.marker([d.lat,d.lng],{icon}).addTo(lmap)
+      .bindPopup(`<div class="gmap-iw"><h4>${d.name}</h4><p>${d.address}${d.district?', '+d.district:''}</p>${d.phone?`<p class="iw-phone">${d.phone}</p>`:''}<div class="iw-btns"><a class="iw-btn iw-dir" href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank">Directions</a><a class="iw-btn iw-gm" href="https://maps.google.com?q=${encodeURIComponent(d.name+' Uganda')}" target="_blank">Google Maps</a></div></div>`);
+    lmarks.push(m);
   });
-
-  const leafMarkers = [];
-  DISTRIBUTORS.forEach(d => {
-    const marker = L.marker([d.lat, d.lng], {icon:macIcon})
-      .addTo(leafMap)
-      .bindPopup(`<div class="gmap-iw">
-        <h4>${d.name}</h4>
-        <p>${d.address}${d.district ? ', '+d.district : ''}, ${d.region}</p>
-        ${d.phone ? `<p class="iw-phone"><a href="tel:${d.phone}">${d.phone}</a></p>` : ''}
-        <div class="iw-actions">
-          <a class="iw-btn iw-btn-dir" href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank">Directions</a>
-          <a class="iw-btn iw-btn-gm" href="https://www.google.com/maps/search/${encodeURIComponent(d.name+' '+d.address)}" target="_blank">Google Maps</a>
-        </div>
-      </div>`);
-    leafMarkers.push(marker);
-  });
-
-  // Override selectDist for leaflet
-  window.selectDist = function(idx, lat, lng, name, address, phone, email, region) {
-    selectedIdx = idx;
-    document.querySelectorAll('.dist-item').forEach(el => el.classList.remove('active'));
-    const item = document.getElementById(`ditem-${idx}`);
-    if (item) { item.classList.add('active'); item.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-    leafMap.flyTo([lat, lng], 15);
-    leafMarkers[idx-1]?.openPopup();
+  window.selectDist=function(idx,lat,lng,name,addr,phone,region,email){
+    document.querySelectorAll('.dist-item').forEach(e=>e.classList.remove('active'));
+    const el=document.getElementById('di-'+idx);
+    if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    lmap.flyTo([lat,lng],15);lmarks[idx-1]?.openPopup();
   };
-
-  // Near me for leaflet
-  window.nearMe = function() {
-    if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude:lat, longitude:lng } = pos.coords;
-      leafMap.flyTo([lat, lng], 12);
-      L.circleMarker([lat, lng], {radius:10, color:'#1a5fa8', fillColor:'#1a5fa8', fillOpacity:0.8}).addTo(leafMap).bindPopup('Your Location').openPopup();
+  window.nearMe=function(){
+    if(!navigator.geolocation)return;
+    navigator.geolocation.getCurrentPosition(p=>{
+      lmap.flyTo([p.coords.latitude,p.coords.longitude],12);
+      L.circleMarker([p.coords.latitude,p.coords.longitude],{radius:10,color:'#1a6abf',fillColor:'#1a6abf',fillOpacity:.8}).addTo(lmap).bindPopup('Your Location').openPopup();
     });
   };
 }

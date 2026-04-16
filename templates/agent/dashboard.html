@@ -5,7 +5,7 @@
 <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
   <div>
     <div class="admin-page-title anim-fade-right">My Dashboard</div>
-    <div class="admin-page-sub">Hello, <strong>{{ agent.name }}</strong> — {{ now.strftime('%A, %d %B %Y') }}</div>
+    <div class="admin-page-sub">Hello, <strong>{{ agent.get('name', session.get('user_name','Agent')) }}</strong> — {{ now.strftime('%A, %d %B %Y') }}</div>
   </div>
   <div style="display:flex;gap:10px;">
     <a href="{{ url_for('agent_chat') }}" class="btn-sm" style="background:var(--orange,#e8651a);color:white;">
@@ -94,9 +94,9 @@
       <div class="admin-card-header"><span class="admin-card-title"><i class="fas fa-id-card" style="color:var(--orange,#e8651a);margin-right:6px;"></i> My Profile</span></div>
       <div class="admin-card-body" style="padding:16px;">
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-          <div style="width:52px;height:52px;border-radius:50%;background:var(--blue,#1a6abf);color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;">{{ agent.name[0]|upper }}</div>
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--blue,#1a6abf);color:white;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;">{{ (agent.get('name', session.get('user_name','A')))[0]|upper }}</div>
           <div>
-            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--blue-dark,#0d3d7a);">{{ agent.name }}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--blue-dark,#0d3d7a);">{{ agent.get('name', session.get('user_name','Agent')) }}</div>
             <div style="font-size:.78rem;color:var(--text-light);">@{{ agent.username }}</div>
           </div>
         </div>

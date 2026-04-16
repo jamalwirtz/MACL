@@ -15,7 +15,7 @@
 <meta name="twitter:description" content="Uganda's trusted MAAIF-registered agrochemical distributor.">
 <link rel="canonical" href="{{ request.url }}">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#08060f">
+<meta name="theme-color" content="#e8651a">
 <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo_macl.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -77,19 +77,20 @@
 
 <!-- PWA Manifest + Service Worker -->
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#08060f">
+<meta name="theme-color" content="#e8651a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Muddo Agro">
 </head>
 <body data-user-role="{{ session.get('role','') }}" data-user-id="{{ session.get('user_id','') }}" data-user-initial="{{ (session.get('user_name','U') or 'U')[0]|upper }}">
 
+<div class="scroll-progress" id="scrollProgress"></div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <nav class="navbar" id="navbar"><div class="nav-inner">
   <a href="{{ url_for('index') }}" class="nav-logo">
-    <img src="{{ url_for('static', filename='images/logo_macl.png') }}" alt="MACL"
-       style="height:42px;width:auto;max-width:200px;object-fit:contain;">
+    <img src="{{ url_for('static', filename='images/logo_full.png') }}" alt="MACL"
+       style="height:40px;width:auto;max-width:190px;object-fit:contain;">
     <div class="logo-text"><span class="logo-main">MUDDO AGRO</span><span class="logo-sub">Chemicals LTD</span></div>
   </a>
   <div class="nav-links" id="navLinks">

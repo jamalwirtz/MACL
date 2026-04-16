@@ -84,8 +84,14 @@ def init_db():
         product_id INTEGER,change_qty INTEGER,reason TEXT,changed_by TEXT,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP)''')
 
+    # ── SEED ONLY IF EMPTY (prevents duplicates on Render redeployments) ──
     pw=hashlib.sha256('muddo@admin2024'.encode()).hexdigest()
     c.execute('INSERT OR IGNORE INTO admins(username,password) VALUES(?,?)',('admin',pw))
+
+    # Only seed products/distributors/agents if DB is empty
+    existing = c.execute('SELECT COUNT(*) FROM products').fetchone()[0]
+    if existing > 0:
+        conn.commit(); conn.close(); return
 
     prods=[
       ('MD-MAIZE PLUS 40OD','herbicide','Selective post-emergence herbicide for maize. Controls grass and broad-leaved weeds.','Nicosulfuron 400g/l','Oil Dispersion (OD)','Maize','0.5–0.75 L/ha','1L, 5L','https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600',None),
@@ -348,7 +354,8 @@ def agent_dashboard():
     last_msg=conn.execute("SELECT * FROM messages WHERE ((sender_role='admin' AND receiver_id=? AND receiver_role='agent') OR (sender_id=? AND sender_role='agent' AND receiver_role='admin')) ORDER BY id DESC LIMIT 1",(my_id,my_id)).fetchone()
     total_products=conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
     conn.close()
-    return render_template('agent/dashboard.html',agent=dict(agent) if agent else {},my_requests=[dict(r) for r in my_requests],unread=unread,last_msg=dict(last_msg) if last_msg else None,total_products=total_products)
+    agent_data = dict(agent) if agent else {'name':session.get('user_name','Agent'),'username':session.get('username',''),'region':'','district':''}
+    return render_template('agent/dashboard.html',agent=agent_data,my_requests=[dict(r) for r in my_requests],unread=unread,last_msg=dict(last_msg) if last_msg else None,total_products=total_products)
 
 @app.route('/agent/chat')
 @agent_required
@@ -667,25 +674,19 @@ if __name__=='__main__':
 
 # ── HELPER: get display image URL for a product ──────────────────────────────
 def get_product_image(product):
-    """Return the best image URL: static/images > uploaded > URL > placeholder"""
-    if isinstance(product, dict):
-        img_file = product.get('image_file')
-        img_url  = product.get('image_url', '')
-    else:
-        img_file = getattr(product, 'image_file', None)
-        img_url  = getattr(product, 'image_url', '')
+    """Return best image URL for a product — checks static/images first."""
+    img_file = product.get('image_file') if isinstance(product, dict) else getattr(product,'image_file',None)
+    img_url  = (product.get('image_url','') if isinstance(product,dict) else getattr(product,'image_url','')) or ''
     if img_file:
-        # Check static/images first (product photos saved there)
         static_path = os.path.join(os.path.dirname(__file__), 'static', 'images', img_file)
         if os.path.exists(static_path):
             return url_for('static', filename=f'images/{img_file}')
-        # Fall back to uploaded products folder
         upload_path = os.path.join(UPLOAD_DIR, img_file)
         if os.path.exists(upload_path):
             return url_for('uploaded_product_image', filename=img_file)
-    if img_url:
+    if img_url and img_url.startswith('http'):
         return img_url
-    return 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600'
+    return url_for('static', filename='images/products_all.png')
 
 app.jinja_env.globals['get_product_image'] = get_product_image
 
